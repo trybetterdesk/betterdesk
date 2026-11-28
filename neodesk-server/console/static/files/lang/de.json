@@ -826,7 +826,19 @@
     "signin_path_typed": "Solange NeoDesk auf diesem Computer sich nicht selbst anmelden kann, gibt der Browser-Viewer die Daten ein.",
     "unblock_not_blocked": "Dieser Computer ist auf diesem Server nicht gesperrt.",
     "empty_none": "Noch keine Geräte.",
-    "empty_join_requests": "Neue Computer unter Beitrittsanfragen freigeben"
+    "empty_join_requests": "Neue Computer unter Beitrittsanfragen freigeben",
+    "unattended_line_ask": "Jemand am Computer muss auf Erlauben klicken.",
+    "unattended_line_always": "Mitarbeiter können sich ohne Nachfrage verbinden.",
+    "unattended_line_when": "Mitarbeiter können sich ohne Nachfrage verbinden, {when}.",
+    "unattended_line_who": "Mitarbeiter können sich ohne Nachfrage verbinden, nur {who}.",
+    "unattended_line_when_who": "Mitarbeiter können sich ohne Nachfrage verbinden, {when}, nur {who}.",
+    "unattended_when": "{days} {start} bis {end}",
+    "unattended_when_all_day": "{days} ganztägig",
+    "unattended_when_zone": "{when} (Zeit in {zone})",
+    "unattended_day_range": "{first} bis {last}",
+    "unattended_every_day": "jeden Tag",
+    "unattended_and": "{list} und {last}",
+    "access_policy_change": "Ändern"
   },
   "keys": {
     "title": "Dashboard",
@@ -2424,7 +2436,29 @@
     "action_fleet_workflow_run": "Workflow ausgeführt",
     "action_quick_support_receiver_offer": "Installationsangebot nach der Schnellhilfe geändert",
     "action_receiver_installer_downloaded": "Installationsprogramm der Empfänger-App heruntergeladen",
-    "action_dashboards_shared_changed": "Geteilte Dashboards veröffentlicht"
+    "action_dashboards_shared_changed": "Geteilte Dashboards veröffentlicht",
+    "action_unattended_session_started": "Sitzung ohne Nachfrage begonnen",
+    "action_unattended_session_ended": "Sitzung ohne Nachfrage beendet",
+    "action_unattended_caller_refused": "Sitzung ohne Nachfrage abgelehnt",
+    "action_quick_support_caller": "Anrufer der Schnellhilfe bestätigt",
+    "action_quick_support_caller_refused": "Anrufer der Schnellhilfe nicht bestätigt",
+    "detail_unattended_started": "Sitzung ohne Nachfrage zu Gerät {device} begonnen",
+    "detail_unattended_ended": "Sitzung ohne Nachfrage zu Gerät {device} beendet",
+    "detail_unattended_refused": "Sitzung ohne Nachfrage zu Gerät {device} abgelehnt",
+    "field_helper": "Mitarbeiter",
+    "field_via": "verbunden über",
+    "field_relay_session": "Relay-Sitzung",
+    "field_started": "begonnen",
+    "field_duration_s": "Dauer in Sekunden",
+    "value_via_console": "die Webkonsole",
+    "value_via_desktop": "die Desktop-App",
+    "value_too_late": "zu spät gefragt",
+    "value_already_used": "schon einmal bestätigt",
+    "value_no_permission": "Konto darf sich nicht verbinden",
+    "value_ask_always": "die Richtlinie fragt immer",
+    "value_not_enabled": "Zugriff ohne Nachfrage ist aus",
+    "value_outside_schedule": "außerhalb der erlaubten Zeiten",
+    "value_operator_not_allowed": "kein erlaubter Mitarbeiter"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6524,13 +6558,13 @@
     "console_default": "Standard der Konsole"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "Mo",
+    "tue": "Di",
+    "wed": "Mi",
+    "thu": "Do",
+    "fri": "Fr",
+    "sat": "Sa",
+    "sun": "So"
   },
   "toolkit": {
     "title": "Dashboard",
@@ -6756,7 +6790,7 @@
     "password_min_length": "Mindestlänge für Passwörter",
     "password_require_special": "Sonderzeichen in Passwörtern verlangen",
     "password_max_age": "Passwörter laufen ab nach (Tage)",
-    "allowed_operators": "Erlaubte Bedienerrollen",
+    "allowed_operators": "Mitarbeiter, die sich ohne Nachfrage verbinden dürfen",
     "network_title": "Netzwerk",
     "network_desc": "Welche Wege Verbindungen zu diesen Geräten nehmen dürfen.",
     "block_direct_p2p": "Immer über einen Relay-Server verbinden",
@@ -6798,7 +6832,7 @@
     "col_source": "Geändert von",
     "audit_failed": "Die letzten Änderungen konnten nicht geladen werden.",
     "save_failed_groups": "Nicht gespeichert: {groups}.",
-    "help_mode": "Ob die Person am Gerät eine Fernsitzung annehmen muss.",
+    "help_mode": "Was die Empfänger-App tut, wenn sich Mitarbeiter verbinden. Betreut: Jemand am Computer klickt auf Erlauben, außer die Zugriffsrichtlinie des Computers schaltet den Zugriff ohne Nachfrage ein. Unbetreut: Mitarbeiter, die in NeoDesk angemeldet sind und sich mit dem Computer verbinden dürfen, kommen ohne Nachfrage und ohne Passwort hinein. Immer fragen: Jemand am Computer muss jedes Mal auf Erlauben klicken.",
     "help_max_session": "Eine Fernsitzung endet nach so vielen Minuten, von 0 bis 1440.",
     "help_idle_lock": "Das Gerät sperrt sich nach so vielen Minuten ohne Eingabe, von 0 bis 120.",
     "help_wallpaper": "Ob das Hintergrundbild zu sehen ist, während jemand verbunden ist.",
@@ -6810,7 +6844,7 @@
     "help_password_min": "Das kürzeste erlaubte Gerätepasswort, von 6 bis 128 Zeichen.",
     "help_password_special": "Gerätepasswörter müssen ein Zeichen wie ! oder # enthalten.",
     "help_password_age": "Gerätepasswörter müssen nach so vielen Tagen geändert werden, von 0 bis 365. 0 heißt nie.",
-    "help_operators": "Nur Personen mit einer dieser Rollen dürfen sich mit diesen Geräten verbinden, zum Beispiel Fernbediener.",
+    "help_operators": "Benutzernamen der Konten, die sich ohne Nachfrage verbinden dürfen, zum Beispiel anna. Nicht gesetzt lässt alle, die sich mit dem Computer verbinden dürfen.",
     "help_block_p2p": "Verbindungen zu diesen Geräten laufen nie direkt zwischen den beiden Computern, nur über einen Relay-Server.",
     "help_relays": "Verbindungen zu diesen Geräten nutzen das Relay des Servers, wenn es in dieser Liste steht, sonst das erste hier. Zum Beispiel relay1.example.com:21117.",
     "help_ip_ranges": "IP-Adressen oder Bereiche, einer pro Zeile, zum Beispiel 192.168.1.0/24.",
@@ -6861,7 +6895,9 @@
     "devices_none": "Noch ist kein Gerät in dieser Organisation, diese Richtlinien erreichen also keines.",
     "allow_uninstall": "Personen können die App entfernen",
     "help_allow_uninstall": "Aus: Personen an diesen Computern können die NeoDesk-App nicht entfernen. Nicht festgelegt erlaubt es.",
-    "receiver_applies_some": "Bisher wendet nur die Empfänger-App einen Teil dieser Gruppe an: {settings}. Die NeoDesk-Desktop-App wendet diese Gruppe noch nicht an. Die übrigen Einstellungen werden gespeichert und an Geräte gegeben, die danach fragen."
+    "receiver_applies_some": "Bisher wendet nur die Empfänger-App einen Teil dieser Gruppe an: {settings}. Die NeoDesk-Desktop-App wendet diese Gruppe noch nicht an. Die übrigen Einstellungen werden gespeichert und an Geräte gegeben, die danach fragen.",
+    "operator_n": "Konto {n}",
+    "add_operator": "Konto hinzufügen"
   },
   "attestation": {
     "title": "Dashboard",
@@ -9837,7 +9873,8 @@
       "key_changed_hint": "Wenn er neu installiert oder zurückgesetzt wurde, genehmige den neuen Schlüssel. Öffne dann die Einladung auf dem Computer noch einmal.",
       "approve_key": "Neuen Schlüssel genehmigen",
       "key_approved": "Neuer Schlüssel genehmigt. Öffne die Einladung auf dem Computer noch einmal.",
-      "refused": "Ein Computer mit der ID {id} hat diese Einladung versucht und wurde abgewiesen. Sieh in Geräte nach: Er ist vielleicht gesperrt oder entfernt."
+      "refused": "Ein Computer mit der ID {id} hat diese Einladung versucht und wurde abgewiesen. Sieh in Geräte nach: Er ist vielleicht gesperrt oder entfernt.",
+      "reach_policy": "Ohne Nachfrage: Der Zugriff ohne Nachfrage folgt der Richtlinie. Mitarbeiter, die in NeoDesk angemeldet sind und sich verbinden dürfen, kommen ohne Klick hinein, wenn die Richtlinie der Organisation oder die Zugriffsrichtlinie des Computers es erlaubt."
     }
   },
   "ui_form": {

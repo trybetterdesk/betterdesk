@@ -22,6 +22,10 @@ type inviteDevice struct {
 	FolderName string `json:"folder_name"`
 	Online     bool   `json:"online"`
 	JoinedAt   string `json:"joined_at"`
+	// DeviceType is what the computer runs as its NeoDesk reports it:
+	// "neodesk-support" for the receiver app, "neodesk" for the full
+	// desktop app, "" until it says
+	DeviceType string `json:"device_type"`
 }
 
 // inviteRefusal is the last computer an invite's join refused. KeyRequest
@@ -92,16 +96,16 @@ func (h *handlers) joinedDevice(ctx context.Context, joined onboard.Joined) (inv
 	if h.d.Store == nil {
 		return d, false, nil
 	}
-	var name, hostname, platform, status sql.NullString
-	err := h.d.Store.QueryRow(ctx, `SELECT display_name, hostname, os, status FROM peers WHERE id = ? AND NOT soft_deleted`, joined.DeviceID).
-		Scan(&name, &hostname, &platform, &status)
+	var name, hostname, platform, status, deviceType sql.NullString
+	err := h.d.Store.QueryRow(ctx, `SELECT display_name, hostname, os, status, device_type FROM peers WHERE id = ? AND NOT soft_deleted`, joined.DeviceID).
+		Scan(&name, &hostname, &platform, &status, &deviceType)
 	if errors.Is(err, sql.ErrNoRows) {
 		return d, false, nil
 	}
 	if err != nil {
 		return d, false, err
 	}
-	d.Name, d.Hostname, d.Platform = name.String, hostname.String, platform.String
+	d.Name, d.Hostname, d.Platform, d.DeviceType = name.String, hostname.String, platform.String, deviceType.String
 	d.Online = strings.EqualFold(status.String, "ONLINE")
 	var folder sql.NullInt64
 	var folderName sql.NullString

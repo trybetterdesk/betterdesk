@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Még nincs eszköz.",
-    "empty_join_requests": "Új számítógépek jóváhagyása a Csatlakozási kérelmek alatt"
+    "empty_join_requests": "Új számítógépek jóváhagyása a Csatlakozási kérelmek alatt",
+    "unattended_line_ask": "A számítógépnél ülő valakinek az Engedélyezés gombra kell kattintania.",
+    "unattended_line_always": "A munkatársak kérdés nélkül csatlakozhatnak.",
+    "unattended_line_when": "A munkatársak kérdés nélkül csatlakozhatnak, {when}.",
+    "unattended_line_who": "A munkatársak kérdés nélkül csatlakozhatnak, csak {who}.",
+    "unattended_line_when_who": "A munkatársak kérdés nélkül csatlakozhatnak, {when}, csak {who}.",
+    "unattended_when": "{days} {start} és {end} között",
+    "unattended_when_all_day": "{days} egész nap",
+    "unattended_when_zone": "{when} ({zone} szerinti idő)",
+    "unattended_day_range": "{first}–{last}",
+    "unattended_every_day": "minden nap",
+    "unattended_and": "{list} és {last}",
+    "access_policy_change": "Módosítás"
   },
   "keys": {
     "title": "Szerverkulcsok",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Megosztott irányítópultok közzétéve"
+    "action_dashboards_shared_changed": "Megosztott irányítópultok közzétéve",
+    "action_unattended_session_started": "Felügyelet nélküli munkamenet elindult",
+    "action_unattended_session_ended": "Felügyelet nélküli munkamenet véget ért",
+    "action_unattended_caller_refused": "Felügyelet nélküli munkamenet elutasítva",
+    "action_quick_support_caller": "Gyorstámogatási hívó megerősítve",
+    "action_quick_support_caller_refused": "Gyorstámogatási hívó nincs megerősítve",
+    "detail_unattended_started": "Felügyelet nélküli munkamenet a(z) {device} eszközhöz elindult",
+    "detail_unattended_ended": "Felügyelet nélküli munkamenet a(z) {device} eszközhöz véget ért",
+    "detail_unattended_refused": "Felügyelet nélküli munkamenet a(z) {device} eszközhöz elutasítva",
+    "field_helper": "munkatárs",
+    "field_via": "csatlakozás módja",
+    "field_relay_session": "relay-munkamenet",
+    "field_started": "kezdete",
+    "field_duration_s": "időtartam másodpercben",
+    "value_via_console": "a webkonzol",
+    "value_via_desktop": "az asztali alkalmazás",
+    "value_too_late": "túl későn kérdezett",
+    "value_already_used": "egyszer már megerősítve",
+    "value_no_permission": "a fiók nem csatlakozhat",
+    "value_ask_always": "a szabályzat mindig kérdez",
+    "value_not_enabled": "a felügyelet nélküli hozzáférés ki van kapcsolva",
+    "value_outside_schedule": "az engedélyezett időn kívül",
+    "value_operator_not_allowed": "nem engedélyezett munkatárs"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "Konzol alapértelmezése"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "H",
+    "tue": "K",
+    "wed": "Sze",
+    "thu": "Cs",
+    "fri": "P",
+    "sat": "Szo",
+    "sun": "V"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "Minimális jelszó hossza",
     "password_require_special": "Különleges karakterek szükségesek",
     "password_max_age": "Jelszó maximális életkora (nap, 0=soha)",
-    "allowed_operators": "Engedélyezett operátori szerepkörök (vesszővel elválasztva)",
+    "allowed_operators": "Kérdés nélkül csatlakozó munkatársak",
     "network_title": "Hálózati szabályzat",
     "network_desc": "Vezérelje a közvetítő szervereket és a közvetlen kapcsolatokat",
     "block_direct_p2p": "Mindig továbbítószerveren keresztül csatlakozzon",
@@ -6804,7 +6838,7 @@
     "col_source": "Módosítás helye",
     "audit_failed": "Nem sikerült betölteni a legutóbbi módosításokat.",
     "save_failed_groups": "Nincs mentve: {groups}.",
-    "help_mode": "El kell-e fogadnia az eszköznél lévő személynek a távoli munkamenetet.",
+    "help_mode": "Mit tesz a fogadó alkalmazás, amikor munkatársak csatlakoznak. Részt vett: a számítógépnél ülő valaki az Engedélyezés gombra kattint, hacsak a számítógép hozzáférési szabályzata be nem kapcsolja a felügyelet nélküli hozzáférést. Felügyelet nélkül: a NeoDeskbe bejelentkezett munkatársak, akik csatlakozhatnak a számítógéphez, kérdés és jelszó nélkül jutnak be. Mindig kérdezzen: a számítógépnél ülő valakinek mindig az Engedélyezés gombra kell kattintania.",
     "help_max_session": "A távoli munkamenet ennyi perc után véget ér, 0 és 1440 között.",
     "help_idle_lock": "Az eszköz ennyi perc tétlenség után zárol, 0 és 120 között.",
     "help_wallpaper": "Látszik-e az asztal háttérképe, amíg valaki csatlakozik.",
@@ -6816,7 +6850,7 @@
     "help_password_min": "A legrövidebb engedélyezett eszközjelszó, 6 és 128 karakter között.",
     "help_password_special": "Az eszközjelszavaknak tartalmazniuk kell egy jelet, például ! vagy #.",
     "help_password_age": "Az eszközjelszavakat ennyi nap után meg kell változtatni, 0 és 365 között. A 0 azt jelenti: soha.",
-    "help_operators": "Csak az ilyen szerepkörök valamelyikével rendelkezők csatlakozhatnak ezekhez az eszközökhöz, például Távoli operátor.",
+    "help_operators": "Azoknak a munkatársi fiókoknak a felhasználónevei, amelyek kérdés nélkül csatlakozhatnak, például anna. Ha nincs beállítva, mindenki, aki csatlakozhat a számítógéphez.",
     "help_block_p2p": "Az ezekhez az eszközökhöz menő kapcsolatok soha nem mennek közvetlenül a két számítógép között, csak továbbító szerveren át.",
     "help_relays": "Az ezekhez az eszközökhöz menő kapcsolatok a szerver továbbítóját használják, ha szerepel ebben a listában, különben az itteni elsőt. Például relay1.example.com:21117.",
     "help_ip_ranges": "IP-címek vagy tartományok, soronként egy, például 192.168.1.0/24.",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "{n}. fiók",
+    "add_operator": "Fiók hozzáadása"
   },
   "attestation": {
     "title": "Eszköz tanúsítvány",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "Ha újratelepítették vagy visszaállították, hagyja jóvá az új kulcsot. Ezután nyissa meg újra a meghívót a számítógépen.",
       "approve_key": "Új kulcs jóváhagyása",
       "key_approved": "Az új kulcs jóváhagyva. Nyissa meg újra a meghívót a számítógépen.",
-      "refused": "Egy {id} azonosítójú számítógép megpróbálta használni ezt a meghívót, de elutasították. Nézzen utána az Eszközök között: lehet, hogy le van tiltva vagy el lett távolítva."
+      "refused": "Egy {id} azonosítójú számítógép megpróbálta használni ezt a meghívót, de elutasították. Nézzen utána az Eszközök között: lehet, hogy le van tiltva vagy el lett távolítva.",
+      "reach_policy": "Kérdés nélkül: a felügyelet nélküli hozzáférés a szabályzatot követi. A NeoDeskbe bejelentkezett, csatlakozásra jogosult munkatársak kattintás nélkül jutnak be, ha a szervezet szabályzata vagy a számítógép hozzáférési szabályzata megengedi."
     }
   },
   "ui_form": {

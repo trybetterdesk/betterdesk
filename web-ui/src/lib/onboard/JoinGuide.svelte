@@ -3,7 +3,8 @@
   with an invite (lib/onboard/guide.ts), inside the invite sheet.
     1. Name: as the invite or the computer named it; saved with device.edit.
     2. Folder: as the invite put it; saved with device.edit.
-    3. How you reach it: the ways that exist today, explained (REACH_OPTIONS).
+    3. How you reach it: the ways that exist today for what the computer
+       runs, explained (reachOptions).
     4. Test session: opens the viewer while the computer is online.
   Next saves the step; Skip ends the walk and leaves the rest as it joined.
   A role without device.edit sees the name and folder, read only.
@@ -19,7 +20,7 @@
 	import Input from '#lib/ui/Input.svelte';
 	import Select, { type SelectOption } from '#lib/ui/Select.svelte';
 	import { ICONS } from '#lib/util/display.ts';
-	import { GUIDE_STEPS, REACH_OPTIONS, deviceLabel } from './guide.ts';
+	import { GUIDE_STEPS, deviceLabel, reachOptions } from './guide.ts';
 	import { go, viewerPath } from './quick-support.ts';
 
 	interface Props {
@@ -120,7 +121,7 @@
 	{:else if current === 'reach'}
 		<p>{t('onboard.guide.reach_lead', { name: label })}</p>
 		<ul class="reach">
-			{#each REACH_OPTIONS as key (key)}<li>{t(key)}</li>{/each}
+			{#each reachOptions(device) as key (key)}<li>{t(key)}</li>{/each}
 		</ul>
 	{:else}
 		<p>{t('onboard.guide.test_lead')}</p>

@@ -48,7 +48,6 @@
 		type Org,
 		type ResolvedPolicies
 	} from '#lib/api/policies.ts';
-	import { listRoles } from '#lib/api/roles.ts';
 	import { listRelays } from '#lib/api/scaling.ts';
 	import { t, tf } from '#lib/i18n/i18n.svelte.ts';
 	import { link } from '#lib/nav.ts';
@@ -102,8 +101,7 @@
 	import ChoiceSegments from '#lib/ui/settings/ChoiceSegments.svelte';
 	import ListEditor from '#lib/ui/settings/ListEditor.svelte';
 	import OrgPicker from '#lib/ui/settings/OrgPicker.svelte';
-	import { relayOptions, roleOptions } from '#lib/ui/settings/pickers.ts';
-	import RecordPicker, { type PickOption } from '#lib/ui/settings/RecordPicker.svelte';
+	import { relayOptions } from '#lib/ui/settings/pickers.ts';
 	import SettingRow, { type ValueSource } from '#lib/ui/settings/SettingRow.svelte';
 	import SettingsGroup from '#lib/ui/settings/SettingsGroup.svelte';
 	import SettingsPage from '#lib/ui/settings/SettingsPage.svelte';
@@ -146,7 +144,10 @@
 	const help = (field: string): string => {
 		switch (field) {
 			case 'connection.mode':
-				return tf('policies.help_mode', 'Whether the person at the device must accept a remote session.');
+				return tf(
+					'policies.help_mode',
+					"What the receiver app does when staff connect. Attended: someone at the computer clicks Allow, unless the computer's access policy turns on unattended access. Unattended: staff signed in to NeoDesk who may connect to the computer get in without asking, with no password. Always ask: someone at the computer always has to click Allow."
+				);
 			case 'connection.max_session_duration':
 				return tf(
 					'policies.help_max_session',
@@ -190,7 +191,7 @@
 			case 'security.allowed_operators':
 				return tf(
 					'policies.help_operators',
-					'Only people with one of these roles may connect to these devices, for example Remote operator.'
+					'Account usernames of the staff who may connect without asking, for example anna. Not set lets everyone who may connect to the computer.'
 				);
 			case 'security.allow_uninstall':
 				return tf(
@@ -302,20 +303,14 @@
 		})
 	);
 
-	/* ── Roles and relay servers for the pickers ── */
+	/* ── Relay servers for the picker ── */
 
-	let roleOpts = $state.raw<PickOption[] | null>(null);
 	let relayOpts = $state.raw<{ value: string; label: string }[]>([]);
 
 	$effect(() => {
 		if (!allowed) return;
-		const mayRoles = can('user.view');
 		const mayRelays = can('server.config');
 		untrack(() => {
-			if (mayRoles)
-				listRoles()
-					.then((r) => (roleOpts = roleOptions(r.roles, t)))
-					.catch(() => (roleOpts = null));
 			if (mayRelays)
 				listRelays()
 					.then((list) => (relayOpts = relayOptions(list)))
@@ -676,48 +671,34 @@
 		{#if bad}<p class="field-error" id={`${f.id}-error`}>{problemText(field, '')}</p>{/if}
 	{:else if kind?.kind === 'list'}
 		{#if unset}<p class="unset-hint list-hint">{notSetList}</p>{/if}
-		{#if kind.entry === 'name' && roleOpts}
-			<RecordPicker
-				id={f.id}
-				legend={fieldLabel(field)}
-				describedby={f.describedby}
-				disabled={!canEdit}
-				options={roleOpts}
-				value={(value as string[]) ?? []}
-				compact
-				unknownLabel={(name) => tf('policies.not_a_role', '{name} (not a role)', { name })}
-				onchange={(list) => draft.set(field, listValue(list))}
-			/>
-		{:else}
-			<ListEditor
-				id={f.id}
-				describedby={f.describedby}
-				disabled={!canEdit}
-				items={(value as string[]) ?? []}
-				onchange={(list) => draft.set(field, listValue(list))}
-				itemLabel={(n) =>
-					kind.entry === 'relay'
-						? tf('policies.relay_n', 'Relay server {n}', { n })
-						: kind.entry === 'range'
-							? tf('policies.range_n', 'IP range {n}', { n })
-							: tf('policies.role_n', 'Role {n}', { n })}
-				check={(entry) =>
-					entryOk(field, entry)
-						? ''
-						: kind.entry === 'relay'
-							? tf(
-									'policies.row_bad_relay',
-									'Not a server address. Use a host name or address, with a port if needed.'
-								)
-							: tf('policies.row_bad_range', 'Not an IP address or range.')}
-				addLabel={kind.entry === 'relay'
-					? tf('policies.add_relay', 'Add a relay server')
+		<ListEditor
+			id={f.id}
+			describedby={f.describedby}
+			disabled={!canEdit}
+			items={(value as string[]) ?? []}
+			onchange={(list) => draft.set(field, listValue(list))}
+			itemLabel={(n) =>
+				kind.entry === 'relay'
+					? tf('policies.relay_n', 'Relay server {n}', { n })
 					: kind.entry === 'range'
-						? tf('policies.add_range', 'Add an IP range')
-						: tf('policies.add_role', 'Add a role')}
-				quick={kind.entry === 'relay' ? relayOpts : []}
-			/>
-		{/if}
+						? tf('policies.range_n', 'IP range {n}', { n })
+						: tf('policies.operator_n', 'Account {n}', { n })}
+			check={(entry) =>
+				entryOk(field, entry)
+					? ''
+					: kind.entry === 'relay'
+						? tf(
+								'policies.row_bad_relay',
+								'Not a server address. Use a host name or address, with a port if needed.'
+							)
+						: tf('policies.row_bad_range', 'Not an IP address or range.')}
+			addLabel={kind.entry === 'relay'
+				? tf('policies.add_relay', 'Add a relay server')
+				: kind.entry === 'range'
+					? tf('policies.add_range', 'Add an IP range')
+					: tf('policies.add_operator', 'Add an account')}
+			quick={kind.entry === 'relay' ? relayOpts : []}
+		/>
 	{/if}
 {/snippet}
 

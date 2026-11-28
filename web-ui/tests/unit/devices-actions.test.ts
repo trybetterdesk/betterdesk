@@ -442,13 +442,14 @@ describe('row menu', () => {
 			'manage-tags',
 			'groups',
 			'move-folder',
+			'access-policy',
 			'issue-token'
 		]);
 	});
 
-	test('no Access policy entry while the server does not enforce the policy (L221)', () => {
+	test('an Access policy entry, now that the server checks it (A279)', () => {
 		session.isSuperAdmin = true;
-		expect(ids(dev())).not.toContain('access-policy');
+		expect(ids(dev())).toContain('access-policy');
 	});
 
 	test('admin: ban or unban by state, change ID and delete', () => {

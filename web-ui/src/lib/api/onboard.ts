@@ -149,7 +149,9 @@ export const InviteDevice = v.object({
 	folder_id: FolderId,
 	folder_name: Text,
 	online: Bool,
-	joined_at: Text
+	joined_at: Text,
+	/** What it runs: "neodesk-support" for the receiver app, "neodesk" for the desktop app, "" until it says */
+	device_type: Text
 });
 export type InviteDevice = v.InferOutput<typeof InviteDevice>;
 

@@ -19,12 +19,13 @@ const desktopAppReadsPolicies = false
 
 // receiverApplies are the settings, per group, that the receiver app (the
 // NeoDesk app installed with the receiver MSI) applies from GET
-// /api/nd/device-policy since neodesk-client#28: session approval, and
-// whether people at the computer can remove the app. It checks every five
-// minutes. It applies no other setting.
+// /api/nd/device-policy: session approval and whether people at the
+// computer can remove the app since neodesk-client#28, and the accounts
+// that may connect without asking (A279), which the server's caller check
+// applies too. It checks every five minutes. It applies no other setting.
 var receiverApplies = map[string][]string{
 	"connection": {"mode"},
-	"security":   {"allow_uninstall"},
+	"security":   {"allow_uninstall", "allowed_operators"},
 }
 
 // serverGroups are the groups the server applies itself (package policy,

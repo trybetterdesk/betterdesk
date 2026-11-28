@@ -28,3 +28,16 @@ func TestReceiverAppliesNamesRealSettings(t *testing.T) {
 		}
 	}
 }
+
+// TestReceiverAppliesTheAllowedOperators: the receiver app and the
+// server's caller check apply the organization's allowed operators to
+// unattended callers (A279), so the policy page says so.
+func TestReceiverAppliesTheAllowedOperators(t *testing.T) {
+	found := false
+	for _, name := range receiverApplies["security"] {
+		found = found || name == "allowed_operators"
+	}
+	if !found {
+		t.Fatalf("receiverApplies security %v, want allowed_operators among them", receiverApplies["security"])
+	}
+}

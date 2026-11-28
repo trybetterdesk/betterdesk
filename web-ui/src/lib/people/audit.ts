@@ -45,7 +45,7 @@ const CATEGORY_TESTS: Record<AuditFilter, (action: string) => boolean> = {
 	bans: (a) => /(^|_)(un)?ban|banned|blocklist|ip_block/.test(a),
 	signins: (a) => /^(login|logout|auth_|session_|2fa_|password_)/.test(a),
 	failed: (a) => /(login|auth)(_login)?_failed/.test(a),
-	devices: (a) => /^(device_|devices_|enrollment_|folder_|peer_|remote_|registration)/.test(a),
+	devices: (a) => /^(device_|devices_|enrollment_|folder_|peer_|remote_|registration|unattended_)/.test(a),
 	people: (a) =>
 		/^(user_|role_|permission|group_|org_|organization_|invite|impersonation_|email_|password_|temporary_password|two_factor_|recovery_codes_)/.test(
 			a
@@ -115,7 +115,10 @@ const DETAIL_PHRASES: readonly [RegExp, string][] = [
 	[/^Deleted (?<device>\S+)$/, 'audit.detail_deleted'],
 	[/^Created folder:? (?<name>.+)$/, 'audit.detail_folder_created'],
 	[/^Created user group: (?<name>.+)$/, 'audit.detail_user_group_created'],
-	[/^Device group (?<name>.+) saved$/, 'audit.detail_device_group_saved']
+	[/^Device group (?<name>.+) saved$/, 'audit.detail_device_group_saved'],
+	[/^Unattended session to device (?<device>\S+) started$/, 'audit.detail_unattended_started'],
+	[/^Unattended session to device (?<device>\S+) ended$/, 'audit.detail_unattended_ended'],
+	[/^Unattended session to device (?<device>\S+) refused$/, 'audit.detail_unattended_refused']
 ];
 
 /** A translation, or null when the language has no string for the key */
@@ -133,7 +136,17 @@ function fieldName(name: string, t: T): string {
 const VALUES: Readonly<Record<string, string>> = {
 	'queued for approval (managed mode)': 'audit.value_queued_managed',
 	idle: 'audit.value_idle',
-	support: 'audit.value_support'
+	support: 'audit.value_support',
+	// How an unattended caller came, and why the server refused one
+	console: 'audit.value_via_console',
+	desktop: 'audit.value_via_desktop',
+	too_late: 'audit.value_too_late',
+	already_used: 'audit.value_already_used',
+	no_permission: 'audit.value_no_permission',
+	ask_always: 'audit.value_ask_always',
+	not_enabled: 'audit.value_not_enabled',
+	outside_schedule: 'audit.value_outside_schedule',
+	operator_not_allowed: 'audit.value_operator_not_allowed'
 };
 
 function fieldValue(value: string, t: T): string {
@@ -141,7 +154,7 @@ function fieldValue(value: string, t: T): string {
 	return (key && known(t, key)) || value;
 }
 
-const FIELD = /^[A-Za-z]+=/;
+const FIELD = /^[A-Za-z][A-Za-z_]*=/;
 
 /**
  * An audit detail line in the console language: "User logged in; ip=10.0.0.5"

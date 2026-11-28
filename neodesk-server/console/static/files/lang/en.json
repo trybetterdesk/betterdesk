@@ -834,7 +834,19 @@
         "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
         "unblock_not_blocked": "This computer is not blocked on this server.",
         "empty_none": "No devices yet.",
-        "empty_join_requests": "Approve new computers under Join requests"
+        "empty_join_requests": "Approve new computers under Join requests",
+        "unattended_line_ask": "Someone at the computer must click Allow.",
+        "unattended_line_always": "Staff can connect without asking.",
+        "unattended_line_when": "Staff can connect without asking, {when}.",
+        "unattended_line_who": "Staff can connect without asking, only {who}.",
+        "unattended_line_when_who": "Staff can connect without asking, {when}, only {who}.",
+        "unattended_when": "{days} {start} to {end}",
+        "unattended_when_all_day": "{days} all day",
+        "unattended_when_zone": "{when} ({zone} time)",
+        "unattended_day_range": "{first} to {last}",
+        "unattended_every_day": "every day",
+        "unattended_and": "{list} and {last}",
+        "access_policy_change": "Change"
     },
     "keys": {
         "title": "Server Keys",
@@ -2432,7 +2444,29 @@
         "action_fleet_workflow_run": "Workflow run",
         "action_quick_support_receiver_offer": "Offer to install after quick support changed",
         "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-        "action_dashboards_shared_changed": "Shared dashboards published"
+        "action_dashboards_shared_changed": "Shared dashboards published",
+        "action_unattended_session_started": "Unattended session started",
+        "action_unattended_session_ended": "Unattended session ended",
+        "action_unattended_caller_refused": "Unattended session refused",
+        "action_quick_support_caller": "Quick support caller confirmed",
+        "action_quick_support_caller_refused": "Quick support caller not confirmed",
+        "detail_unattended_started": "Unattended session to device {device} started",
+        "detail_unattended_ended": "Unattended session to device {device} ended",
+        "detail_unattended_refused": "Unattended session to device {device} refused",
+        "field_helper": "staff member",
+        "field_via": "connected through",
+        "field_relay_session": "relay session",
+        "field_started": "started",
+        "field_duration_s": "duration in seconds",
+        "value_via_console": "the web console",
+        "value_via_desktop": "the desktop app",
+        "value_too_late": "asked too late",
+        "value_already_used": "already confirmed once",
+        "value_no_permission": "account may not connect",
+        "value_ask_always": "the policy always asks",
+        "value_not_enabled": "unattended access is off",
+        "value_outside_schedule": "outside the allowed times",
+        "value_operator_not_allowed": "not an allowed operator"
     },
     "generator": {
         "title": "NeoDesk Support Generator",
@@ -7118,7 +7152,7 @@
         "password_min_length": "Minimum password length",
         "password_require_special": "Require special characters in passwords",
         "password_max_age": "Passwords expire after (days)",
-        "allowed_operators": "Allowed operator roles",
+        "allowed_operators": "Staff who may connect without asking",
         "network_title": "Network",
         "network_desc": "Which routes connections to these devices may take.",
         "block_direct_p2p": "Always connect through a relay server",
@@ -7160,7 +7194,7 @@
         "col_source": "Changed from",
         "audit_failed": "Could not load the recent changes.",
         "save_failed_groups": "Not saved: {groups}.",
-        "help_mode": "Whether the person at the device must accept a remote session.",
+        "help_mode": "What the receiver app does when staff connect. Attended: someone at the computer clicks Allow, unless the computer's access policy turns on unattended access. Unattended: staff signed in to NeoDesk who may connect to the computer get in without asking, with no password. Always ask: someone at the computer always has to click Allow.",
         "help_max_session": "A remote session ends after this many minutes, from 0 to 1440.",
         "help_idle_lock": "The device locks after this many minutes without input, from 0 to 120.",
         "help_wallpaper": "Whether the desktop picture shows while someone connects.",
@@ -7172,7 +7206,7 @@
         "help_password_min": "The shortest device password allowed, from 6 to 128 characters.",
         "help_password_special": "Device passwords must contain a character such as ! or #.",
         "help_password_age": "Device passwords must be changed after this many days, from 0 to 365. 0 means never.",
-        "help_operators": "Only people with one of these roles may connect to these devices, for example Remote operator.",
+        "help_operators": "Account usernames of the staff who may connect without asking, for example anna. Not set lets everyone who may connect to the computer.",
         "help_block_p2p": "Connections to these devices never go directly between the two computers, only through a relay server.",
         "help_relays": "Connections to these devices use the server's relay when it is in this list, else the first one here. For example relay1.example.com:21117.",
         "help_ip_ranges": "IP addresses or ranges, one per row, for example 192.168.1.0/24.",
@@ -7223,7 +7257,9 @@
         "devices_none": "No device is in this organization yet, so these policies reach none.",
         "allow_uninstall": "People can remove the app",
         "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-        "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+        "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+        "operator_n": "Account {n}",
+        "add_operator": "Add an account"
     },
     "attestation": {
         "title": "Device Attestation",
@@ -9837,7 +9873,8 @@
             "key_changed_hint": "If it was reinstalled or reset, approve the new key. Then open the invite on the computer again.",
             "approve_key": "Approve new key",
             "key_approved": "New key approved. Open the invite on the computer again.",
-            "refused": "A computer with the ID {id} tried this invite and was turned away. Check Devices: it may be banned or removed."
+            "refused": "A computer with the ID {id} tried this invite and was turned away. Check Devices: it may be banned or removed.",
+            "reach_policy": "Without asking: unattended access follows the policy. Staff signed in to NeoDesk who may connect get in without a click when the organization's policy or the computer's access policy allows it."
         }
     },
     "ui_form": {

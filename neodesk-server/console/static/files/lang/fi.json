@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Ei vielä laitteita.",
-    "empty_join_requests": "Hyväksy uudet tietokoneet kohdassa Liittymispyynnöt"
+    "empty_join_requests": "Hyväksy uudet tietokoneet kohdassa Liittymispyynnöt",
+    "unattended_line_ask": "Jonkun tietokoneen ääressä on napsautettava Salli.",
+    "unattended_line_always": "Henkilöstö voi muodostaa yhteyden kysymättä.",
+    "unattended_line_when": "Henkilöstö voi muodostaa yhteyden kysymättä, {when}.",
+    "unattended_line_who": "Henkilöstö voi muodostaa yhteyden kysymättä, vain {who}.",
+    "unattended_line_when_who": "Henkilöstö voi muodostaa yhteyden kysymättä, {when}, vain {who}.",
+    "unattended_when": "{days} kello {start}–{end}",
+    "unattended_when_all_day": "{days} koko päivän",
+    "unattended_when_zone": "{when} ({zone}-aikaa)",
+    "unattended_day_range": "{first}–{last}",
+    "unattended_every_day": "joka päivä",
+    "unattended_and": "{list} ja {last}",
+    "access_policy_change": "Muuta"
   },
   "keys": {
     "title": "Palvelimen avaimet",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Jaettuja koontinäyttöjä julkaistu"
+    "action_dashboards_shared_changed": "Jaettuja koontinäyttöjä julkaistu",
+    "action_unattended_session_started": "Valvomaton istunto alkoi",
+    "action_unattended_session_ended": "Valvomaton istunto päättyi",
+    "action_unattended_caller_refused": "Valvomaton istunto hylättiin",
+    "action_quick_support_caller": "Pikatuen soittaja vahvistettu",
+    "action_quick_support_caller_refused": "Pikatuen soittajaa ei vahvistettu",
+    "detail_unattended_started": "Valvomaton istunto laitteeseen {device} alkoi",
+    "detail_unattended_ended": "Valvomaton istunto laitteeseen {device} päättyi",
+    "detail_unattended_refused": "Valvomaton istunto laitteeseen {device} hylättiin",
+    "field_helper": "henkilöstön jäsen",
+    "field_via": "yhteys kautta",
+    "field_relay_session": "välitysistunto",
+    "field_started": "alkoi",
+    "field_duration_s": "kesto sekunteina",
+    "value_via_console": "verkkokonsoli",
+    "value_via_desktop": "työpöytäsovellus",
+    "value_too_late": "kysytty liian myöhään",
+    "value_already_used": "vahvistettu jo kerran",
+    "value_no_permission": "tili ei saa muodostaa yhteyttä",
+    "value_ask_always": "käytäntö kysyy aina",
+    "value_not_enabled": "valvomaton pääsy on pois päältä",
+    "value_outside_schedule": "sallittujen aikojen ulkopuolella",
+    "value_operator_not_allowed": "ei sallittu operaattori"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "Konsolin oletus"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "ma",
+    "tue": "ti",
+    "wed": "ke",
+    "thu": "to",
+    "fri": "pe",
+    "sat": "la",
+    "sun": "su"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "Salasanan vähimmäispituus",
     "password_require_special": "Vaadi erikoismerkkejä",
     "password_max_age": "Salasanan enimmäisikä (päivää, 0 = ei koskaan)",
-    "allowed_operators": "Sallitut operaattoriroolit (pilkuilla erotettu)",
+    "allowed_operators": "Henkilöstö, joka saa muodostaa yhteyden kysymättä",
     "network_title": "Verkkokäytäntö",
     "network_desc": "Ohjaa välityspalvelimia ja suoria yhteyksiä",
     "block_direct_p2p": "Yhdistä aina välityspalvelimen kautta",
@@ -6804,7 +6838,7 @@
     "col_source": "Muutettu osoitteesta",
     "audit_failed": "Viimeisimpien muutosten lataaminen epäonnistui.",
     "save_failed_groups": "Ei tallennettu: {groups}.",
-    "help_mode": "Pitääkö laitteen äärellä olevan hyväksyä etäistunto.",
+    "help_mode": "Mitä vastaanottajasovellus tekee, kun henkilöstö muodostaa yhteyden. Osallistunut: joku tietokoneen ääressä napsauttaa Salli, ellei tietokoneen käyttöoikeuskäytäntö ota valvomatonta pääsyä käyttöön. Vartioimaton: NeoDeskiin kirjautunut henkilöstö, jolla on oikeus muodostaa yhteys tietokoneeseen, pääsee sisään kysymättä ja ilman salasanaa. Kysy aina: jonkun tietokoneen ääressä on aina napsautettava Salli.",
     "help_max_session": "Etäistunto päättyy näin monen minuutin jälkeen, 0–1440.",
     "help_idle_lock": "Laite lukittuu näin monen minuutin jälkeen ilman syötettä, 0–120.",
     "help_wallpaper": "Näkyykö työpöydän taustakuva, kun joku on yhteydessä.",
@@ -6816,7 +6850,7 @@
     "help_password_min": "Lyhin sallittu laitesalasana, 6–128 merkkiä.",
     "help_password_special": "Laitesalasanoissa on oltava merkki, kuten ! tai #.",
     "help_password_age": "Laitesalasanat on vaihdettava näin monen päivän jälkeen, 0–365. 0 tarkoittaa ei koskaan.",
-    "help_operators": "Vain ihmiset, joilla on jokin näistä rooleista, saavat muodostaa yhteyden näihin laitteisiin, esimerkiksi Etäoperaattori.",
+    "help_operators": "Niiden henkilöstötilien käyttäjänimet, jotka saavat muodostaa yhteyden kysymättä, esimerkiksi anna. Ei asetettu sallii kaikki, jotka saavat muodostaa yhteyden tietokoneeseen.",
     "help_block_p2p": "Yhteydet näihin laitteisiin eivät koskaan kulje suoraan kahden tietokoneen välillä, vain välityspalvelimen kautta.",
     "help_relays": "Yhteydet näihin laitteisiin käyttävät palvelimen välitystä, kun se on tässä luettelossa, muuten tämän luettelon ensimmäistä. Esimerkiksi relay1.example.com:21117.",
     "help_ip_ranges": "IP-osoitteet tai -alueet, yksi riviä kohden, esimerkiksi 192.168.1.0/24.",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Tili {n}",
+    "add_operator": "Lisää tili"
   },
   "attestation": {
     "title": "Laitteen todistus",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "Jos se on asennettu uudelleen tai palautettu, hyväksy uusi avain. Avaa sitten kutsu tietokoneella uudelleen.",
       "approve_key": "Hyväksy uusi avain",
       "key_approved": "Uusi avain hyväksytty. Avaa kutsu tietokoneella uudelleen.",
-      "refused": "Tietokone, jonka tunnus on {id}, yritti käyttää tätä kutsua, ja se torjuttiin. Tarkista Laitteet: se voi olla estetty tai poistettu."
+      "refused": "Tietokone, jonka tunnus on {id}, yritti käyttää tätä kutsua, ja se torjuttiin. Tarkista Laitteet: se voi olla estetty tai poistettu.",
+      "reach_policy": "Kysymättä: valvomaton pääsy noudattaa käytäntöä. NeoDeskiin kirjautunut henkilöstö, joka saa muodostaa yhteyden, pääsee sisään ilman napsautusta, kun organisaation käytäntö tai tietokoneen käyttöoikeuskäytäntö sallii sen."
     }
   },
   "ui_form": {

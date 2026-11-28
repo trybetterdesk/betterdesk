@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "ยังไม่มีอุปกรณ์",
-    "empty_join_requests": "อนุมัติคอมพิวเตอร์ใหม่ที่ คำขอเข้าร่วม"
+    "empty_join_requests": "อนุมัติคอมพิวเตอร์ใหม่ที่ คำขอเข้าร่วม",
+    "unattended_line_ask": "ต้องมีคนที่คอมพิวเตอร์คลิกอนุญาต",
+    "unattended_line_always": "เจ้าหน้าที่เชื่อมต่อได้โดยไม่ต้องถาม",
+    "unattended_line_when": "เจ้าหน้าที่เชื่อมต่อได้โดยไม่ต้องถาม {when}",
+    "unattended_line_who": "เจ้าหน้าที่เชื่อมต่อได้โดยไม่ต้องถาม เฉพาะ {who}",
+    "unattended_line_when_who": "เจ้าหน้าที่เชื่อมต่อได้โดยไม่ต้องถาม {when} เฉพาะ {who}",
+    "unattended_when": "{days} {start} ถึง {end}",
+    "unattended_when_all_day": "{days} ตลอดวัน",
+    "unattended_when_zone": "{when} (เวลา {zone})",
+    "unattended_day_range": "{first} ถึง {last}",
+    "unattended_every_day": "ทุกวัน",
+    "unattended_and": "{list} และ {last}",
+    "access_policy_change": "เปลี่ยน"
   },
   "keys": {
     "title": "คีย์เซิร์ฟเวอร์",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "เผยแพร่แดชบอร์ดที่แชร์แล้ว"
+    "action_dashboards_shared_changed": "เผยแพร่แดชบอร์ดที่แชร์แล้ว",
+    "action_unattended_session_started": "เริ่มเซสชันแบบอัตโนมัติ",
+    "action_unattended_session_ended": "สิ้นสุดเซสชันแบบอัตโนมัติ",
+    "action_unattended_caller_refused": "ปฏิเสธเซสชันแบบอัตโนมัติ",
+    "action_quick_support_caller": "ยืนยันผู้เชื่อมต่อความช่วยเหลือด่วนแล้ว",
+    "action_quick_support_caller_refused": "ไม่ได้ยืนยันผู้เชื่อมต่อความช่วยเหลือด่วน",
+    "detail_unattended_started": "เซสชันแบบอัตโนมัติไปยังอุปกรณ์ {device} เริ่มแล้ว",
+    "detail_unattended_ended": "เซสชันแบบอัตโนมัติไปยังอุปกรณ์ {device} สิ้นสุดแล้ว",
+    "detail_unattended_refused": "เซสชันแบบอัตโนมัติไปยังอุปกรณ์ {device} ถูกปฏิเสธ",
+    "field_helper": "เจ้าหน้าที่",
+    "field_via": "เชื่อมต่อผ่าน",
+    "field_relay_session": "เซสชันรีเลย์",
+    "field_started": "เริ่ม",
+    "field_duration_s": "ระยะเวลาเป็นวินาที",
+    "value_via_console": "เว็บคอนโซล",
+    "value_via_desktop": "แอปเดสก์ท็อป",
+    "value_too_late": "ถามช้าเกินไป",
+    "value_already_used": "ยืนยันไปแล้วหนึ่งครั้ง",
+    "value_no_permission": "บัญชีเชื่อมต่อไม่ได้",
+    "value_ask_always": "นโยบายให้ถามทุกครั้ง",
+    "value_not_enabled": "ปิดการเข้าถึงแบบอัตโนมัติอยู่",
+    "value_outside_schedule": "นอกเวลาที่อนุญาต",
+    "value_operator_not_allowed": "ไม่ใช่ผู้ปฏิบัติงานที่ได้รับอนุญาต"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "ค่าเริ่มต้นของคอนโซล"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "จ.",
+    "tue": "อ.",
+    "wed": "พ.",
+    "thu": "พฤ.",
+    "fri": "ศ.",
+    "sat": "ส.",
+    "sun": "อา."
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "ความยาวรหัสผ่านขั้นต่ำ",
     "password_require_special": "ต้องใช้อักขระพิเศษ",
     "password_max_age": "รหัสผ่านอายุสูงสุด (วัน 0=ไม่เคย)",
-    "allowed_operators": "บทบาทของตัวดำเนินการที่อนุญาต (คั่นด้วยเครื่องหมายจุลภาค)",
+    "allowed_operators": "เจ้าหน้าที่ที่เชื่อมต่อได้โดยไม่ต้องถาม",
     "network_title": "นโยบายเครือข่าย",
     "network_desc": "เส้นทางที่การเชื่อมต่อไปยังอุปกรณ์เหล่านี้ใช้ได้",
     "block_direct_p2p": "เชื่อมต่อผ่านเซิร์ฟเวอร์รีเลย์เสมอ",
@@ -6804,7 +6838,7 @@
     "col_source": "เปลี่ยนจาก",
     "audit_failed": "โหลดการเปลี่ยนแปลงล่าสุดไม่ได้",
     "save_failed_groups": "ยังไม่ได้บันทึก: {groups}",
-    "help_mode": "ผู้ที่อยู่ที่อุปกรณ์ต้องยอมรับเซสชันระยะไกลหรือไม่",
+    "help_mode": "สิ่งที่แอปผู้รับทำเมื่อเจ้าหน้าที่เชื่อมต่อ เข้าร่วม: คนที่คอมพิวเตอร์คลิกอนุญาต เว้นแต่นโยบายการเข้าถึงของคอมพิวเตอร์เปิดการเข้าถึงแบบอัตโนมัติ ไม่ต้องใส่ข้อมูล: เจ้าหน้าที่ที่ลงชื่อเข้าใช้ NeoDesk และได้รับอนุญาตให้เชื่อมต่อกับคอมพิวเตอร์จะเข้าได้โดยไม่ต้องถามและไม่ต้องใช้รหัสผ่าน ถามทุกครั้ง: คนที่คอมพิวเตอร์ต้องคลิกอนุญาตทุกครั้ง",
     "help_max_session": "เซสชันระยะไกลจะสิ้นสุดหลังจากจำนวนนาทีนี้ ตั้งแต่ 0 ถึง 1440",
     "help_idle_lock": "อุปกรณ์จะล็อกหลังจากไม่มีการป้อนข้อมูลตามจำนวนนาทีนี้ ตั้งแต่ 0 ถึง 120",
     "help_wallpaper": "แสดงภาพพื้นหลังเดสก์ท็อปขณะมีคนเชื่อมต่ออยู่หรือไม่",
@@ -6816,7 +6850,7 @@
     "help_password_min": "รหัสผ่านอุปกรณ์ที่สั้นที่สุดที่อนุญาต ตั้งแต่ 6 ถึง 128 อักขระ",
     "help_password_special": "รหัสผ่านอุปกรณ์ต้องมีอักขระ เช่น ! หรือ #",
     "help_password_age": "ต้องเปลี่ยนรหัสผ่านอุปกรณ์หลังจากจำนวนวันนี้ ตั้งแต่ 0 ถึง 365 โดย 0 หมายถึงไม่ต้องเปลี่ยน",
-    "help_operators": "เฉพาะผู้ที่มีบทบาทใดบทบาทหนึ่งเหล่านี้เท่านั้นที่เชื่อมต่อกับอุปกรณ์เหล่านี้ได้ เช่น ผู้ควบคุมระยะไกล",
+    "help_operators": "ชื่อผู้ใช้ของบัญชีเจ้าหน้าที่ที่เชื่อมต่อได้โดยไม่ต้องถาม เช่น anna หากไม่ได้ตั้งค่า ทุกคนที่เชื่อมต่อกับคอมพิวเตอร์ได้จะเข้าได้",
     "help_block_p2p": "การเชื่อมต่อกับอุปกรณ์เหล่านี้ไม่เคยวิ่งตรงระหว่างคอมพิวเตอร์สองเครื่อง แต่ผ่านเซิร์ฟเวอร์รีเลย์เท่านั้น",
     "help_relays": "การเชื่อมต่อกับอุปกรณ์เหล่านี้ใช้รีเลย์ของเซิร์ฟเวอร์หากอยู่ในรายการนี้ มิฉะนั้นใช้รายการแรกที่นี่ เช่น relay1.example.com:21117",
     "help_ip_ranges": "ที่อยู่ IP หรือช่วง หนึ่งรายการต่อแถว เช่น 192.168.1.0/24",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "บัญชี {n}",
+    "add_operator": "เพิ่มบัญชี"
   },
   "attestation": {
     "title": "การรับรองอุปกรณ์",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "หากติดตั้งใหม่หรือรีเซ็ตเครื่องแล้ว ให้อนุมัติคีย์ใหม่ จากนั้นเปิดคำเชิญบนคอมพิวเตอร์อีกครั้ง",
       "approve_key": "อนุมัติคีย์ใหม่",
       "key_approved": "อนุมัติคีย์ใหม่แล้ว เปิดคำเชิญบนคอมพิวเตอร์อีกครั้ง",
-      "refused": "คอมพิวเตอร์ที่มี ID {id} ลองใช้คำเชิญนี้และถูกปฏิเสธ ตรวจสอบ อุปกรณ์: เครื่องอาจถูกแบนหรือถูกลบ"
+      "refused": "คอมพิวเตอร์ที่มี ID {id} ลองใช้คำเชิญนี้และถูกปฏิเสธ ตรวจสอบ อุปกรณ์: เครื่องอาจถูกแบนหรือถูกลบ",
+      "reach_policy": "โดยไม่ต้องถาม: การเข้าถึงแบบอัตโนมัติเป็นไปตามนโยบาย เจ้าหน้าที่ที่ลงชื่อเข้าใช้ NeoDesk และได้รับอนุญาตให้เชื่อมต่อจะเข้าได้โดยไม่ต้องคลิก เมื่อนโยบายขององค์กรหรือนโยบายการเข้าถึงของคอมพิวเตอร์อนุญาต"
     }
   },
   "ui_form": {

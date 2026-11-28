@@ -826,7 +826,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Ancora nessun dispositivo.",
-    "empty_join_requests": "Approvi i nuovi computer in Richieste di adesione"
+    "empty_join_requests": "Approvi i nuovi computer in Richieste di adesione",
+    "unattended_line_ask": "Qualcuno al computer deve fare clic su Consenti.",
+    "unattended_line_always": "Il personale può connettersi senza chiedere.",
+    "unattended_line_when": "Il personale può connettersi senza chiedere, {when}.",
+    "unattended_line_who": "Il personale può connettersi senza chiedere, solo {who}.",
+    "unattended_line_when_who": "Il personale può connettersi senza chiedere, {when}, solo {who}.",
+    "unattended_when": "{days} dalle {start} alle {end}",
+    "unattended_when_all_day": "{days} tutto il giorno",
+    "unattended_when_zone": "{when} (ora di {zone})",
+    "unattended_day_range": "da {first} a {last}",
+    "unattended_every_day": "tutti i giorni",
+    "unattended_and": "{list} e {last}",
+    "access_policy_change": "Modifica"
   },
   "keys": {
     "title": "Chiavi del server",
@@ -2424,7 +2436,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Dashboard condivise pubblicate"
+    "action_dashboards_shared_changed": "Dashboard condivise pubblicate",
+    "action_unattended_session_started": "Sessione non presidiata avviata",
+    "action_unattended_session_ended": "Sessione non presidiata terminata",
+    "action_unattended_caller_refused": "Sessione non presidiata rifiutata",
+    "action_quick_support_caller": "Chiamante dell'assistenza rapida confermato",
+    "action_quick_support_caller_refused": "Chiamante dell'assistenza rapida non confermato",
+    "detail_unattended_started": "Sessione non presidiata al dispositivo {device} avviata",
+    "detail_unattended_ended": "Sessione non presidiata al dispositivo {device} terminata",
+    "detail_unattended_refused": "Sessione non presidiata al dispositivo {device} rifiutata",
+    "field_helper": "membro del personale",
+    "field_via": "connesso tramite",
+    "field_relay_session": "sessione relay",
+    "field_started": "inizio",
+    "field_duration_s": "durata in secondi",
+    "value_via_console": "la console web",
+    "value_via_desktop": "l'app desktop",
+    "value_too_late": "richiesta troppo tardiva",
+    "value_already_used": "già confermato una volta",
+    "value_no_permission": "l'account non può connettersi",
+    "value_ask_always": "il criterio chiede sempre",
+    "value_not_enabled": "l'accesso non presidiato è disattivato",
+    "value_outside_schedule": "fuori dagli orari consentiti",
+    "value_operator_not_allowed": "non è un operatore consentito"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6524,13 +6558,13 @@
     "console_default": "Predefinito della console"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "lun",
+    "tue": "mar",
+    "wed": "mer",
+    "thu": "gio",
+    "fri": "ven",
+    "sat": "sab",
+    "sun": "dom"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6756,7 +6790,7 @@
     "password_min_length": "Lunghezza minima password",
     "password_require_special": "Richiedi caratteri speciali",
     "password_max_age": "Età max. password (giorni, 0=mai)",
-    "allowed_operators": "Ruoli operatore consentiti (separati da virgola)",
+    "allowed_operators": "Personale che può connettersi senza chiedere",
     "network_title": "Criterio di rete",
     "network_desc": "Controlla server relay e connessioni dirette",
     "block_direct_p2p": "Connetti sempre tramite un server relay",
@@ -6798,7 +6832,7 @@
     "col_source": "Modificato da",
     "audit_failed": "Impossibile caricare le modifiche recenti.",
     "save_failed_groups": "Non salvato: {groups}.",
-    "help_mode": "Se la persona al dispositivo deve accettare una sessione remota.",
+    "help_mode": "Cosa fa l'app ricevente quando il personale si connette. Assistita: qualcuno al computer fa clic su Consenti, a meno che il criterio di accesso del computer non attivi l'accesso non presidiato. Non assistita: il personale che ha effettuato l'accesso a NeoDesk e può connettersi al computer entra senza chiedere e senza password. Chiedi sempre: qualcuno al computer deve sempre fare clic su Consenti.",
     "help_max_session": "Una sessione remota termina dopo questo numero di minuti, da 0 a 1440.",
     "help_idle_lock": "Il dispositivo si blocca dopo questo numero di minuti senza input, da 0 a 120.",
     "help_wallpaper": "Se lo sfondo del desktop si vede mentre qualcuno è connesso.",
@@ -6810,7 +6844,7 @@
     "help_password_min": "La password dispositivo più corta consentita, da 6 a 128 caratteri.",
     "help_password_special": "Le password dispositivo devono contenere un carattere come ! o #.",
     "help_password_age": "Le password dispositivo vanno cambiate dopo questo numero di giorni, da 0 a 365. 0 significa mai.",
-    "help_operators": "Solo le persone con uno di questi ruoli possono connettersi a questi dispositivi, per esempio Operatore remoto.",
+    "help_operators": "Nomi utente degli account del personale che può connettersi senza chiedere, ad esempio anna. Non impostato consente a chiunque possa connettersi al computer.",
     "help_block_p2p": "Le connessioni a questi dispositivi non vanno mai direttamente tra i due computer, solo tramite un server di inoltro.",
     "help_relays": "Le connessioni a questi dispositivi usano l'inoltro del server se è in questo elenco, altrimenti il primo qui. Per esempio relay1.example.com:21117.",
     "help_ip_ranges": "Indirizzi IP o intervalli, uno per riga, per esempio 192.168.1.0/24.",
@@ -6861,7 +6895,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Account {n}",
+    "add_operator": "Aggiungi un account"
   },
   "attestation": {
     "title": "Attestazione dispositivi",
@@ -9837,7 +9873,8 @@
       "key_changed_hint": "Se è stato reinstallato o ripristinato, approva la nuova chiave. Poi apri di nuovo l'invito sul computer.",
       "approve_key": "Approva nuova chiave",
       "key_approved": "Nuova chiave approvata. Apri di nuovo l'invito sul computer.",
-      "refused": "Un computer con l'ID {id} ha provato questo invito ed è stato respinto. Controlla Dispositivi: potrebbe essere bannato o rimosso."
+      "refused": "Un computer con l'ID {id} ha provato questo invito ed è stato respinto. Controlla Dispositivi: potrebbe essere bannato o rimosso.",
+      "reach_policy": "Senza chiedere: l'accesso non presidiato segue il criterio. Il personale che ha effettuato l'accesso a NeoDesk e può connettersi entra senza clic quando il criterio dell'organizzazione o il criterio di accesso del computer lo consente."
     }
   },
   "ui_form": {

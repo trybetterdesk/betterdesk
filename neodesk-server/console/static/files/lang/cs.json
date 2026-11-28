@@ -826,7 +826,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Zatím žádná zařízení.",
-    "empty_join_requests": "Schvalte nové počítače v části Žádosti o připojení"
+    "empty_join_requests": "Schvalte nové počítače v části Žádosti o připojení",
+    "unattended_line_ask": "Někdo u počítače musí kliknout na Povolit.",
+    "unattended_line_always": "Pracovníci se mohou připojit bez ptaní.",
+    "unattended_line_when": "Pracovníci se mohou připojit bez ptaní, {when}.",
+    "unattended_line_who": "Pracovníci se mohou připojit bez ptaní, jen {who}.",
+    "unattended_line_when_who": "Pracovníci se mohou připojit bez ptaní, {when}, jen {who}.",
+    "unattended_when": "{days} od {start} do {end}",
+    "unattended_when_all_day": "{days} celý den",
+    "unattended_when_zone": "{when} (čas {zone})",
+    "unattended_day_range": "{first} až {last}",
+    "unattended_every_day": "každý den",
+    "unattended_and": "{list} a {last}",
+    "access_policy_change": "Změnit"
   },
   "keys": {
     "title": "Klíče serveru",
@@ -2424,7 +2436,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Sdílené nástěnky zveřejněny"
+    "action_dashboards_shared_changed": "Sdílené nástěnky zveřejněny",
+    "action_unattended_session_started": "Bezobslužná relace zahájena",
+    "action_unattended_session_ended": "Bezobslužná relace ukončena",
+    "action_unattended_caller_refused": "Bezobslužná relace odmítnuta",
+    "action_quick_support_caller": "Volající rychlé podpory potvrzen",
+    "action_quick_support_caller_refused": "Volající rychlé podpory nepotvrzen",
+    "detail_unattended_started": "Bezobslužná relace k zařízení {device} zahájena",
+    "detail_unattended_ended": "Bezobslužná relace k zařízení {device} ukončena",
+    "detail_unattended_refused": "Bezobslužná relace k zařízení {device} odmítnuta",
+    "field_helper": "pracovník",
+    "field_via": "připojeno přes",
+    "field_relay_session": "relace relay",
+    "field_started": "zahájeno",
+    "field_duration_s": "doba v sekundách",
+    "value_via_console": "webová konzole",
+    "value_via_desktop": "desktopová aplikace",
+    "value_too_late": "dotaz přišel pozdě",
+    "value_already_used": "již jednou potvrzeno",
+    "value_no_permission": "účet se nesmí připojit",
+    "value_ask_always": "pravidla se vždy ptají",
+    "value_not_enabled": "bezobslužný přístup je vypnutý",
+    "value_outside_schedule": "mimo povolené časy",
+    "value_operator_not_allowed": "není povolený pracovník"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6756,7 +6790,7 @@
     "password_min_length": "Minimální délka hesla",
     "password_require_special": "Vyžadovat speciální znaky",
     "password_max_age": "Maximální stáří hesla (dny, 0=nikdy)",
-    "allowed_operators": "Povolené role operátorů (oddělené čárkou)",
+    "allowed_operators": "Pracovníci, kteří se smějí připojit bez ptaní",
     "network_title": "Síťové zásady",
     "network_desc": "Řízení relay serverů a přímých připojení",
     "block_direct_p2p": "Vždy se připojovat přes přenosový server",
@@ -6798,7 +6832,7 @@
     "col_source": "Změněno z",
     "audit_failed": "Poslední změny se nepodařilo načíst.",
     "save_failed_groups": "Neuloženo: {groups}.",
-    "help_mode": "Zda musí osoba u zařízení vzdálenou relaci přijmout.",
+    "help_mode": "Co aplikace příjemce udělá, když se připojí pracovníci. S asistencí: někdo u počítače klikne na Povolit, pokud pravidlo přístupu počítače nezapne bezobslužný přístup. Bezobslužné: pracovníci přihlášení do NeoDesk, kteří se smějí k počítači připojit, se dostanou dovnitř bez ptaní a bez hesla. Vždy se zeptat: někdo u počítače musí pokaždé kliknout na Povolit.",
     "help_max_session": "Vzdálená relace skončí po tomto počtu minut, od 0 do 1440.",
     "help_idle_lock": "Zařízení se zamkne po tomto počtu minut bez vstupu, od 0 do 120.",
     "help_wallpaper": "Zda je během připojení vidět tapeta plochy.",
@@ -6810,7 +6844,7 @@
     "help_password_min": "Nejkratší povolené heslo zařízení, od 6 do 128 znaků.",
     "help_password_special": "Hesla zařízení musí obsahovat znak jako ! nebo #.",
     "help_password_age": "Hesla zařízení se musí změnit po tomto počtu dní, od 0 do 365. 0 znamená nikdy.",
-    "help_operators": "K těmto zařízením se smějí připojit jen lidé s jednou z těchto rolí, například Vzdálený operátor.",
+    "help_operators": "Uživatelská jména účtů pracovníků, kteří se smějí připojit bez ptaní, například anna. Nenastaveno pustí každého, kdo se smí k počítači připojit.",
     "help_block_p2p": "Spojení s těmito zařízeními nikdy nejdou přímo mezi oběma počítači, jen přes přenosový server.",
     "help_relays": "Spojení s těmito zařízeními používají přenos serveru, pokud je v tomto seznamu, jinak první zde. Například relay1.example.com:21117.",
     "help_ip_ranges": "IP adresy nebo rozsahy, jeden na řádek, například 192.168.1.0/24.",
@@ -6861,7 +6895,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Účet {n}",
+    "add_operator": "Přidat účet"
   },
   "attestation": {
     "title": "Atestace zařízení",
@@ -9837,7 +9873,8 @@
       "key_changed_hint": "Pokud byl přeinstalován nebo resetován, schvalte nový klíč. Pak na počítači znovu otevřete pozvánku.",
       "approve_key": "Schválit nový klíč",
       "key_approved": "Nový klíč je schválen. Otevřete na počítači znovu pozvánku.",
-      "refused": "Počítač s ID {id} zkusil tuto pozvánku a byl odmítnut. Zkontrolujte Zařízení: možná je zablokovaný nebo odebraný."
+      "refused": "Počítač s ID {id} zkusil tuto pozvánku a byl odmítnut. Zkontrolujte Zařízení: možná je zablokovaný nebo odebraný.",
+      "reach_policy": "Bez ptaní: bezobslužný přístup se řídí pravidly. Pracovníci přihlášení do NeoDesk, kteří se smějí připojit, se dostanou dovnitř bez kliknutí, když to dovolí pravidla organizace nebo pravidlo přístupu počítače."
     }
   },
   "ui_form": {

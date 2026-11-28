@@ -14,13 +14,6 @@ import (
 	"github.com/neodeskapp/neodesk/neodesk-server/policy/unattended"
 )
 
-// The audit actions of unattended access (UNATTENDED-CONTRACT.md).
-const (
-	auditUnattendedStarted = "unattended_session_started"
-	auditUnattendedEnded   = "unattended_session_ended"
-	auditUnattendedRefused = "unattended_caller_refused"
-)
-
 // unattendedAnswer is POST /api/nd/unattended/caller when the server
 // vouches for the caller.
 type unattendedAnswer struct {
@@ -90,8 +83,8 @@ func (h *handlers) unattendedCaller(w http.ResponseWriter, r *http.Request) {
 	refuse := func(reason string, actor int64, username string) {
 		if h.d.Audit != nil && account > 0 {
 			details := unattendedDetails(device, "refused", "helper="+who(username), "reason="+reason, "relay_session="+relaySession)
-			if err := h.d.Audit.WriteAbout(ctx, actor, account, auditUnattendedRefused, details, kit.ClientIP(r)); err != nil {
-				h.log.Warn("Audit entry "+auditUnattendedRefused+" failed:", err)
+			if err := h.d.Audit.WriteAbout(ctx, actor, account, "unattended_caller_refused", details, kit.ClientIP(r)); err != nil {
+				h.log.Warn("Audit entry unattended_caller_refused failed:", err)
 			}
 		}
 		notVouched(reason)
@@ -168,7 +161,7 @@ func (h *handlers) unattendedCaller(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	details := unattendedDetails(device, "started", "helper="+who(acct.Username), "via="+pair.Via, "relay_session="+relaySession)
-	if err := h.d.Audit.WriteAbout(ctx, account, account, auditUnattendedStarted, details, kit.ClientIP(r)); err != nil {
+	if err := h.d.Audit.WriteAbout(ctx, account, account, "unattended_session_started", details, kit.ClientIP(r)); err != nil {
 		h.log.Error("Unattended caller audit:", err)
 		appFail(w, r, http.StatusInternalServerError, "audit_failed", "")
 		return
@@ -195,8 +188,8 @@ func (h *handlers) unattendedEnded(v onboard.Vouched, ended time.Time) {
 	}
 	details := unattendedDetails(v.DeviceID, "ended", "helper="+v.Helper, "started="+v.Since.UTC().Format(time.RFC3339),
 		"duration_s="+strconv.FormatInt(seconds, 10), "relay_session="+v.Session)
-	if err := h.d.Audit.WriteAbout(context.Background(), v.Actor, v.Account, auditUnattendedEnded, details, ""); err != nil {
-		h.log.Warn("Audit entry "+auditUnattendedEnded+" failed:", err)
+	if err := h.d.Audit.WriteAbout(context.Background(), v.Actor, v.Account, "unattended_session_ended", details, ""); err != nil {
+		h.log.Warn("Audit entry unattended_session_ended failed:", err)
 	}
 }
 
