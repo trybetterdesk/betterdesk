@@ -54,7 +54,7 @@
        "native": "العربية",
        "needs_review": true,
        "rtl": true,
-       "total_keys": 10615
+       "total_keys": 10652
       },
       {
        "code": "cs",
@@ -69,7 +69,7 @@
        "native": "Čeština",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "da",
@@ -84,7 +84,7 @@
        "native": "Dansk",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "de",
@@ -99,7 +99,7 @@
        "native": "Deutsch",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "en",
@@ -114,7 +114,7 @@
        "native": "English",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "es",
@@ -129,7 +129,7 @@
        "native": "Español",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "fi",
@@ -144,7 +144,7 @@
        "native": "Suomi",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "fr",
@@ -159,7 +159,7 @@
        "native": "Français",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "hi",
@@ -174,7 +174,7 @@
        "native": "हिन्दी",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "hu",
@@ -189,7 +189,7 @@
        "native": "Magyar",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "id",
@@ -204,7 +204,7 @@
        "native": "Bahasa Indonesia",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "it",
@@ -219,7 +219,7 @@
        "native": "Italiano",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "ja",
@@ -234,7 +234,7 @@
        "native": "日本語",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "ko",
@@ -249,7 +249,7 @@
        "native": "한국어",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "nb",
@@ -264,7 +264,7 @@
        "native": "Norsk",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "nl",
@@ -279,7 +279,7 @@
        "native": "Nederlands",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "pl",
@@ -294,7 +294,7 @@
        "native": "Polski",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "pt",
@@ -309,7 +309,7 @@
        "native": "Português",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       },
       {
        "code": "ro",
@@ -324,7 +324,7 @@
        "native": "Română",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "sv",
@@ -339,7 +339,7 @@
        "native": "Svenska",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "th",
@@ -354,7 +354,7 @@
        "native": "ไทย",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "tr",
@@ -369,7 +369,7 @@
        "native": "Türkçe",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "uk",
@@ -384,7 +384,7 @@
        "native": "Українська",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "vi",
@@ -399,7 +399,7 @@
        "native": "Tiếng Việt",
        "needs_review": true,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "zh-TW",
@@ -414,7 +414,7 @@
        "native": "繁體中文",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10614
+       "total_keys": 10651
       },
       {
        "code": "zh",
@@ -429,10 +429,10 @@
        "native": "中文",
        "needs_review": false,
        "rtl": false,
-       "total_keys": 10610
+       "total_keys": 10647
       }
      ],
-     "refKeyCount": 10610
+     "refKeyCount": 10647
     }
    }
   }
