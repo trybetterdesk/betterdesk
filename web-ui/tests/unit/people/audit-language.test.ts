@@ -23,6 +23,7 @@ function serverActions(): Set<string> {
 		/audit\.Action\(\s*"([a-z0-9_.]+)"\)/g,
 		/\bAction\w*\s+Action\s*=\s*"([a-z0-9_.]+)"/g,
 		/\bWrite\(\s*ctx\s*,[^,\n]+,\s*"([a-z0-9_.]+)"/g,
+		/\bWriteAbout\(\s*[^,\n]+,[^,\n]+,[^,\n]+,\s*"([a-z0-9_.]+)"/g,
 		/Action:\s*"([a-z0-9_.]+)"/g
 	];
 	const found = new Set<string>();
@@ -89,6 +90,22 @@ describe('in German', () => {
 		);
 		expect(detailsText('Device 900100019 tags set to [office, finance]', t)).toBe(
 			'Tags von Gerät 900100019 gesetzt auf: office, finance'
+		);
+		expect(
+			detailsText(
+				'Unattended session to device 900100018 started; helper=Olga Operator (olga); via=console; relay_session=ab12',
+				t
+			)
+		).toBe(
+			'Sitzung ohne Nachfrage zu Gerät 900100018 begonnen; Mitarbeiter: Olga Operator (olga); verbunden über: die Webkonsole; Relay-Sitzung: ab12'
+		);
+		expect(
+			detailsText(
+				'Unattended session to device 900100018 refused; helper=olga; reason=outside_schedule; relay_session=ab12',
+				t
+			)
+		).toBe(
+			'Sitzung ohne Nachfrage zu Gerät 900100018 abgelehnt; Mitarbeiter: olga; Grund: außerhalb der erlaubten Zeiten; Relay-Sitzung: ab12'
 		);
 		// Anything else stays as the server wrote it
 		expect(detailsText('Language xx deleted', t)).toBe('Language xx deleted');

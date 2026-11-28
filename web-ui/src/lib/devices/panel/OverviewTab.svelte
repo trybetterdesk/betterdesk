@@ -1,7 +1,8 @@
 <!--
   Overview: the edit form in edit mode (passed in as children), the ban
   notice, current load, identity, the RDP/VNC target's connection, the
-  connection mode, network and times. Everything from the device is text.
+  connection mode, a receiver's unattended access, network and times.
+  Everything from the device is text.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
@@ -32,8 +33,10 @@
 		usageSource,
 		type PanelDevice
 	} from '../panel-logic.ts';
+	import { isReceiver } from '../unattended.ts';
 	import ConnectionMode from './ConnectionMode.svelte';
 	import PanelSection from './PanelSection.svelte';
+	import UnattendedAccess from './UnattendedAccess.svelte';
 
 	interface Props {
 		device: PanelDevice;
@@ -249,6 +252,10 @@
 
 {#if conn.shown}
 	<ConnectionMode {device} view={conn} />
+{/if}
+
+{#if isReceiver(device) && !device.soft_deleted}
+	<UnattendedAccess {device} />
 {/if}
 
 <PanelSection title={t('device_detail.section_network')}>

@@ -826,7 +826,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Nie ma jeszcze urządzeń.",
-    "empty_join_requests": "Zatwierdź nowe komputery w Prośby o dołączenie"
+    "empty_join_requests": "Zatwierdź nowe komputery w Prośby o dołączenie",
+    "unattended_line_ask": "Ktoś przy komputerze musi kliknąć Zezwól.",
+    "unattended_line_always": "Personel może się łączyć bez pytania.",
+    "unattended_line_when": "Personel może się łączyć bez pytania, {when}.",
+    "unattended_line_who": "Personel może się łączyć bez pytania, tylko {who}.",
+    "unattended_line_when_who": "Personel może się łączyć bez pytania, {when}, tylko {who}.",
+    "unattended_when": "{days} od {start} do {end}",
+    "unattended_when_all_day": "{days} przez cały dzień",
+    "unattended_when_zone": "{when} (czas {zone})",
+    "unattended_day_range": "{first}–{last}",
+    "unattended_every_day": "codziennie",
+    "unattended_and": "{list} i {last}",
+    "access_policy_change": "Zmień"
   },
   "keys": {
     "title": "Klucze serwera",
@@ -2424,7 +2436,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Opublikowano udostępnione pulpity"
+    "action_dashboards_shared_changed": "Opublikowano udostępnione pulpity",
+    "action_unattended_session_started": "Sesja nienadzorowana rozpoczęta",
+    "action_unattended_session_ended": "Sesja nienadzorowana zakończona",
+    "action_unattended_caller_refused": "Sesja nienadzorowana odrzucona",
+    "action_quick_support_caller": "Rozmówca szybkiej pomocy potwierdzony",
+    "action_quick_support_caller_refused": "Rozmówca szybkiej pomocy niepotwierdzony",
+    "detail_unattended_started": "Sesja nienadzorowana z urządzeniem {device} rozpoczęta",
+    "detail_unattended_ended": "Sesja nienadzorowana z urządzeniem {device} zakończona",
+    "detail_unattended_refused": "Sesja nienadzorowana z urządzeniem {device} odrzucona",
+    "field_helper": "pracownik",
+    "field_via": "połączono przez",
+    "field_relay_session": "sesja przekaźnika",
+    "field_started": "rozpoczęto",
+    "field_duration_s": "czas w sekundach",
+    "value_via_console": "konsola internetowa",
+    "value_via_desktop": "aplikacja komputerowa",
+    "value_too_late": "zapytano za późno",
+    "value_already_used": "już raz potwierdzono",
+    "value_no_permission": "konto nie może się łączyć",
+    "value_ask_always": "polityka zawsze pyta",
+    "value_not_enabled": "dostęp nienadzorowany jest wyłączony",
+    "value_outside_schedule": "poza dozwolonymi godzinami",
+    "value_operator_not_allowed": "nie jest dozwolonym operatorem"
   },
   "generator": {
     "title": "Generator NeoDesk Support",
@@ -7044,7 +7078,7 @@
     "password_min_length": "Minimalna długość hasła",
     "password_require_special": "Wymagaj znaków specjalnych",
     "password_max_age": "Maks. wiek hasła (dni, 0=nigdy)",
-    "allowed_operators": "Dozwolone role operatorów (po przecinku)",
+    "allowed_operators": "Personel, który może łączyć się bez pytania",
     "network_title": "Polityka sieciowa",
     "network_desc": "Kontroluj serwery relay i bezpośrednie połączenia",
     "block_direct_p2p": "Zawsze łącz przez serwer przekaźnikowy",
@@ -7086,7 +7120,7 @@
     "col_source": "Zmieniono z",
     "audit_failed": "Nie udało się wczytać ostatnich zmian.",
     "save_failed_groups": "Nie zapisano: {groups}.",
-    "help_mode": "Czy osoba przy urządzeniu musi zaakceptować sesję zdalną.",
+    "help_mode": "Co robi aplikacja odbiorcy, gdy łączy się personel. Z obsługą: ktoś przy komputerze klika Zezwól, chyba że polityka dostępu komputera włącza dostęp nienadzorowany. Bez obsługi: personel zalogowany do NeoDesk, który może łączyć się z komputerem, wchodzi bez pytania i bez hasła. Zawsze pytaj: ktoś przy komputerze zawsze musi kliknąć Zezwól.",
     "help_max_session": "Sesja zdalna kończy się po tej liczbie minut, od 0 do 1440.",
     "help_idle_lock": "Urządzenie blokuje się po tej liczbie minut bez aktywności, od 0 do 120.",
     "help_wallpaper": "Czy tapeta pulpitu jest widoczna, gdy ktoś jest połączony.",
@@ -7098,7 +7132,7 @@
     "help_password_min": "Najkrótsze dozwolone hasło urządzenia, od 6 do 128 znaków.",
     "help_password_special": "Hasła urządzeń muszą zawierać znak taki jak ! lub #.",
     "help_password_age": "Hasła urządzeń trzeba zmieniać po tej liczbie dni, od 0 do 365. 0 oznacza nigdy.",
-    "help_operators": "Z tymi urządzeniami mogą łączyć się tylko osoby z jedną z tych ról, na przykład Operator zdalny.",
+    "help_operators": "Nazwy użytkowników kont personelu, który może łączyć się bez pytania, na przykład anna. Nieustawione dopuszcza każdego, kto może łączyć się z komputerem.",
     "help_block_p2p": "Połączenia z tymi urządzeniami nigdy nie idą bezpośrednio między dwoma komputerami, tylko przez serwer przekaźnikowy.",
     "help_relays": "Połączenia z tymi urządzeniami używają przekaźnika serwera, jeśli jest na tej liście, a jeśli nie, pierwszego z listy. Na przykład relay1.example.com:21117.",
     "help_ip_ranges": "Adresy IP lub zakresy, jeden w wierszu, na przykład 192.168.1.0/24.",
@@ -7149,7 +7183,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Konto {n}",
+    "add_operator": "Dodaj konto"
   },
   "attestation": {
     "title": "Atestacja urządzeń",
@@ -9837,7 +9873,8 @@
       "key_changed_hint": "Jeśli został ponownie zainstalowany lub zresetowany, zatwierdź nowy klucz. Potem ponownie otwórz zaproszenie na komputerze.",
       "approve_key": "Zatwierdź nowy klucz",
       "key_approved": "Nowy klucz zatwierdzony. Ponownie otwórz zaproszenie na komputerze.",
-      "refused": "Komputer o ID {id} próbował użyć tego zaproszenia i został odrzucony. Sprawdź Urządzenia: może być zablokowany lub usunięty."
+      "refused": "Komputer o ID {id} próbował użyć tego zaproszenia i został odrzucony. Sprawdź Urządzenia: może być zablokowany lub usunięty.",
+      "reach_policy": "Bez pytania: dostęp nienadzorowany działa według polityki. Personel zalogowany do NeoDesk, który może się łączyć, wchodzi bez kliknięcia, gdy pozwala na to polityka organizacji albo polityka dostępu komputera."
     }
   },
   "ui_form": {

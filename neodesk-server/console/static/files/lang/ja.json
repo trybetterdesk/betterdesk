@@ -826,7 +826,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "デバイスはまだありません。",
-    "empty_join_requests": "新しいコンピューターを [参加リクエスト] で承認"
+    "empty_join_requests": "新しいコンピューターを [参加リクエスト] で承認",
+    "unattended_line_ask": "コンピューターの前にいる人が「許可」をクリックする必要があります。",
+    "unattended_line_always": "スタッフは確認なしで接続できます。",
+    "unattended_line_when": "スタッフは{when}に確認なしで接続できます。",
+    "unattended_line_who": "{who}のみ、確認なしで接続できます。",
+    "unattended_line_when_who": "{who}のみ、{when}に確認なしで接続できます。",
+    "unattended_when": "{days} {start}〜{end}",
+    "unattended_when_all_day": "{days} 終日",
+    "unattended_when_zone": "{when}（{zone} 時間）",
+    "unattended_day_range": "{first}〜{last}",
+    "unattended_every_day": "毎日",
+    "unattended_and": "{list}、{last}",
+    "access_policy_change": "変更"
   },
   "keys": {
     "title": "サーバーキー",
@@ -2424,7 +2436,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "共有ダッシュボードを公開しました"
+    "action_dashboards_shared_changed": "共有ダッシュボードを公開しました",
+    "action_unattended_session_started": "無人セッション開始",
+    "action_unattended_session_ended": "無人セッション終了",
+    "action_unattended_caller_refused": "無人セッション拒否",
+    "action_quick_support_caller": "クイックサポートの接続元を確認",
+    "action_quick_support_caller_refused": "クイックサポートの接続元を確認できず",
+    "detail_unattended_started": "デバイス {device} への無人セッション開始",
+    "detail_unattended_ended": "デバイス {device} への無人セッション終了",
+    "detail_unattended_refused": "デバイス {device} への無人セッション拒否",
+    "field_helper": "スタッフ",
+    "field_via": "接続方法",
+    "field_relay_session": "リレーセッション",
+    "field_started": "開始",
+    "field_duration_s": "時間（秒）",
+    "value_via_console": "Web コンソール",
+    "value_via_desktop": "デスクトップアプリ",
+    "value_too_late": "確認が遅すぎた",
+    "value_already_used": "確認済み",
+    "value_no_permission": "アカウントは接続できない",
+    "value_ask_always": "ポリシーが常に確認する",
+    "value_not_enabled": "無人アクセスがオフ",
+    "value_outside_schedule": "許可された時間外",
+    "value_operator_not_allowed": "許可されたオペレーターではない"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6524,13 +6558,13 @@
     "console_default": "コンソールの既定"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "月",
+    "tue": "火",
+    "wed": "水",
+    "thu": "木",
+    "fri": "金",
+    "sat": "土",
+    "sun": "日"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6756,7 +6790,7 @@
     "password_min_length": "最小パスワード長",
     "password_require_special": "特殊文字を要求",
     "password_max_age": "パスワード最大有効期間（日、0=無期限）",
-    "allowed_operators": "許可されたオペレーターロール（カンマ区切り）",
+    "allowed_operators": "確認なしで接続できるスタッフ",
     "network_title": "ネットワークポリシー",
     "network_desc": "リレーサーバーと直接接続を制御",
     "block_direct_p2p": "常にリレーサーバー経由で接続する",
@@ -6798,7 +6832,7 @@
     "col_source": "変更元",
     "audit_failed": "最近の変更を読み込めませんでした。",
     "save_failed_groups": "保存されていません: {groups}。",
-    "help_mode": "デバイスの前にいる人がリモートセッションを承諾する必要があるかどうか。",
+    "help_mode": "スタッフが接続したときに受信側アプリが行うこと。有人: アクセスポリシーで無人アクセスがオンになっていない限り、コンピューターの前にいる人が「許可」をクリックします。無人: NeoDeskにサインインしていて、このコンピューターに接続できるスタッフは、確認なし、パスワードなしで接続できます。常に確認する: コンピューターの前にいる人が毎回「許可」をクリックする必要があります。",
     "help_max_session": "リモートセッションはこの分数で終了します。0 から 1440。",
     "help_idle_lock": "入力がないままこの分数が過ぎるとデバイスがロックされます。0 から 120。",
     "help_wallpaper": "接続中にデスクトップの壁紙を表示するかどうか。",
@@ -6810,7 +6844,7 @@
     "help_password_min": "許可するデバイスパスワードの最短の長さ。6 から 128 文字。",
     "help_password_special": "デバイスパスワードには ! や # などの文字を含める必要があります。",
     "help_password_age": "デバイスパスワードはこの日数が過ぎたら変更が必要です。0 から 365。0 は変更不要。",
-    "help_operators": "これらのロールのいずれかを持つ人だけが、これらのデバイスに接続できます。例: リモートオペレーター。",
+    "help_operators": "確認なしで接続できるスタッフのアカウントのユーザー名（例: anna）。未設定の場合、このコンピューターに接続できる全員が対象です。",
     "help_block_p2p": "これらのデバイスへの接続は 2 台のコンピューター間で直接行わず、必ずリレーサーバーを経由します。",
     "help_relays": "これらのデバイスへの接続は、サーバーのリレーがこの一覧にあればそれを、なければここの最初のものを使います。例: relay1.example.com:21117。",
     "help_ip_ranges": "IP アドレスまたは範囲を 1 行に 1 つ。例: 192.168.1.0/24。",
@@ -6861,7 +6895,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "アカウント {n}",
+    "add_operator": "アカウントを追加"
   },
   "attestation": {
     "title": "デバイス証明",
@@ -9837,7 +9873,8 @@
       "key_changed_hint": "再インストールまたはリセットした場合は、新しいキーを承認してください。その後、コンピューターで招待をもう一度開いてください。",
       "approve_key": "新しいキーを承認",
       "key_approved": "新しいキーを承認しました。コンピューターで招待をもう一度開いてください。",
-      "refused": "ID {id} のコンピューターがこの招待を使おうとしましたが、拒否されました。デバイスを確認してください: 禁止または削除されている可能性があります。"
+      "refused": "ID {id} のコンピューターがこの招待を使おうとしましたが、拒否されました。デバイスを確認してください: 禁止または削除されている可能性があります。",
+      "reach_policy": "確認なし: 無人アクセスはポリシーに従います。NeoDeskにサインインしていて接続できるスタッフは、組織のポリシーまたはコンピューターのアクセスポリシーが許可するとき、クリックなしで接続できます。"
     }
   },
   "ui_form": {

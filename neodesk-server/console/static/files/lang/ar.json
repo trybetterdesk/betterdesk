@@ -833,7 +833,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "لا توجد أجهزة بعد.",
-    "empty_join_requests": "وافق على أجهزة الكمبيوتر الجديدة في طلبات الانضمام"
+    "empty_join_requests": "وافق على أجهزة الكمبيوتر الجديدة في طلبات الانضمام",
+    "unattended_line_ask": "يجب أن ينقر شخص أمام الكمبيوتر على «سماح».",
+    "unattended_line_always": "يمكن للموظفين الاتصال دون سؤال.",
+    "unattended_line_when": "يمكن للموظفين الاتصال دون سؤال، {when}.",
+    "unattended_line_who": "يمكن للموظفين الاتصال دون سؤال، {who} فقط.",
+    "unattended_line_when_who": "يمكن للموظفين الاتصال دون سؤال، {when}، {who} فقط.",
+    "unattended_when": "{days} من {start} إلى {end}",
+    "unattended_when_all_day": "{days} طوال اليوم",
+    "unattended_when_zone": "{when} (بتوقيت {zone})",
+    "unattended_day_range": "{first} إلى {last}",
+    "unattended_every_day": "كل يوم",
+    "unattended_and": "{list} و{last}",
+    "access_policy_change": "تغيير"
   },
   "keys": {
     "title": "مفاتيح الخادم",
@@ -2431,7 +2443,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "تم نشر لوحات المعلومات المشتركة"
+    "action_dashboards_shared_changed": "تم نشر لوحات المعلومات المشتركة",
+    "action_unattended_session_started": "بدأت جلسة غير مراقبة",
+    "action_unattended_session_ended": "انتهت جلسة غير مراقبة",
+    "action_unattended_caller_refused": "رُفضت جلسة غير مراقبة",
+    "action_quick_support_caller": "تم تأكيد طالب الدعم السريع",
+    "action_quick_support_caller_refused": "لم يتم تأكيد طالب الدعم السريع",
+    "detail_unattended_started": "جلسة غير مراقبة إلى الجهاز {device} بدأت",
+    "detail_unattended_ended": "جلسة غير مراقبة إلى الجهاز {device} انتهت",
+    "detail_unattended_refused": "جلسة غير مراقبة إلى الجهاز {device} رُفضت",
+    "field_helper": "الموظف",
+    "field_via": "متصل عبر",
+    "field_relay_session": "جلسة المرحّل",
+    "field_started": "البدء",
+    "field_duration_s": "المدة بالثواني",
+    "value_via_console": "وحدة تحكم الويب",
+    "value_via_desktop": "تطبيق سطح المكتب",
+    "value_too_late": "طُلب متأخرًا",
+    "value_already_used": "تم التأكيد مرة من قبل",
+    "value_no_permission": "لا يُسمح للحساب بالاتصال",
+    "value_ask_always": "السياسة تسأل دائمًا",
+    "value_not_enabled": "الوصول غير المراقب متوقف",
+    "value_outside_schedule": "خارج الأوقات المسموح بها",
+    "value_operator_not_allowed": "ليس موظفًا مسموحًا له"
   },
   "generator": {
     "title": "مولّد وكيل الدعم",
@@ -6531,13 +6565,13 @@
     "console_default": "افتراضي وحدة التحكم"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "الإثنين",
+    "tue": "الثلاثاء",
+    "wed": "الأربعاء",
+    "thu": "الخميس",
+    "fri": "الجمعة",
+    "sat": "السبت",
+    "sun": "الأحد"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6763,7 +6797,7 @@
     "password_min_length": "الحد الأدنى لطول كلمة المرور",
     "password_require_special": "تتطلب أحرف خاصة",
     "password_max_age": "الحد الأقصى لعمر كلمة المرور (أيام، 0=أبدًا)",
-    "allowed_operators": "أدوار المشغل المسموح بها (مفصولة بفواصل)",
+    "allowed_operators": "الموظفون المسموح لهم بالاتصال دون سؤال",
     "network_title": "سياسة الشبكة",
     "network_desc": "التحكم في خوادم الترحيل والاتصالات المباشرة",
     "block_direct_p2p": "الاتصال دائمًا عبر خادم ترحيل",
@@ -6805,7 +6839,7 @@
     "col_source": "تم التغيير من",
     "audit_failed": "تعذر تحميل التغييرات الأخيرة.",
     "save_failed_groups": "لم يُحفظ: {groups}.",
-    "help_mode": "ما إذا كان على الشخص عند الجهاز قبول جلسة عن بُعد.",
+    "help_mode": "ما يفعله تطبيق المستقبِل عند اتصال الموظفين. حضر: ينقر شخص أمام الكمبيوتر على «سماح»، إلا إذا فعّلت سياسة الوصول الخاصة بالكمبيوتر الوصول غير المراقب. غير مراقب: يدخل الموظفون المسجّلون في NeoDesk والمسموح لهم بالاتصال بالكمبيوتر دون سؤال ودون كلمة مرور. اسأل دائمًا: يجب أن ينقر شخص أمام الكمبيوتر على «سماح» في كل مرة.",
     "help_max_session": "تنتهي الجلسة عن بُعد بعد هذا العدد من الدقائق، من 0 إلى 1440.",
     "help_idle_lock": "يُقفل الجهاز بعد هذا العدد من الدقائق دون إدخال، من 0 إلى 120.",
     "help_wallpaper": "ما إذا كانت خلفية سطح المكتب تظهر أثناء اتصال أحدهم.",
@@ -6817,7 +6851,7 @@
     "help_password_min": "أقصر كلمة مرور مسموحة للجهاز، من 6 إلى 128 حرفًا.",
     "help_password_special": "يجب أن تحتوي كلمات مرور الأجهزة على رمز مثل ! أو #.",
     "help_password_age": "يجب تغيير كلمات مرور الأجهزة بعد هذا العدد من الأيام، من 0 إلى 365. 0 تعني أبدًا.",
-    "help_operators": "لا يمكن الاتصال بهذه الأجهزة إلا لمن لديه أحد هذه الأدوار، مثلًا مشغّل عن بُعد.",
+    "help_operators": "أسماء مستخدمي حسابات الموظفين المسموح لهم بالاتصال دون سؤال، مثل anna. «غير محدد» يسمح لكل من يمكنه الاتصال بالكمبيوتر.",
     "help_block_p2p": "لا تمر الاتصالات بهذه الأجهزة مباشرة بين الكمبيوترين أبدًا، بل عبر خادم ترحيل فقط.",
     "help_relays": "تستخدم الاتصالات بهذه الأجهزة مرحّل الخادم إذا كان في هذه القائمة، وإلا فأول مرحّل هنا. مثلًا relay1.example.com:21117.",
     "help_ip_ranges": "عناوين IP أو نطاقات، واحد في كل سطر، مثلًا 192.168.1.0/24.",
@@ -6868,7 +6902,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "الحساب {n}",
+    "add_operator": "إضافة حساب"
   },
   "attestation": {
     "title": "شهادة الجهاز",
@@ -9844,7 +9880,8 @@
       "key_changed_hint": "إذا أُعيد تثبيته أو إعادة تعيينه، فوافق على المفتاح الجديد. ثم افتح الدعوة على الكمبيوتر مرة أخرى.",
       "approve_key": "الموافقة على المفتاح الجديد",
       "key_approved": "تمت الموافقة على المفتاح الجديد. افتح الدعوة على الكمبيوتر مرة أخرى.",
-      "refused": "حاول كمبيوتر بالمعرّف {id} استخدام هذه الدعوة ورُفض. تحقق من الأجهزة: ربما يكون محظورًا أو محذوفًا."
+      "refused": "حاول كمبيوتر بالمعرّف {id} استخدام هذه الدعوة ورُفض. تحقق من الأجهزة: ربما يكون محظورًا أو محذوفًا.",
+      "reach_policy": "دون سؤال: يتبع الوصول غير المراقب السياسة. يدخل الموظفون المسجّلون في NeoDesk والمسموح لهم بالاتصال دون نقرة عندما تسمح بذلك سياسة المؤسسة أو سياسة الوصول الخاصة بالكمبيوتر."
     }
   },
   "ui_form": {

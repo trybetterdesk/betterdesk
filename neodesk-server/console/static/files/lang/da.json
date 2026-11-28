@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Ingen enheder endnu.",
-    "empty_join_requests": "Godkend nye computere under Anmodninger om tilslutning"
+    "empty_join_requests": "Godkend nye computere under Anmodninger om tilslutning",
+    "unattended_line_ask": "Nogen ved computeren skal klikke på Tillad.",
+    "unattended_line_always": "Medarbejdere kan oprette forbindelse uden at spørge.",
+    "unattended_line_when": "Medarbejdere kan oprette forbindelse uden at spørge, {when}.",
+    "unattended_line_who": "Medarbejdere kan oprette forbindelse uden at spørge, kun {who}.",
+    "unattended_line_when_who": "Medarbejdere kan oprette forbindelse uden at spørge, {when}, kun {who}.",
+    "unattended_when": "{days} {start} til {end}",
+    "unattended_when_all_day": "{days} hele dagen",
+    "unattended_when_zone": "{when} ({zone}-tid)",
+    "unattended_day_range": "{first} til {last}",
+    "unattended_every_day": "hver dag",
+    "unattended_and": "{list} og {last}",
+    "access_policy_change": "Skift"
   },
   "keys": {
     "title": "Servernøgler",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Delte dashboards udgivet"
+    "action_dashboards_shared_changed": "Delte dashboards udgivet",
+    "action_unattended_session_started": "Uovervåget session startet",
+    "action_unattended_session_ended": "Uovervåget session afsluttet",
+    "action_unattended_caller_refused": "Uovervåget session afvist",
+    "action_quick_support_caller": "Opkalder til hurtig support bekræftet",
+    "action_quick_support_caller_refused": "Opkalder til hurtig support ikke bekræftet",
+    "detail_unattended_started": "Uovervåget session til enhed {device} startet",
+    "detail_unattended_ended": "Uovervåget session til enhed {device} afsluttet",
+    "detail_unattended_refused": "Uovervåget session til enhed {device} afvist",
+    "field_helper": "medarbejder",
+    "field_via": "forbundet via",
+    "field_relay_session": "relay-session",
+    "field_started": "startet",
+    "field_duration_s": "varighed i sekunder",
+    "value_via_console": "webkonsollen",
+    "value_via_desktop": "desktopappen",
+    "value_too_late": "spurgt for sent",
+    "value_already_used": "allerede bekræftet én gang",
+    "value_no_permission": "kontoen må ikke oprette forbindelse",
+    "value_ask_always": "politikken spørger altid",
+    "value_not_enabled": "uovervåget adgang er slået fra",
+    "value_outside_schedule": "uden for de tilladte tider",
+    "value_operator_not_allowed": "ikke en tilladt medarbejder"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "Konsollens standard"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "man",
+    "tue": "tir",
+    "wed": "ons",
+    "thu": "tor",
+    "fri": "fre",
+    "sat": "lør",
+    "sun": "søn"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "Minimum adgangskodelængde",
     "password_require_special": "Kræv specialtegn",
     "password_max_age": "Adgangskode maks. alder (dage, 0=aldrig)",
-    "allowed_operators": "Tilladte operatørroller (kommasepareret)",
+    "allowed_operators": "Medarbejdere, der må oprette forbindelse uden at spørge",
     "network_title": "Netværkspolitik",
     "network_desc": "Styr relæservere og direkte forbindelser",
     "block_direct_p2p": "Forbind altid via en relay-server",
@@ -6804,7 +6838,7 @@
     "col_source": "Ændret fra",
     "audit_failed": "De seneste ændringer kunne ikke indlæses.",
     "save_failed_groups": "Ikke gemt: {groups}.",
-    "help_mode": "Om personen ved enheden skal acceptere en fjernsession.",
+    "help_mode": "Hvad modtagerappen gør, når medarbejdere opretter forbindelse. Deltog: nogen ved computeren klikker på Tillad, medmindre computerens adgangspolitik slår uovervåget adgang til. Uovervåget: medarbejdere, der er logget ind i NeoDesk og må oprette forbindelse til computeren, kommer ind uden at spørge og uden adgangskode. Spørg altid: nogen ved computeren skal altid klikke på Tillad.",
     "help_max_session": "En fjernsession slutter efter dette antal minutter, fra 0 til 1440.",
     "help_idle_lock": "Enheden låses efter dette antal minutter uden input, fra 0 til 120.",
     "help_wallpaper": "Om skrivebordsbaggrunden vises, mens nogen er forbundet.",
@@ -6816,7 +6850,7 @@
     "help_password_min": "Den korteste tilladte enhedsadgangskode, fra 6 til 128 tegn.",
     "help_password_special": "Enhedsadgangskoder skal indeholde et tegn som ! eller #.",
     "help_password_age": "Enhedsadgangskoder skal skiftes efter dette antal dage, fra 0 til 365. 0 betyder aldrig.",
-    "help_operators": "Kun personer med en af disse roller må forbinde til disse enheder, for eksempel Fjernoperatør.",
+    "help_operators": "Brugernavne på de medarbejderkonti, der må oprette forbindelse uden at spørge, for eksempel anna. Ikke angivet lader alle, der må oprette forbindelse til computeren.",
     "help_block_p2p": "Forbindelser til disse enheder går aldrig direkte mellem de to computere, kun gennem en relæserver.",
     "help_relays": "Forbindelser til disse enheder bruger serverens relæ, når det er på denne liste, ellers det første her. For eksempel relay1.example.com:21117.",
     "help_ip_ranges": "IP-adresser eller områder, én pr. række, for eksempel 192.168.1.0/24.",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Konto {n}",
+    "add_operator": "Tilføj en konto"
   },
   "attestation": {
     "title": "Enhedsattest",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "Hvis den er blevet geninstalleret eller nulstillet, så godkend den nye nøgle. Åbn derefter invitationen på computeren igen.",
       "approve_key": "Godkend ny nøgle",
       "key_approved": "Ny nøgle godkendt. Åbn invitationen på computeren igen.",
-      "refused": "En computer med ID'et {id} forsøgte at bruge denne invitation og blev afvist. Tjek Enheder: den er måske spærret eller fjernet."
+      "refused": "En computer med ID'et {id} forsøgte at bruge denne invitation og blev afvist. Tjek Enheder: den er måske spærret eller fjernet.",
+      "reach_policy": "Uden at spørge: uovervåget adgang følger politikken. Medarbejdere, der er logget ind i NeoDesk og må oprette forbindelse, kommer ind uden et klik, når organisationens politik eller computerens adgangspolitik tillader det."
     }
   },
   "ui_form": {

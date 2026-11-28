@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Încă nu există dispozitive.",
-    "empty_join_requests": "Aprobați computerele noi în Cereri de alăturare"
+    "empty_join_requests": "Aprobați computerele noi în Cereri de alăturare",
+    "unattended_line_ask": "Cineva de la calculator trebuie să facă clic pe Permite.",
+    "unattended_line_always": "Personalul se poate conecta fără să întrebe.",
+    "unattended_line_when": "Personalul se poate conecta fără să întrebe, {when}.",
+    "unattended_line_who": "Personalul se poate conecta fără să întrebe, doar {who}.",
+    "unattended_line_when_who": "Personalul se poate conecta fără să întrebe, {when}, doar {who}.",
+    "unattended_when": "{days} între {start} și {end}",
+    "unattended_when_all_day": "{days} toată ziua",
+    "unattended_when_zone": "{when} (ora {zone})",
+    "unattended_day_range": "{first}–{last}",
+    "unattended_every_day": "în fiecare zi",
+    "unattended_and": "{list} și {last}",
+    "access_policy_change": "Modifică"
   },
   "keys": {
     "title": "Cheile serverului",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Tablourile de bord partajate au fost publicate"
+    "action_dashboards_shared_changed": "Tablourile de bord partajate au fost publicate",
+    "action_unattended_session_started": "Sesiune nesupravegheată pornită",
+    "action_unattended_session_ended": "Sesiune nesupravegheată încheiată",
+    "action_unattended_caller_refused": "Sesiune nesupravegheată refuzată",
+    "action_quick_support_caller": "Apelantul asistenței rapide confirmat",
+    "action_quick_support_caller_refused": "Apelantul asistenței rapide neconfirmat",
+    "detail_unattended_started": "Sesiune nesupravegheată către dispozitivul {device} pornită",
+    "detail_unattended_ended": "Sesiune nesupravegheată către dispozitivul {device} încheiată",
+    "detail_unattended_refused": "Sesiune nesupravegheată către dispozitivul {device} refuzată",
+    "field_helper": "membru al personalului",
+    "field_via": "conectat prin",
+    "field_relay_session": "sesiune releu",
+    "field_started": "început",
+    "field_duration_s": "durata în secunde",
+    "value_via_console": "consola web",
+    "value_via_desktop": "aplicația desktop",
+    "value_too_late": "întrebare prea târzie",
+    "value_already_used": "deja confirmat o dată",
+    "value_no_permission": "contul nu se poate conecta",
+    "value_ask_always": "politica întreabă mereu",
+    "value_not_enabled": "accesul nesupravegheat este oprit",
+    "value_outside_schedule": "în afara orelor permise",
+    "value_operator_not_allowed": "nu este un operator permis"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "Implicit consolă"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "lun",
+    "tue": "mar",
+    "wed": "mie",
+    "thu": "joi",
+    "fri": "vin",
+    "sat": "sâm",
+    "sun": "dum"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "Lungimea minimă a parolei",
     "password_require_special": "Necesită caractere speciale",
     "password_max_age": "Vârsta maximă a parolei (zile, 0=niciodată)",
-    "allowed_operators": "Roluri de operator permise (separate prin virgulă)",
+    "allowed_operators": "Personal care se poate conecta fără să întrebe",
     "network_title": "Politica de rețea",
     "network_desc": "Controlați serverele releu și conexiunile directe",
     "block_direct_p2p": "Conectează-te mereu printr-un server releu",
@@ -6804,7 +6838,7 @@
     "col_source": "Modificat de la",
     "audit_failed": "Modificările recente nu au putut fi încărcate.",
     "save_failed_groups": "Nesalvat: {groups}.",
-    "help_mode": "Dacă persoana de la dispozitiv trebuie să accepte o sesiune la distanță.",
+    "help_mode": "Ce face aplicația receptor când personalul se conectează. A participat: cineva de la calculator face clic pe Permite, cu excepția cazului în care politica de acces a calculatorului activează accesul nesupravegheat. Nesupravegheat: personalul conectat la NeoDesk care are voie să se conecteze la calculator intră fără să întrebe și fără parolă. Întreabă mereu: cineva de la calculator trebuie să facă mereu clic pe Permite.",
     "help_max_session": "O sesiune la distanță se încheie după acest număr de minute, între 0 și 1440.",
     "help_idle_lock": "Dispozitivul se blochează după acest număr de minute fără activitate, între 0 și 120.",
     "help_wallpaper": "Dacă imaginea de fundal a desktopului se vede cât timp cineva este conectat.",
@@ -6816,7 +6850,7 @@
     "help_password_min": "Cea mai scurtă parolă de dispozitiv permisă, între 6 și 128 de caractere.",
     "help_password_special": "Parolele dispozitivelor trebuie să conțină un caracter precum ! sau #.",
     "help_password_age": "Parolele dispozitivelor trebuie schimbate după acest număr de zile, între 0 și 365. 0 înseamnă niciodată.",
-    "help_operators": "Doar persoanele cu unul dintre aceste roluri se pot conecta la aceste dispozitive, de exemplu Operator la distanță.",
+    "help_operators": "Numele de utilizator ale conturilor personalului care se poate conecta fără să întrebe, de exemplu anna. Nesetat permite oricui are voie să se conecteze la calculator.",
     "help_block_p2p": "Conexiunile la aceste dispozitive nu merg niciodată direct între cele două computere, doar printr-un server de releu.",
     "help_relays": "Conexiunile la aceste dispozitive folosesc releul serverului dacă este în această listă, altfel primul de aici. De exemplu relay1.example.com:21117.",
     "help_ip_ranges": "Adrese IP sau intervale, câte unul pe rând, de exemplu 192.168.1.0/24.",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Contul {n}",
+    "add_operator": "Adaugă un cont"
   },
   "attestation": {
     "title": "Atestarea dispozitivului",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "Dacă a fost reinstalat sau resetat, aprobați cheia nouă. Apoi deschideți din nou invitația pe computer.",
       "approve_key": "Aprobați cheia nouă",
       "key_approved": "Cheia nouă a fost aprobată. Deschideți din nou invitația pe computer.",
-      "refused": "Un computer cu ID-ul {id} a încercat această invitație și a fost respins. Verificați Dispozitive: poate fi blocat sau eliminat."
+      "refused": "Un computer cu ID-ul {id} a încercat această invitație și a fost respins. Verificați Dispozitive: poate fi blocat sau eliminat.",
+      "reach_policy": "Fără să întrebe: accesul nesupravegheat urmează politica. Personalul conectat la NeoDesk care are voie să se conecteze intră fără niciun clic când politica organizației sau politica de acces a calculatorului permite."
     }
   },
   "ui_form": {

@@ -15,12 +15,21 @@ export const FOLLOW_MS = 3000;
 
 /**
  * The ways to reach a joined computer that exist today, as the reach step
- * explains them (language keys below onboard.guide). Connecting without a
- * device password and a password the console sets come with later server
- * and client versions; they add their keys here, and with them their
- * choices.
+ * explains them (language keys below onboard.guide). The full desktop app
+ * takes a permanent password someone sets at the computer; the receiver
+ * app has none and lets staff in without asking only as the policy says
+ * (A279).
  */
 export const REACH_OPTIONS = ['onboard.guide.reach_accept', 'onboard.guide.reach_password'] as const;
+export const RECEIVER_REACH_OPTIONS = ['onboard.guide.reach_accept', 'onboard.guide.reach_policy'] as const;
+
+/** The device type the receiver app reports (and the Support Agent before it) */
+export const RECEIVER_TYPE = 'neodesk-support';
+
+/** The reach step's lines for a computer: the receiver's, or the desktop app's */
+export function reachOptions(d: { device_type?: string }): readonly string[] {
+	return d.device_type === RECEIVER_TYPE ? RECEIVER_REACH_OPTIONS : REACH_OPTIONS;
+}
 
 /** The next computer of the invite to walk through: the first not set up yet in this sheet */
 export function nextDevice(detail: InviteDetail | null, done: ReadonlySet<string>): InviteDevice | null {

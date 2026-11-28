@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Henüz cihaz yok.",
-    "empty_join_requests": "Yeni bilgisayarları Katılma istekleri altında onaylayın"
+    "empty_join_requests": "Yeni bilgisayarları Katılma istekleri altında onaylayın",
+    "unattended_line_ask": "Bilgisayarın başındaki birinin İzin ver'e tıklaması gerekir.",
+    "unattended_line_always": "Personel sormadan bağlanabilir.",
+    "unattended_line_when": "Personel sormadan bağlanabilir, {when}.",
+    "unattended_line_who": "Personel sormadan bağlanabilir, yalnızca {who}.",
+    "unattended_line_when_who": "Personel sormadan bağlanabilir, {when}, yalnızca {who}.",
+    "unattended_when": "{days} {start} ile {end} arası",
+    "unattended_when_all_day": "{days} gün boyu",
+    "unattended_when_zone": "{when} ({zone} saati)",
+    "unattended_day_range": "{first}–{last}",
+    "unattended_every_day": "her gün",
+    "unattended_and": "{list} ve {last}",
+    "access_policy_change": "Değiştir"
   },
   "keys": {
     "title": "Sunucu Anahtarları",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Paylaşılan panolar yayımlandı"
+    "action_dashboards_shared_changed": "Paylaşılan panolar yayımlandı",
+    "action_unattended_session_started": "Katılımsız oturum başladı",
+    "action_unattended_session_ended": "Katılımsız oturum sona erdi",
+    "action_unattended_caller_refused": "Katılımsız oturum reddedildi",
+    "action_quick_support_caller": "Hızlı destek arayanı doğrulandı",
+    "action_quick_support_caller_refused": "Hızlı destek arayanı doğrulanmadı",
+    "detail_unattended_started": "{device} cihazına katılımsız oturum başladı",
+    "detail_unattended_ended": "{device} cihazına katılımsız oturum sona erdi",
+    "detail_unattended_refused": "{device} cihazına katılımsız oturum reddedildi",
+    "field_helper": "personel",
+    "field_via": "bağlantı yolu",
+    "field_relay_session": "aktarma oturumu",
+    "field_started": "başlangıç",
+    "field_duration_s": "saniye cinsinden süre",
+    "value_via_console": "web konsolu",
+    "value_via_desktop": "masaüstü uygulaması",
+    "value_too_late": "çok geç soruldu",
+    "value_already_used": "zaten bir kez doğrulandı",
+    "value_no_permission": "hesap bağlanamaz",
+    "value_ask_always": "politika her zaman sorar",
+    "value_not_enabled": "katılımsız erişim kapalı",
+    "value_outside_schedule": "izin verilen saatlerin dışında",
+    "value_operator_not_allowed": "izin verilen bir operatör değil"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "Konsol varsayılanı"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "Pzt",
+    "tue": "Sal",
+    "wed": "Çar",
+    "thu": "Per",
+    "fri": "Cum",
+    "sat": "Cmt",
+    "sun": "Paz"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "Minimum Şifre Uzunluğu",
     "password_require_special": "Özel Karakterler Gerektirir",
     "password_max_age": "Şifre Maksimum Süresi (gün, 0=hiçbir zaman)",
-    "allowed_operators": "İzin Verilen Operatör Rolleri (virgülle ayrılmış)",
+    "allowed_operators": "Sormadan bağlanabilecek personel",
     "network_title": "Ağ Politikası",
     "network_desc": "Aktarma sunucularını ve doğrudan bağlantıları kontrol edin",
     "block_direct_p2p": "Her zaman bir aktarma sunucusu üzerinden bağlan",
@@ -6804,7 +6838,7 @@
     "col_source": "Değiştiren adres",
     "audit_failed": "Son değişiklikler yüklenemedi.",
     "save_failed_groups": "Kaydedilmedi: {groups}.",
-    "help_mode": "Cihazın başındaki kişinin uzak oturumu kabul etmesi gerekip gerekmediği.",
+    "help_mode": "Personel bağlandığında alıcı uygulamanın yaptığı. Katıldınız: bilgisayarın erişim politikası katılımsız erişimi açmadıkça bilgisayarın başındaki biri İzin ver'e tıklar. Katılımsız: NeoDesk'te oturum açmış ve bilgisayara bağlanmasına izin verilen personel sormadan ve parola olmadan girer. Her zaman sor: bilgisayarın başındaki birinin her seferinde İzin ver'e tıklaması gerekir.",
     "help_max_session": "Uzak oturum bu kadar dakika sonra biter, 0 ile 1440 arası.",
     "help_idle_lock": "Cihaz bu kadar dakika giriş olmadan kilitlenir, 0 ile 120 arası.",
     "help_wallpaper": "Biri bağlıyken masaüstü arka planının görünüp görünmediği.",
@@ -6816,7 +6850,7 @@
     "help_password_min": "İzin verilen en kısa cihaz parolası, 6 ile 128 karakter arası.",
     "help_password_special": "Cihaz parolaları ! veya # gibi bir karakter içermelidir.",
     "help_password_age": "Cihaz parolaları bu kadar gün sonra değiştirilmelidir, 0 ile 365 arası. 0 hiçbir zaman demektir.",
-    "help_operators": "Bu cihazlara yalnızca bu rollerden birine sahip kişiler bağlanabilir, örneğin Uzak operatör.",
+    "help_operators": "Sormadan bağlanabilecek personel hesaplarının kullanıcı adları, örneğin anna. Ayarlanmamışsa bilgisayara bağlanabilen herkese izin verir.",
     "help_block_p2p": "Bu cihazlara bağlantılar hiçbir zaman iki bilgisayar arasında doğrudan gitmez, yalnızca bir aktarma sunucusu üzerinden.",
     "help_relays": "Bu cihazlara bağlantılar, bu listedeyse sunucunun aktarıcısını, değilse buradaki ilkini kullanır. Örneğin relay1.example.com:21117.",
     "help_ip_ranges": "IP adresleri veya aralıkları, satır başına bir tane, örneğin 192.168.1.0/24.",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Hesap {n}",
+    "add_operator": "Hesap ekle"
   },
   "attestation": {
     "title": "Cihaz Onayı",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "Yeniden kurulduysa veya sıfırlandıysa yeni anahtarı onaylayın. Ardından daveti bilgisayarda yeniden açın.",
       "approve_key": "Yeni anahtarı onayla",
       "key_approved": "Yeni anahtar onaylandı. Daveti bilgisayarda yeniden açın.",
-      "refused": "{id} kimlikli bir bilgisayar bu daveti denedi ve reddedildi. Cihazlar'ı kontrol edin: yasaklanmış veya kaldırılmış olabilir."
+      "refused": "{id} kimlikli bir bilgisayar bu daveti denedi ve reddedildi. Cihazlar'ı kontrol edin: yasaklanmış veya kaldırılmış olabilir.",
+      "reach_policy": "Sormadan: katılımsız erişim politikaya uyar. NeoDesk'te oturum açmış ve bağlanmasına izin verilen personel, kuruluşun politikası veya bilgisayarın erişim politikası izin verdiğinde tıklama olmadan girer."
     }
   },
   "ui_form": {

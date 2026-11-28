@@ -84,14 +84,22 @@ describe('permission gates per role', () => {
 			'cdap-viewer',
 			'guest-access'
 		]);
-		expect(a.manage).toEqual(['edit', 'groups', 'issue-token']);
+		expect(a.manage).toEqual(['edit', 'groups', 'access-policy', 'issue-token']);
 		expect(a.danger).toEqual([]);
 	});
 
 	test('admin: every action, ban turns into unban on a banned device', () => {
 		const can = canFor('admin');
 		const a = panelActions(device(), can);
-		expect(a.manage).toEqual(['edit', 'groups', 'signin', 'change-id', 'issue-token', 'ban']);
+		expect(a.manage).toEqual([
+			'edit',
+			'groups',
+			'access-policy',
+			'signin',
+			'change-id',
+			'issue-token',
+			'ban'
+		]);
 		expect(a.danger).toEqual(['delete']);
 		expect(panelActions(device({ banned: true }), can).manage).toContain('unban');
 	});
@@ -107,8 +115,11 @@ describe('permission gates per role', () => {
 		expect(panelActions(target, admin).manage).not.toContain('signin');
 	});
 
-	test('no Access policy action while the server does not enforce the policy (L221)', () => {
-		expect(panelActions(device(), canFor('admin')).manage).not.toContain('access-policy');
+	test('Access policy with device.edit, now that the server checks it (A279)', () => {
+		expect(panelActions(device(), canFor('admin')).manage).toContain('access-policy');
+		expect(panelActions(device(), canFor('viewer')).manage).not.toContain('access-policy');
+		const target = device({ id: 'rt_1', remote_target: true, device_type: 'rdp' });
+		expect(panelActions(target, canFor('admin')).manage).not.toContain('access-policy');
 	});
 
 	test('a new token needs device.edit; a banned, deleted or RDP/VNC device gets none', () => {
@@ -120,6 +131,7 @@ describe('permission gates per role', () => {
 		expect(panelActions(device({ banned: true }), admin).manage).toEqual([
 			'edit',
 			'groups',
+			'access-policy',
 			'signin',
 			'change-id',
 			'unban'
@@ -161,7 +173,9 @@ describe('permission gates per role', () => {
 		expect(footerSlots(d, can).edit).toBe(false);
 		const a = panelActions(d, can);
 		expect(a.support).toBe(true);
-		expect(a.manage).toEqual([]);
+		// The receiver's access policy is the one thing to manage (A279)
+		expect(a.manage).toEqual(['access-policy']);
+		expect(panelActions(d, canFor('viewer')).manage).toEqual([]);
 		expect(a.danger).toEqual([]);
 	});
 

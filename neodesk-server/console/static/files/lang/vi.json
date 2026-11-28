@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Chưa có thiết bị nào.",
-    "empty_join_requests": "Duyệt máy tính mới trong Yêu cầu tham gia"
+    "empty_join_requests": "Duyệt máy tính mới trong Yêu cầu tham gia",
+    "unattended_line_ask": "Người ở máy tính phải bấm Cho phép.",
+    "unattended_line_always": "Nhân viên có thể kết nối mà không cần hỏi.",
+    "unattended_line_when": "Nhân viên có thể kết nối mà không cần hỏi, {when}.",
+    "unattended_line_who": "Nhân viên có thể kết nối mà không cần hỏi, chỉ {who}.",
+    "unattended_line_when_who": "Nhân viên có thể kết nối mà không cần hỏi, {when}, chỉ {who}.",
+    "unattended_when": "{days} từ {start} đến {end}",
+    "unattended_when_all_day": "{days} cả ngày",
+    "unattended_when_zone": "{when} (giờ {zone})",
+    "unattended_day_range": "{first} đến {last}",
+    "unattended_every_day": "mỗi ngày",
+    "unattended_and": "{list} và {last}",
+    "access_policy_change": "Thay đổi"
   },
   "keys": {
     "title": "Khóa máy chủ",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Đã xuất bản bảng thông tin được chia sẻ"
+    "action_dashboards_shared_changed": "Đã xuất bản bảng thông tin được chia sẻ",
+    "action_unattended_session_started": "Phiên không cần giám sát đã bắt đầu",
+    "action_unattended_session_ended": "Phiên không cần giám sát đã kết thúc",
+    "action_unattended_caller_refused": "Phiên không cần giám sát bị từ chối",
+    "action_quick_support_caller": "Đã xác nhận người gọi hỗ trợ nhanh",
+    "action_quick_support_caller_refused": "Chưa xác nhận người gọi hỗ trợ nhanh",
+    "detail_unattended_started": "Phiên không cần giám sát tới thiết bị {device} đã bắt đầu",
+    "detail_unattended_ended": "Phiên không cần giám sát tới thiết bị {device} đã kết thúc",
+    "detail_unattended_refused": "Phiên không cần giám sát tới thiết bị {device} bị từ chối",
+    "field_helper": "nhân viên",
+    "field_via": "kết nối qua",
+    "field_relay_session": "phiên chuyển tiếp",
+    "field_started": "bắt đầu",
+    "field_duration_s": "thời lượng tính bằng giây",
+    "value_via_console": "bảng điều khiển web",
+    "value_via_desktop": "ứng dụng máy tính",
+    "value_too_late": "hỏi quá muộn",
+    "value_already_used": "đã xác nhận một lần",
+    "value_no_permission": "tài khoản không được kết nối",
+    "value_ask_always": "chính sách luôn hỏi",
+    "value_not_enabled": "truy cập không cần giám sát đang tắt",
+    "value_outside_schedule": "ngoài thời gian cho phép",
+    "value_operator_not_allowed": "không phải người vận hành được phép"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "Mặc định của bảng điều khiển"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "T2",
+    "tue": "T3",
+    "wed": "T4",
+    "thu": "T5",
+    "fri": "T6",
+    "sat": "T7",
+    "sun": "CN"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "Độ dài mật khẩu tối thiểu",
     "password_require_special": "Yêu cầu ký tự đặc biệt",
     "password_max_age": "Tuổi tối đa của mật khẩu (ngày, 0=không bao giờ)",
-    "allowed_operators": "Vai trò của người vận hành được phép (được phân tách bằng dấu phẩy)",
+    "allowed_operators": "Nhân viên được kết nối mà không cần hỏi",
     "network_title": "Chính sách mạng",
     "network_desc": "Kiểm soát máy chủ chuyển tiếp và kết nối trực tiếp",
     "block_direct_p2p": "Luôn kết nối qua máy chủ chuyển tiếp",
@@ -6804,7 +6838,7 @@
     "col_source": "Thay đổi từ",
     "audit_failed": "Không tải được các thay đổi gần đây.",
     "save_failed_groups": "Chưa lưu: {groups}.",
-    "help_mode": "Người ở thiết bị có phải chấp nhận phiên từ xa hay không.",
+    "help_mode": "Ứng dụng nhận làm gì khi nhân viên kết nối. Đã tham dự: người ở máy tính bấm Cho phép, trừ khi chính sách truy cập của máy tính bật truy cập không cần giám sát. Không cần giám sát: nhân viên đã đăng nhập NeoDesk và được phép kết nối với máy tính sẽ vào mà không cần hỏi và không cần mật khẩu. Luôn hỏi: người ở máy tính luôn phải bấm Cho phép.",
     "help_max_session": "Phiên từ xa kết thúc sau số phút này, từ 0 đến 1440.",
     "help_idle_lock": "Thiết bị khóa sau số phút không thao tác này, từ 0 đến 120.",
     "help_wallpaper": "Hình nền màn hình có hiện khi có người kết nối không.",
@@ -6816,7 +6850,7 @@
     "help_password_min": "Mật khẩu thiết bị ngắn nhất được phép, từ 6 đến 128 ký tự.",
     "help_password_special": "Mật khẩu thiết bị phải có một ký tự như ! hoặc #.",
     "help_password_age": "Mật khẩu thiết bị phải đổi sau số ngày này, từ 0 đến 365. 0 nghĩa là không bao giờ.",
-    "help_operators": "Chỉ người có một trong các vai trò này mới được kết nối tới các thiết bị này, ví dụ Người vận hành từ xa.",
+    "help_operators": "Tên người dùng của các tài khoản nhân viên được kết nối mà không cần hỏi, ví dụ anna. Khi chưa đặt, mọi người được phép kết nối với máy tính đều vào được.",
     "help_block_p2p": "Kết nối tới các thiết bị này không bao giờ đi trực tiếp giữa hai máy tính, chỉ qua máy chủ chuyển tiếp.",
     "help_relays": "Kết nối tới các thiết bị này dùng máy chủ chuyển tiếp của máy chủ nếu nó có trong danh sách này, nếu không thì dùng cái đầu tiên ở đây. Ví dụ relay1.example.com:21117.",
     "help_ip_ranges": "Địa chỉ IP hoặc dải, mỗi dòng một mục, ví dụ 192.168.1.0/24.",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Tài khoản {n}",
+    "add_operator": "Thêm tài khoản"
   },
   "attestation": {
     "title": "Chứng thực thiết bị",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "Nếu máy đã được cài đặt lại hoặc đặt lại, hãy phê duyệt khóa mới. Sau đó mở lại lời mời trên máy tính.",
       "approve_key": "Phê duyệt khóa mới",
       "key_approved": "Đã phê duyệt khóa mới. Hãy mở lại lời mời trên máy tính.",
-      "refused": "Một máy tính có ID {id} đã thử lời mời này và bị từ chối. Hãy kiểm tra Thiết bị: có thể máy đã bị cấm hoặc bị xóa."
+      "refused": "Một máy tính có ID {id} đã thử lời mời này và bị từ chối. Hãy kiểm tra Thiết bị: có thể máy đã bị cấm hoặc bị xóa.",
+      "reach_policy": "Không cần hỏi: truy cập không cần giám sát theo chính sách. Nhân viên đã đăng nhập NeoDesk và được phép kết nối sẽ vào mà không cần bấm khi chính sách của tổ chức hoặc chính sách truy cập của máy tính cho phép."
     }
   },
   "ui_form": {

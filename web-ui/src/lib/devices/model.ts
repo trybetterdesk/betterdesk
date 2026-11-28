@@ -16,10 +16,10 @@ export const PREF_SHOW_DELETED = 'nd_devices_show_deleted';
 
 /**
  * Whether the device menu and the panel offer the Access policy sheet. The
- * server stores a device's policy but no connection checks it yet, so the
- * sheet stays out of both; the stored policies and their API remain.
+ * server's unattended caller check applies the policy (A279), so both
+ * offer it to accounts with device.edit.
  */
-export const OFFER_ACCESS_POLICY = false;
+export const OFFER_ACCESS_POLICY = true;
 
 /* ── Status, name, type ── */
 

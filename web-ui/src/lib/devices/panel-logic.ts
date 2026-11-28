@@ -208,6 +208,8 @@ export function panelActions(d: PanelDevice, can: Can): PanelActions {
 
 	if (isSupportAgent(identityOf(d))) {
 		out.support = true;
+		// Who may connect without asking is the receiver's one setting here (A279)
+		if (can('device.edit') && OFFER_ACCESS_POLICY) out.manage.push('access-policy');
 		return out;
 	}
 
@@ -224,7 +226,7 @@ export function panelActions(d: PanelDevice, can: Can): PanelActions {
 	}
 
 	if (can('device.edit')) out.manage.push('edit', 'groups');
-	if (can('device.edit') && OFFER_ACCESS_POLICY) out.manage.push('access-policy');
+	if (can('device.edit') && OFFER_ACCESS_POLICY && !d.remote_target) out.manage.push('access-policy');
 	if (can('device.signin_manage') && !d.remote_target) out.manage.push('signin');
 	if (can('device.change_id')) out.manage.push('change-id');
 	if (can('device.edit') && !d.banned) out.manage.push('issue-token');

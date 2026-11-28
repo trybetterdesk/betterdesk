@@ -826,7 +826,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "还没有设备。",
-    "empty_join_requests": "在“加入请求”中批准新电脑"
+    "empty_join_requests": "在“加入请求”中批准新电脑",
+    "unattended_line_ask": "电脑前必须有人点击“允许”。",
+    "unattended_line_always": "员工可以无需询问直接连接。",
+    "unattended_line_when": "员工可以在{when}无需询问直接连接。",
+    "unattended_line_who": "仅限{who}可以无需询问直接连接。",
+    "unattended_line_when_who": "仅限{who}可以在{when}无需询问直接连接。",
+    "unattended_when": "{days} {start} 至 {end}",
+    "unattended_when_all_day": "{days} 全天",
+    "unattended_when_zone": "{when}（{zone} 时间）",
+    "unattended_day_range": "{first}至{last}",
+    "unattended_every_day": "每天",
+    "unattended_and": "{list}和{last}",
+    "access_policy_change": "更改"
   },
   "keys": {
     "title": "服务器密钥",
@@ -2424,7 +2436,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "共享仪表板已发布"
+    "action_dashboards_shared_changed": "共享仪表板已发布",
+    "action_unattended_session_started": "无人值守会话已开始",
+    "action_unattended_session_ended": "无人值守会话已结束",
+    "action_unattended_caller_refused": "无人值守会话被拒绝",
+    "action_quick_support_caller": "已确认快速支持来电者",
+    "action_quick_support_caller_refused": "未确认快速支持来电者",
+    "detail_unattended_started": "到设备 {device} 的无人值守会话已开始",
+    "detail_unattended_ended": "到设备 {device} 的无人值守会话已结束",
+    "detail_unattended_refused": "到设备 {device} 的无人值守会话被拒绝",
+    "field_helper": "员工",
+    "field_via": "连接方式",
+    "field_relay_session": "中继会话",
+    "field_started": "开始",
+    "field_duration_s": "时长（秒）",
+    "value_via_console": "网页控制台",
+    "value_via_desktop": "桌面应用",
+    "value_too_late": "询问太晚",
+    "value_already_used": "已确认过一次",
+    "value_no_permission": "账号不可连接",
+    "value_ask_always": "策略设为始终询问",
+    "value_not_enabled": "无人值守访问已关闭",
+    "value_outside_schedule": "不在允许的时间内",
+    "value_operator_not_allowed": "不是允许的操作员"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -7026,7 +7060,7 @@
     "password_min_length": "最小密码长度",
     "password_require_special": "要求特殊字符",
     "password_max_age": "密码最大有效期（天，0=永不）",
-    "allowed_operators": "允许的操作员角色（逗号分隔）",
+    "allowed_operators": "可无需询问连接的员工",
     "network_title": "网络策略",
     "network_desc": "控制中继服务器和直接连接",
     "block_direct_p2p": "始终通过中继服务器连接",
@@ -7068,7 +7102,7 @@
     "col_source": "更改来源",
     "audit_failed": "无法加载最近的更改。",
     "save_failed_groups": "未保存：{groups}。",
-    "help_mode": "设备前的人是否必须接受远程会话。",
+    "help_mode": "员工连接时接收端应用的做法。有人值守：除非电脑的访问策略开启无人值守访问，否则需由电脑前的人点击“允许”。无人值守：已登录 NeoDesk 且可以连接此电脑的员工，无需询问、无需密码即可进入。始终询问：每次都必须由电脑前的人点击“允许”。",
     "help_max_session": "远程会话在这么多分钟后结束，0 到 1440。",
     "help_idle_lock": "设备在这么多分钟无输入后锁定，0 到 120。",
     "help_wallpaper": "有人连接时是否显示桌面壁纸。",
@@ -7080,7 +7114,7 @@
     "help_password_min": "允许的最短设备密码，6 到 128 个字符。",
     "help_password_special": "设备密码必须包含 ! 或 # 之类的字符。",
     "help_password_age": "设备密码在这么多天后必须更改，0 到 365。0 表示从不。",
-    "help_operators": "只有拥有其中某个角色的人才能连接这些设备，例如 远程操作员。",
+    "help_operators": "可无需询问连接的员工账号用户名，例如 anna。未设置时，所有可以连接此电脑的人都可以。",
     "help_block_p2p": "与这些设备的连接从不在两台计算机之间直接建立，只通过中继服务器。",
     "help_relays": "与这些设备的连接在服务器的中继位于此列表中时使用它，否则使用此处的第一个。例如 relay1.example.com:21117。",
     "help_ip_ranges": "IP 地址或范围，每行一个，例如 192.168.1.0/24。",
@@ -7131,7 +7165,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "账号 {n}",
+    "add_operator": "添加账号"
   },
   "attestation": {
     "title": "设备认证",
@@ -9837,7 +9873,8 @@
       "key_changed_hint": "如果它已重新安装或重置，请批准新密钥。然后在电脑上再次打开邀请。",
       "approve_key": "批准新密钥",
       "key_approved": "已批准新密钥。请在电脑上再次打开邀请。",
-      "refused": "ID 为 {id} 的电脑尝试使用此邀请，但被拒绝。请检查“设备”：它可能已被封禁或删除。"
+      "refused": "ID 为 {id} 的电脑尝试使用此邀请，但被拒绝。请检查“设备”：它可能已被封禁或删除。",
+      "reach_policy": "无需询问：无人值守访问按策略执行。已登录 NeoDesk 且可以连接的员工，在组织的策略或电脑的访问策略允许时，无需点击即可进入。"
     }
   },
   "ui_form": {

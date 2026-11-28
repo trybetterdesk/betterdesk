@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "अभी कोई उपकरण नहीं।",
-    "empty_join_requests": "नए कंप्यूटरों को जुड़ने के अनुरोध में स्वीकृत करें"
+    "empty_join_requests": "नए कंप्यूटरों को जुड़ने के अनुरोध में स्वीकृत करें",
+    "unattended_line_ask": "कंप्यूटर पर मौजूद किसी व्यक्ति को अनुमति दें पर क्लिक करना होगा।",
+    "unattended_line_always": "स्टाफ़ बिना पूछे कनेक्ट कर सकता है।",
+    "unattended_line_when": "स्टाफ़ बिना पूछे कनेक्ट कर सकता है, {when}।",
+    "unattended_line_who": "स्टाफ़ बिना पूछे कनेक्ट कर सकता है, केवल {who}।",
+    "unattended_line_when_who": "स्टाफ़ बिना पूछे कनेक्ट कर सकता है, {when}, केवल {who}।",
+    "unattended_when": "{days} {start} से {end} तक",
+    "unattended_when_all_day": "{days} पूरे दिन",
+    "unattended_when_zone": "{when} ({zone} समय)",
+    "unattended_day_range": "{first} से {last}",
+    "unattended_every_day": "हर दिन",
+    "unattended_and": "{list} और {last}",
+    "access_policy_change": "बदलें"
   },
   "keys": {
     "title": "सर्वर कुंजी",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "साझा डैशबोर्ड प्रकाशित किए"
+    "action_dashboards_shared_changed": "साझा डैशबोर्ड प्रकाशित किए",
+    "action_unattended_session_started": "अप्राप्य सत्र शुरू हुआ",
+    "action_unattended_session_ended": "अप्राप्य सत्र समाप्त हुआ",
+    "action_unattended_caller_refused": "अप्राप्य सत्र अस्वीकार किया गया",
+    "action_quick_support_caller": "त्वरित सहायता कॉलर की पुष्टि हुई",
+    "action_quick_support_caller_refused": "त्वरित सहायता कॉलर की पुष्टि नहीं हुई",
+    "detail_unattended_started": "डिवाइस {device} से अप्राप्य सत्र शुरू हुआ",
+    "detail_unattended_ended": "डिवाइस {device} से अप्राप्य सत्र समाप्त हुआ",
+    "detail_unattended_refused": "डिवाइस {device} से अप्राप्य सत्र अस्वीकार किया गया",
+    "field_helper": "स्टाफ़ सदस्य",
+    "field_via": "इसके माध्यम से कनेक्ट",
+    "field_relay_session": "रिले सत्र",
+    "field_started": "शुरू",
+    "field_duration_s": "अवधि सेकंड में",
+    "value_via_console": "वेब कंसोल",
+    "value_via_desktop": "डेस्कटॉप ऐप",
+    "value_too_late": "बहुत देर से पूछा गया",
+    "value_already_used": "पहले ही एक बार पुष्टि हो चुकी",
+    "value_no_permission": "खाता कनेक्ट नहीं कर सकता",
+    "value_ask_always": "नीति हमेशा पूछती है",
+    "value_not_enabled": "अप्राप्य पहुंच बंद है",
+    "value_outside_schedule": "अनुमत समय के बाहर",
+    "value_operator_not_allowed": "अनुमत ऑपरेटर नहीं"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "कंसोल डिफ़ॉल्ट"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "सोम",
+    "tue": "मंगल",
+    "wed": "बुध",
+    "thu": "गुरु",
+    "fri": "शुक्र",
+    "sat": "शनि",
+    "sun": "रवि"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "न्यूनतम पासवर्ड लंबाई",
     "password_require_special": "विशेष वर्णों की आवश्यकता है",
     "password_max_age": "पासवर्ड अधिकतम आयु (दिन, 0=कभी नहीं)",
-    "allowed_operators": "स्वीकृत ऑपरेटर भूमिकाएँ (अल्पविराम से अलग)",
+    "allowed_operators": "स्टाफ़ जो बिना पूछे कनेक्ट कर सकता है",
     "network_title": "नेटवर्क नीति",
     "network_desc": "रिले सर्वर और सीधे कनेक्शन को नियंत्रित करें",
     "block_direct_p2p": "हमेशा रिले सर्वर के ज़रिए कनेक्ट करें",
@@ -6804,7 +6838,7 @@
     "col_source": "यहाँ से बदला गया",
     "audit_failed": "हाल के बदलाव लोड नहीं हो सके।",
     "save_failed_groups": "सहेजा नहीं गया: {groups}।",
-    "help_mode": "क्या डिवाइस पर मौजूद व्यक्ति को रिमोट सत्र स्वीकार करना होगा।",
+    "help_mode": "जब स्टाफ़ कनेक्ट करता है तो रिसीवर ऐप क्या करता है। भाग लिया: कंप्यूटर पर मौजूद कोई व्यक्ति अनुमति दें पर क्लिक करता है, जब तक कंप्यूटर की एक्सेस नीति अप्राप्य पहुंच चालू न करे। अप्राप्य: NeoDesk में साइन इन किया हुआ स्टाफ़, जिसे कंप्यूटर से कनेक्ट करने की अनुमति है, बिना पूछे और बिना पासवर्ड के अंदर आ जाता है। हमेशा पूछें: कंप्यूटर पर मौजूद किसी व्यक्ति को हर बार अनुमति दें पर क्लिक करना होगा।",
     "help_max_session": "रिमोट सत्र इतने मिनट बाद खत्म होता है, 0 से 1440 तक।",
     "help_idle_lock": "बिना इनपुट के इतने मिनट बाद डिवाइस लॉक हो जाता है, 0 से 120 तक।",
     "help_wallpaper": "क्या किसी के कनेक्ट रहते डेस्कटॉप वॉलपेपर दिखता है।",
@@ -6816,7 +6850,7 @@
     "help_password_min": "सबसे छोटा अनुमत डिवाइस पासवर्ड, 6 से 128 अक्षर।",
     "help_password_special": "डिवाइस पासवर्ड में ! या # जैसा कोई चिह्न होना चाहिए।",
     "help_password_age": "डिवाइस पासवर्ड इतने दिन बाद बदलने होंगे, 0 से 365 तक। 0 का मतलब कभी नहीं।",
-    "help_operators": "केवल इनमें से किसी भूमिका वाले लोग इन डिवाइस से कनेक्ट कर सकते हैं, उदाहरण के लिए रिमोट ऑपरेटर।",
+    "help_operators": "उन स्टाफ़ खातों के उपयोगकर्ता नाम जो बिना पूछे कनेक्ट कर सकते हैं, उदाहरण के लिए anna। सेट न होने पर हर वह व्यक्ति जो कंप्यूटर से कनेक्ट कर सकता है।",
     "help_block_p2p": "इन डिवाइस से कनेक्शन कभी दोनों कंप्यूटरों के बीच सीधे नहीं जाते, केवल रिले सर्वर से होकर।",
     "help_relays": "इन डिवाइस से कनेक्शन सर्वर का रिले इस्तेमाल करते हैं अगर वह इस सूची में हो, नहीं तो यहाँ का पहला। उदाहरण के लिए relay1.example.com:21117।",
     "help_ip_ranges": "IP पते या रेंज, हर पंक्ति में एक, उदाहरण के लिए 192.168.1.0/24।",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "खाता {n}",
+    "add_operator": "खाता जोड़ें"
   },
   "attestation": {
     "title": "डिवाइस सत्यापन",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "अगर इसे फिर से इंस्टॉल या रीसेट किया गया था, तो नई कुंजी स्वीकृत करें। फिर कंप्यूटर पर आमंत्रण दोबारा खोलें।",
       "approve_key": "नई कुंजी स्वीकृत करें",
       "key_approved": "नई कुंजी स्वीकृत हो गई। कंप्यूटर पर आमंत्रण दोबारा खोलें।",
-      "refused": "ID {id} वाले एक कंप्यूटर ने यह आमंत्रण आज़माया और उसे लौटा दिया गया। डिवाइस देखें: हो सकता है कि यह प्रतिबंधित हो या हटा दिया गया हो।"
+      "refused": "ID {id} वाले एक कंप्यूटर ने यह आमंत्रण आज़माया और उसे लौटा दिया गया। डिवाइस देखें: हो सकता है कि यह प्रतिबंधित हो या हटा दिया गया हो।",
+      "reach_policy": "बिना पूछे: अप्राप्य पहुंच नीति के अनुसार चलती है। NeoDesk में साइन इन किया हुआ स्टाफ़, जिसे कनेक्ट करने की अनुमति है, बिना क्लिक के अंदर आ जाता है जब संगठन की नीति या कंप्यूटर की एक्सेस नीति इसकी अनुमति देती है।"
     }
   },
   "ui_form": {

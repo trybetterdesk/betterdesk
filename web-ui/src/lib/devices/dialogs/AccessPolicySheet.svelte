@@ -1,8 +1,10 @@
 <!--
-  Access policy of one device: unattended access, the access password, a
-  schedule and the operators allowed to connect. A side sheet (long form).
-  The schedule fields show only with the schedule on, the new password only
-  while the saved one is not being cleared.
+  Access policy of one device: unattended access, a schedule and the
+  operators allowed to connect without asking, as the server's caller check
+  and the receiver apply them (A279). A side sheet (long form). The
+  schedule fields show only with the schedule on. The sheet sets no
+  password: a receiver has none, and the server never hands a password
+  saved here to a device.
 -->
 <script lang="ts">
 	import type { AccessPolicy, AccessPolicyInput } from '#lib/api/devices.ts';
@@ -14,7 +16,6 @@
 	import Input from '#lib/ui/Input.svelte';
 	import Sheet from '#lib/ui/Sheet.svelte';
 	import ShowWhen from '#lib/ui/ShowWhen.svelte';
-	import Status from '#lib/ui/Status.svelte';
 	import Time from '#lib/ui/Time.svelte';
 	import User from '#lib/ui/User.svelte';
 	import { createForm, type Form } from '#lib/ui/form.svelte.ts';
@@ -37,8 +38,6 @@
 
 	interface Values {
 		unattended: boolean;
-		clearPassword: boolean;
-		password: string;
 		schedule: boolean;
 		days: string[];
 		start: string;
@@ -57,8 +56,6 @@
 	function valuesFrom(p: AccessPolicy): Values {
 		return {
 			unattended: p.unattended_enabled ?? false,
-			clearPassword: false,
-			password: '',
 			schedule: p.schedule_enabled ?? false,
 			days: (p.schedule_days ?? '')
 				.split(',')
@@ -82,8 +79,9 @@
 					submit: async (v) => {
 						await save({
 							unattended_enabled: v.unattended,
-							password: v.clearPassword ? '' : v.password,
-							clear_password: v.clearPassword,
+							// An empty password keeps what the server has
+							password: '',
+							clear_password: false,
 							schedule_enabled: v.schedule,
 							schedule_days: DAYS.filter((d) => v.days.includes(d)).join(','),
 							schedule_start_time: v.start,
@@ -127,43 +125,6 @@
 					hint={t('devices.unattended_hint')}
 					bind:checked={form.values.unattended}
 				/>
-			</FormSection>
-			<FormSection title={t('devices.access_password')}>
-				<p class="state-line">
-					{#if policy.password_set}
-						<Status tone="good" label={t('devices.password_configured')} />
-					{:else}
-						<Status tone="neutral" label={t('devices.no_password')} />
-					{/if}
-				</p>
-				{#if policy.password_set}
-					<Checkbox
-						label={t('devices.clear_password')}
-						hint={tf('devices.clear_password_hint', 'Removes the saved password from this device.')}
-						aria-controls="{uid}-password"
-						bind:checked={form.values.clearPassword}
-					/>
-				{/if}
-				<ShowWhen id="{uid}-password" when={!form.values.clearPassword}>
-					<Field
-						label={policy.password_set
-							? tf('devices.access_password_new', 'New password')
-							: tf('devices.access_password_set', 'Password')}
-						hint={policy.password_set
-							? tf('devices.access_password_keep_hint', 'Leave empty to keep the current password.')
-							: tf('devices.access_password_hint', 'Leave empty to set no password.')}
-					>
-						{#snippet children(f)}
-							<Input
-								{...f}
-								type="password"
-								width="medium"
-								autocomplete="new-password"
-								bind:value={fm.values.password}
-							/>
-						{/snippet}
-					</Field>
-				</ShowWhen>
 			</FormSection>
 			<FormSection title={t('devices.access_schedule')}>
 				<Checkbox
@@ -250,7 +211,6 @@
 </Sheet>
 
 <style>
-	.state-line,
 	.updated,
 	.loading {
 		margin: 0;

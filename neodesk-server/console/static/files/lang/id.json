@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Belum ada perangkat.",
-    "empty_join_requests": "Setujui komputer baru di Permintaan bergabung"
+    "empty_join_requests": "Setujui komputer baru di Permintaan bergabung",
+    "unattended_line_ask": "Seseorang di komputer harus mengeklik Izinkan.",
+    "unattended_line_always": "Staf dapat terhubung tanpa bertanya.",
+    "unattended_line_when": "Staf dapat terhubung tanpa bertanya, {when}.",
+    "unattended_line_who": "Staf dapat terhubung tanpa bertanya, hanya {who}.",
+    "unattended_line_when_who": "Staf dapat terhubung tanpa bertanya, {when}, hanya {who}.",
+    "unattended_when": "{days} {start} sampai {end}",
+    "unattended_when_all_day": "{days} sepanjang hari",
+    "unattended_when_zone": "{when} (waktu {zone})",
+    "unattended_day_range": "{first} sampai {last}",
+    "unattended_every_day": "setiap hari",
+    "unattended_and": "{list} dan {last}",
+    "access_policy_change": "Ubah"
   },
   "keys": {
     "title": "Kunci Server",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Dasbor bersama diterbitkan"
+    "action_dashboards_shared_changed": "Dasbor bersama diterbitkan",
+    "action_unattended_session_started": "Sesi tanpa pengawasan dimulai",
+    "action_unattended_session_ended": "Sesi tanpa pengawasan berakhir",
+    "action_unattended_caller_refused": "Sesi tanpa pengawasan ditolak",
+    "action_quick_support_caller": "Pemanggil dukungan cepat dikonfirmasi",
+    "action_quick_support_caller_refused": "Pemanggil dukungan cepat tidak dikonfirmasi",
+    "detail_unattended_started": "Sesi tanpa pengawasan ke perangkat {device} dimulai",
+    "detail_unattended_ended": "Sesi tanpa pengawasan ke perangkat {device} berakhir",
+    "detail_unattended_refused": "Sesi tanpa pengawasan ke perangkat {device} ditolak",
+    "field_helper": "anggota staf",
+    "field_via": "terhubung melalui",
+    "field_relay_session": "sesi relay",
+    "field_started": "dimulai",
+    "field_duration_s": "durasi dalam detik",
+    "value_via_console": "konsol web",
+    "value_via_desktop": "aplikasi desktop",
+    "value_too_late": "ditanyakan terlambat",
+    "value_already_used": "sudah dikonfirmasi sekali",
+    "value_no_permission": "akun tidak boleh terhubung",
+    "value_ask_always": "kebijakan selalu bertanya",
+    "value_not_enabled": "akses tanpa pengawasan nonaktif",
+    "value_outside_schedule": "di luar waktu yang diizinkan",
+    "value_operator_not_allowed": "bukan operator yang diizinkan"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "Bawaan konsol"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "Sen",
+    "tue": "Sel",
+    "wed": "Rab",
+    "thu": "Kam",
+    "fri": "Jum",
+    "sat": "Sab",
+    "sun": "Min"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "Panjang Kata Sandi Minimum",
     "password_require_special": "Membutuhkan Karakter Khusus",
     "password_max_age": "Usia Maks Kata Sandi (hari, 0=tidak pernah)",
-    "allowed_operators": "Peran Operator yang Diizinkan (dipisahkan koma)",
+    "allowed_operators": "Staf yang boleh terhubung tanpa bertanya",
     "network_title": "Kebijakan Jaringan",
     "network_desc": "Kontrol server relai dan koneksi langsung",
     "block_direct_p2p": "Selalu terhubung melalui server relai",
@@ -6804,7 +6838,7 @@
     "col_source": "Diubah dari",
     "audit_failed": "Perubahan terbaru tidak dapat dimuat.",
     "save_failed_groups": "Tidak tersimpan: {groups}.",
-    "help_mode": "Apakah orang di perangkat harus menerima sesi jarak jauh.",
+    "help_mode": "Apa yang dilakukan aplikasi penerima saat staf terhubung. Dihadiri: seseorang di komputer mengeklik Izinkan, kecuali kebijakan akses komputer menyalakan akses tanpa pengawasan. Tanpa pengawasan: staf yang masuk ke NeoDesk dan boleh terhubung ke komputer masuk tanpa bertanya dan tanpa kata sandi. Selalu tanya: seseorang di komputer selalu harus mengeklik Izinkan.",
     "help_max_session": "Sesi jarak jauh berakhir setelah jumlah menit ini, dari 0 sampai 1440.",
     "help_idle_lock": "Perangkat terkunci setelah jumlah menit ini tanpa input, dari 0 sampai 120.",
     "help_wallpaper": "Apakah gambar latar desktop tampil saat seseorang terhubung.",
@@ -6816,7 +6850,7 @@
     "help_password_min": "Kata sandi perangkat terpendek yang diizinkan, dari 6 sampai 128 karakter.",
     "help_password_special": "Kata sandi perangkat harus berisi karakter seperti ! atau #.",
     "help_password_age": "Kata sandi perangkat harus diganti setelah jumlah hari ini, dari 0 sampai 365. 0 berarti tidak pernah.",
-    "help_operators": "Hanya orang dengan salah satu peran ini yang boleh terhubung ke perangkat ini, misalnya Operator jarak jauh.",
+    "help_operators": "Nama pengguna akun staf yang boleh terhubung tanpa bertanya, misalnya anna. Tidak diatur berarti semua yang boleh terhubung ke komputer.",
     "help_block_p2p": "Koneksi ke perangkat ini tidak pernah langsung antara kedua komputer, hanya lewat server relai.",
     "help_relays": "Koneksi ke perangkat ini memakai relai server jika ada di daftar ini, jika tidak yang pertama di sini. Misalnya relay1.example.com:21117.",
     "help_ip_ranges": "Alamat IP atau rentang, satu per baris, misalnya 192.168.1.0/24.",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Akun {n}",
+    "add_operator": "Tambah akun"
   },
   "attestation": {
     "title": "Pengesahan Perangkat",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "Jika komputer ini diinstal ulang atau direset, setujui kunci baru. Lalu buka undangan di komputer lagi.",
       "approve_key": "Setujui kunci baru",
       "key_approved": "Kunci baru disetujui. Buka undangan di komputer lagi.",
-      "refused": "Komputer dengan ID {id} mencoba undangan ini dan ditolak. Periksa Perangkat: mungkin diblokir atau dihapus."
+      "refused": "Komputer dengan ID {id} mencoba undangan ini dan ditolak. Periksa Perangkat: mungkin diblokir atau dihapus.",
+      "reach_policy": "Tanpa bertanya: akses tanpa pengawasan mengikuti kebijakan. Staf yang masuk ke NeoDesk dan boleh terhubung masuk tanpa klik jika kebijakan organisasi atau kebijakan akses komputer mengizinkannya."
     }
   },
   "ui_form": {

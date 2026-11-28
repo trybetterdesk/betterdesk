@@ -826,7 +826,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Nog geen apparaten.",
-    "empty_join_requests": "Keur nieuwe computers goed onder Deelnameverzoeken"
+    "empty_join_requests": "Keur nieuwe computers goed onder Deelnameverzoeken",
+    "unattended_line_ask": "Iemand bij de computer moet op Toestaan klikken.",
+    "unattended_line_always": "Medewerkers kunnen verbinden zonder te vragen.",
+    "unattended_line_when": "Medewerkers kunnen verbinden zonder te vragen, {when}.",
+    "unattended_line_who": "Medewerkers kunnen verbinden zonder te vragen, alleen {who}.",
+    "unattended_line_when_who": "Medewerkers kunnen verbinden zonder te vragen, {when}, alleen {who}.",
+    "unattended_when": "{days} {start} tot {end}",
+    "unattended_when_all_day": "{days} de hele dag",
+    "unattended_when_zone": "{when} (tijd in {zone})",
+    "unattended_day_range": "{first} t/m {last}",
+    "unattended_every_day": "elke dag",
+    "unattended_and": "{list} en {last}",
+    "access_policy_change": "Wijzigen"
   },
   "keys": {
     "title": "Serversleutels",
@@ -2424,7 +2436,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Gedeelde dashboards gepubliceerd"
+    "action_dashboards_shared_changed": "Gedeelde dashboards gepubliceerd",
+    "action_unattended_session_started": "Onbeheerde sessie gestart",
+    "action_unattended_session_ended": "Onbeheerde sessie beëindigd",
+    "action_unattended_caller_refused": "Onbeheerde sessie geweigerd",
+    "action_quick_support_caller": "Beller van snelle ondersteuning bevestigd",
+    "action_quick_support_caller_refused": "Beller van snelle ondersteuning niet bevestigd",
+    "detail_unattended_started": "Onbeheerde sessie naar apparaat {device} gestart",
+    "detail_unattended_ended": "Onbeheerde sessie naar apparaat {device} beëindigd",
+    "detail_unattended_refused": "Onbeheerde sessie naar apparaat {device} geweigerd",
+    "field_helper": "medewerker",
+    "field_via": "verbonden via",
+    "field_relay_session": "relaysessie",
+    "field_started": "gestart",
+    "field_duration_s": "duur in seconden",
+    "value_via_console": "de webconsole",
+    "value_via_desktop": "de desktop-app",
+    "value_too_late": "te laat gevraagd",
+    "value_already_used": "al een keer bevestigd",
+    "value_no_permission": "account mag niet verbinden",
+    "value_ask_always": "het beleid vraagt altijd",
+    "value_not_enabled": "onbeheerde toegang staat uit",
+    "value_outside_schedule": "buiten de toegestane tijden",
+    "value_operator_not_allowed": "geen toegestane medewerker"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6524,13 +6558,13 @@
     "console_default": "Standaard van de console"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "ma",
+    "tue": "di",
+    "wed": "wo",
+    "thu": "do",
+    "fri": "vr",
+    "sat": "za",
+    "sun": "zo"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6756,7 +6790,7 @@
     "password_min_length": "Minimale wachtwoordlengte",
     "password_require_special": "Speciale tekens vereist",
     "password_max_age": "Max. wachtwoordleeftijd (dagen, 0=nooit)",
-    "allowed_operators": "Toegestane operatorrollen (kommagescheiden)",
+    "allowed_operators": "Medewerkers die zonder vragen mogen verbinden",
     "network_title": "Netwerkbeleid",
     "network_desc": "Relay-servers en directe verbindingen beheren",
     "block_direct_p2p": "Altijd verbinden via een relayserver",
@@ -6798,7 +6832,7 @@
     "col_source": "Gewijzigd vanaf",
     "audit_failed": "De recente wijzigingen konden niet worden geladen.",
     "save_failed_groups": "Niet opgeslagen: {groups}.",
-    "help_mode": "Of de persoon bij het apparaat een externe sessie moet accepteren.",
+    "help_mode": "Wat de ontvanger-app doet als medewerkers verbinden. Begeleid: iemand bij de computer klikt op Toestaan, tenzij het toegangsbeleid van de computer onbeheerde toegang aanzet. Onbegeleid: medewerkers die bij NeoDesk zijn aangemeld en met de computer mogen verbinden, komen binnen zonder te vragen en zonder wachtwoord. Altijd vragen: iemand bij de computer moet altijd op Toestaan klikken.",
     "help_max_session": "Een externe sessie eindigt na dit aantal minuten, van 0 tot 1440.",
     "help_idle_lock": "Het apparaat vergrendelt na dit aantal minuten zonder invoer, van 0 tot 120.",
     "help_wallpaper": "Of de bureaubladachtergrond te zien is terwijl iemand verbonden is.",
@@ -6810,7 +6844,7 @@
     "help_password_min": "Het kortste toegestane apparaatwachtwoord, van 6 tot 128 tekens.",
     "help_password_special": "Apparaatwachtwoorden moeten een teken als ! of # bevatten.",
     "help_password_age": "Apparaatwachtwoorden moeten na dit aantal dagen worden gewijzigd, van 0 tot 365. 0 betekent nooit.",
-    "help_operators": "Alleen mensen met een van deze rollen mogen met deze apparaten verbinden, bijvoorbeeld Externe operator.",
+    "help_operators": "Gebruikersnamen van de accounts van medewerkers die zonder vragen mogen verbinden, bijvoorbeeld anna. Niet ingesteld laat iedereen toe die met de computer mag verbinden.",
     "help_block_p2p": "Verbindingen met deze apparaten gaan nooit direct tussen de twee computers, alleen via een relayserver.",
     "help_relays": "Verbindingen met deze apparaten gebruiken de relay van de server als die in deze lijst staat, anders de eerste hier. Bijvoorbeeld relay1.example.com:21117.",
     "help_ip_ranges": "IP-adressen of bereiken, één per rij, bijvoorbeeld 192.168.1.0/24.",
@@ -6861,7 +6895,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Account {n}",
+    "add_operator": "Account toevoegen"
   },
   "attestation": {
     "title": "Apparaatattestatie",
@@ -9837,7 +9873,8 @@
       "key_changed_hint": "Als hij opnieuw is geïnstalleerd of teruggezet, keur dan de nieuwe sleutel goed. Open daarna de uitnodiging opnieuw op de computer.",
       "approve_key": "Nieuwe sleutel goedkeuren",
       "key_approved": "Nieuwe sleutel goedgekeurd. Open de uitnodiging opnieuw op de computer.",
-      "refused": "Een computer met de ID {id} probeerde deze uitnodiging en werd geweigerd. Kijk in Apparaten: misschien is hij verbannen of verwijderd."
+      "refused": "Een computer met de ID {id} probeerde deze uitnodiging en werd geweigerd. Kijk in Apparaten: misschien is hij verbannen of verwijderd.",
+      "reach_policy": "Zonder te vragen: onbeheerde toegang volgt het beleid. Medewerkers die bij NeoDesk zijn aangemeld en mogen verbinden, komen binnen zonder klik als het beleid van de organisatie of het toegangsbeleid van de computer het toestaat."
     }
   },
   "ui_form": {

@@ -52,7 +52,10 @@ const GROUP_FIELDS: Record<string, string[]> = {
 };
 
 /** What the receiver app applies, as the server says (neodesk-client#28) */
-const RECEIVER_APPLIES: Record<string, string[]> = { connection: ['mode'], security: ['allow_uninstall'] };
+const RECEIVER_APPLIES: Record<string, string[]> = {
+	connection: ['mode'],
+	security: ['allow_uninstall', 'allowed_operators']
+};
 
 /** The resolved answer for what the organization stored */
 function resolvedFor(stored: Record<string, Record<string, unknown>>, deviceAppApplies = false) {
@@ -263,7 +266,7 @@ describe('policies page', () => {
 		await openPage();
 		for (const [g, label] of [
 			['connection', 'policies.connection_mode'],
-			['security', 'policies.allow_uninstall']
+			['security', 'policies.allow_uninstall, policies.allowed_operators']
 		] as const) {
 			const box = group(`policies.${g}_title`);
 			expect(within(box).queryByText(NOTICE)).toBeNull();
@@ -423,15 +426,28 @@ describe('policies page', () => {
 		);
 	});
 
-	test('operator roles are picked from the roles; a stored name that is no role stays visible', async () => {
+	test('allowed operators are account usernames, one per row, as the server checks them (A279)', async () => {
 		signIn('global_admin', EDITOR);
 		stored = { security: { allowed_operators: ['remote_operator', 'demo_operator'] } };
+		const user = userEvent.setup();
 		await openPage();
 		await vi.waitFor(() =>
-			expect(screen.getByRole('checkbox', { name: 'demo_operator (not a role)' })).toBeChecked()
+			expect(screen.getByRole('textbox', { name: 'Account 1' })).toHaveValue('remote_operator')
 		);
-		expect(screen.getByRole('checkbox', { name: 'remote_operator' })).toBeChecked();
-		expect(screen.getByRole('checkbox', { name: 'admin' })).not.toBeChecked();
+		expect(screen.getByRole('textbox', { name: 'Account 2' })).toHaveValue('demo_operator');
+		// No role picker: a role name would never match a caller
+		expect(screen.queryByRole('checkbox', { name: 'admin' })).toBeNull();
+		await user.click(screen.getByRole('button', { name: 'Add an account' }));
+		await user.type(screen.getByRole('textbox', { name: 'Account 3' }), 'anna');
+		await user.click(screen.getByRole('button', { name: 'policies.save_button' }));
+		await vi.waitFor(() =>
+			expect(writes).toEqual([
+				{
+					call: 'PUT /api/panel/policies/org-1/security',
+					body: { allowed_operators: ['remote_operator', 'demo_operator', 'anna'] }
+				}
+			])
+		);
 	});
 
 	test('a wrong IP range is named under its own row and nothing is saved (BUGS L395)', async () => {

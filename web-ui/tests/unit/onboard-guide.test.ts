@@ -160,6 +160,16 @@ describe('the guided first join', () => {
 		expect(calls.some((c) => c.method === 'PATCH')).toBe(false);
 	}, 20000);
 
+	test('a receiver is not sent to a password: unattended access follows the policy', async () => {
+		const user = await makeInvite();
+		joined = [{ ...anna, device_type: 'neodesk-support' }];
+		await screen.findByRole('heading', { name: 'onboard.guide.joined_title' }, { timeout: 8000 });
+		for (let i = 0; i < 2; i++) await user.click(screen.getByRole('button', { name: 'onboard.guide.next' }));
+		expect(await screen.findByText('onboard.guide.reach_policy')).toBeInTheDocument();
+		expect(screen.getByText('onboard.guide.reach_accept')).toBeInTheDocument();
+		expect(screen.queryByText('onboard.guide.reach_password')).toBeNull();
+	}, 20000);
+
 	test('an offline computer gets no test session button, only why', async () => {
 		const user = await makeInvite();
 		joined = [{ ...anna, online: false }];

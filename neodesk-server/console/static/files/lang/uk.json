@@ -832,7 +832,19 @@
     "signin_path_typed": "Until NeoDesk on this computer can sign in by itself, the browser viewer types the details.",
     "unblock_not_blocked": "This computer is not blocked on this server.",
     "empty_none": "Пристроїв ще немає.",
-    "empty_join_requests": "Схваліть нові комп'ютери в Запити на приєднання"
+    "empty_join_requests": "Схваліть нові комп'ютери в Запити на приєднання",
+    "unattended_line_ask": "Хтось біля комп'ютера має натиснути «Дозволити».",
+    "unattended_line_always": "Працівники можуть підключатися без запиту.",
+    "unattended_line_when": "Працівники можуть підключатися без запиту, {when}.",
+    "unattended_line_who": "Працівники можуть підключатися без запиту, лише {who}.",
+    "unattended_line_when_who": "Працівники можуть підключатися без запиту, {when}, лише {who}.",
+    "unattended_when": "{days} з {start} до {end}",
+    "unattended_when_all_day": "{days} цілодобово",
+    "unattended_when_zone": "{when} (час {zone})",
+    "unattended_day_range": "{first}–{last}",
+    "unattended_every_day": "щодня",
+    "unattended_and": "{list} і {last}",
+    "access_policy_change": "Змінити"
   },
   "keys": {
     "title": "Ключі сервера",
@@ -2430,7 +2442,29 @@
     "action_fleet_workflow_run": "Workflow run",
     "action_quick_support_receiver_offer": "Offer to install after quick support changed",
     "action_receiver_installer_downloaded": "Receiver app installer downloaded",
-    "action_dashboards_shared_changed": "Спільні панелі опубліковано"
+    "action_dashboards_shared_changed": "Спільні панелі опубліковано",
+    "action_unattended_session_started": "Сеанс без запиту розпочато",
+    "action_unattended_session_ended": "Сеанс без запиту завершено",
+    "action_unattended_caller_refused": "Сеанс без запиту відхилено",
+    "action_quick_support_caller": "Абонента швидкої підтримки підтверджено",
+    "action_quick_support_caller_refused": "Абонента швидкої підтримки не підтверджено",
+    "detail_unattended_started": "Сеанс без запиту до пристрою {device} розпочато",
+    "detail_unattended_ended": "Сеанс без запиту до пристрою {device} завершено",
+    "detail_unattended_refused": "Сеанс без запиту до пристрою {device} відхилено",
+    "field_helper": "працівник",
+    "field_via": "підключено через",
+    "field_relay_session": "сеанс ретранслятора",
+    "field_started": "початок",
+    "field_duration_s": "тривалість у секундах",
+    "value_via_console": "вебконсоль",
+    "value_via_desktop": "застосунок для комп'ютера",
+    "value_too_late": "запит надійшов запізно",
+    "value_already_used": "уже підтверджено раз",
+    "value_no_permission": "обліковому запису не можна підключатися",
+    "value_ask_always": "політика завжди питає",
+    "value_not_enabled": "автоматичний доступ вимкнено",
+    "value_outside_schedule": "поза дозволеним часом",
+    "value_operator_not_allowed": "не дозволений оператор"
   },
   "generator": {
     "title": "NeoDesk Support Generator",
@@ -6530,13 +6564,13 @@
     "console_default": "Типова для консолі"
   },
   "days": {
-    "mon": "Mon",
-    "tue": "Tue",
-    "wed": "Wed",
-    "thu": "Thu",
-    "fri": "Fri",
-    "sat": "Sat",
-    "sun": "Sun"
+    "mon": "Пн",
+    "tue": "Вт",
+    "wed": "Ср",
+    "thu": "Чт",
+    "fri": "Пт",
+    "sat": "Сб",
+    "sun": "Нд"
   },
   "toolkit": {
     "title": "Toolkit",
@@ -6762,7 +6796,7 @@
     "password_min_length": "Мінімальна довжина пароля",
     "password_require_special": "Вимагати спеціальних символів",
     "password_max_age": "Максимальний вік пароля (дні, 0=ніколи)",
-    "allowed_operators": "Дозволені ролі оператора (розділені комами)",
+    "allowed_operators": "Працівники, які можуть підключатися без запиту",
     "network_title": "Мережева політика",
     "network_desc": "Керуйте серверами ретрансляції та прямими з’єднаннями",
     "block_direct_p2p": "Завжди підключатися через сервер-ретранслятор",
@@ -6804,7 +6838,7 @@
     "col_source": "Змінено з",
     "audit_failed": "Не вдалося завантажити останні зміни.",
     "save_failed_groups": "Не збережено: {groups}.",
-    "help_mode": "Чи має людина біля пристрою прийняти віддалений сеанс.",
+    "help_mode": "Що робить застосунок-отримувач, коли працівники підключаються. Відвідував: хтось біля комп'ютера натискає «Дозволити», якщо політика доступу комп'ютера не вмикає автоматичний доступ. Без нагляду: працівники, що увійшли в NeoDesk і можуть підключатися до комп'ютера, заходять без запиту й без пароля. Завжди питати: хтось біля комп'ютера щоразу має натиснути «Дозволити».",
     "help_max_session": "Віддалений сеанс завершується після цієї кількості хвилин, від 0 до 1440.",
     "help_idle_lock": "Пристрій блокується після цієї кількості хвилин без введення, від 0 до 120.",
     "help_wallpaper": "Чи видно шпалери робочого столу, поки хтось підключений.",
@@ -6816,7 +6850,7 @@
     "help_password_min": "Найкоротший дозволений пароль пристрою, від 6 до 128 символів.",
     "help_password_special": "Паролі пристроїв мають містити символ на зразок ! або #.",
     "help_password_age": "Паролі пристроїв треба змінювати після цієї кількості днів, від 0 до 365. 0 означає ніколи.",
-    "help_operators": "До цих пристроїв можуть підключатися лише люди з однією з цих ролей, наприклад Віддалений оператор.",
+    "help_operators": "Імена користувачів облікових записів працівників, які можуть підключатися без запиту, наприклад anna. Якщо не задано, дозволено всім, хто може підключатися до комп'ютера.",
     "help_block_p2p": "З'єднання з цими пристроями ніколи не йдуть напряму між двома комп'ютерами, лише через ретрансляційний сервер.",
     "help_relays": "З'єднання з цими пристроями використовують ретранслятор сервера, якщо він є в цьому списку, інакше перший тут. Наприклад relay1.example.com:21117.",
     "help_ip_ranges": "IP-адреси або діапазони, один на рядок, наприклад 192.168.1.0/24.",
@@ -6867,7 +6901,9 @@
     "devices_none": "No device is in this organization yet, so these policies reach none.",
     "allow_uninstall": "People can remove the app",
     "help_allow_uninstall": "Off: people at these computers cannot remove the NeoDesk app. Not set allows it.",
-    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask."
+    "receiver_applies_some": "So far only the receiver app applies part of this group: {settings}. The NeoDesk desktop app doesn't apply this group yet. The other settings are saved and handed to devices that ask.",
+    "operator_n": "Обліковий запис {n}",
+    "add_operator": "Додати обліковий запис"
   },
   "attestation": {
     "title": "Атестація пристрою",
@@ -9843,7 +9879,8 @@
       "key_changed_hint": "Якщо його перевстановили або скинули, схваліть новий ключ. Потім знову відкрийте запрошення на комп'ютері.",
       "approve_key": "Схвалити новий ключ",
       "key_approved": "Новий ключ схвалено. Знову відкрийте запрошення на комп'ютері.",
-      "refused": "Комп'ютер з ID {id} спробував використати це запрошення, і його не прийняли. Перевірте «Пристрої»: можливо, його заблоковано або видалено."
+      "refused": "Комп'ютер з ID {id} спробував використати це запрошення, і його не прийняли. Перевірте «Пристрої»: можливо, його заблоковано або видалено.",
+      "reach_policy": "Без запиту: автоматичний доступ відповідає політиці. Працівники, що увійшли в NeoDesk і можуть підключатися, заходять без натискання, коли це дозволяє політика організації або політика доступу комп'ютера."
     }
   },
   "ui_form": {
