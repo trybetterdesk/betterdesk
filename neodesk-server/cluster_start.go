@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-	"net"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -212,41 +211,12 @@ func (rt *clusterRuntime) shareDevices(ctx context.Context, apiSrv *api.Server, 
 	if meshGw != nil {
 		meshGw.SetPresence(devices)
 	}
-	apiSrv.SetDeviceRouting(deviceRouting{devices: devices, mesh: rt.mesh, kv: rt.kv})
+	apiSrv.SetDeviceRouting(cluster.DeviceRouting{Devices: devices, Mesh: rt.mesh, KV: rt.kv})
 	rt.mesh.HandleStream(api.ForwardStream, apiSrv.ServeForwarded)
 	for name, h := range apiSrv.DeviceCalls() {
 		h := h
 		rt.mesh.Handle(name, func(ctx context.Context, _ string, body []byte) ([]byte, error) { return h(ctx, body) })
 	}
-}
-
-// deviceRouting is api.DeviceRouting on the cluster.
-type deviceRouting struct {
-	devices *cluster.Devices
-	mesh    *cluster.Mesh
-	kv      cluster.KV
-}
-
-func (d deviceRouting) Owner(ctx context.Context, kind, id string) string {
-	return d.devices.Owner(ctx, kind, id)
-}
-
-func (d deviceRouting) Stream(ctx context.Context, pod, name string, meta map[string]string) (net.Conn, error) {
-	return d.mesh.Stream(ctx, pod, name, meta)
-}
-
-func (d deviceRouting) Call(ctx context.Context, pod, name string, body []byte) ([]byte, error) {
-	return d.mesh.Call(ctx, pod, name, body)
-}
-
-// ClaimOnce keeps each nonce for longer than a signature is valid, so a
-// replayed stream is refused.
-func (d deviceRouting) ClaimOnce(ctx context.Context, nonce string) bool {
-	if len(nonce) < 16 {
-		return false
-	}
-	_, set, err := d.kv.SetNX(ctx, "mesh:nonce:"+nonce, "1", 2*time.Minute)
-	return err == nil && set
 }
 
 // settingsBus is the settings bus, nil when the server runs alone.
