@@ -51,7 +51,7 @@ func TestResolvedPoliciesSayWhatIsInForce(t *testing.T) {
 				"idle_lock_timeout":`+none+`,"max_session_duration":`+none+`,"mode":{"value":"attended","source":"organization"},"wallpaper":`+none+`}},
 			"features":{"set":false,"applied_by":"device","device_app_applies":false,"receiver_applies":[],"timing":"device_next_check","fields":{
 				"allow_audio":`+none+`,"allow_clipboard":`+none+`,"allow_file_transfer":`+none+`,"allow_recording":`+none+`}},
-			"security":{"set":false,"applied_by":"device","device_app_applies":false,"receiver_applies":["allow_uninstall"],"timing":"device_next_check","fields":{
+			"security":{"set":false,"applied_by":"device","device_app_applies":false,"receiver_applies":["allow_uninstall","allowed_operators"],"timing":"device_next_check","fields":{
 				"allow_uninstall":`+none+`,"allowed_operators":`+none+`,"password_max_age_days":`+none+`,"password_min_length":`+none+`,"password_require_special":`+none+`,"require_2fa":`+none+`}},
 			"network":{"set":true,"applied_by":"server","device_app_applies":false,"receiver_applies":[],"timing":"server_minute","fields":{
 				"allowed_relay_servers":`+none+`,
