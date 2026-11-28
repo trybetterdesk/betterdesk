@@ -76,6 +76,7 @@
     "json": {
      "data": {
       "allowed_operators": "",
+      "org_id": "",
       "password_set": false,
       "peer_id": "900100018",
       "schedule_days": "",
@@ -93,9 +94,150 @@
   },
   {
    "roles": [
-    "operator",
-    "global_admin",
-    "super_admin",
+    "operator"
+   ],
+   "status": 200,
+   "headers": {
+    "cache-control": "no-cache, no-store, must-revalidate",
+    "content-security-policy": "default-src 'self';script-src 'self';script-src-attr 'none';style-src 'self' 'unsafe-inline';font-src 'self';img-src 'self' data: blob:;media-src 'self' blob:;connect-src 'self' ws:;frame-src 'none';object-src 'none';worker-src 'self' blob:;base-uri 'self';form-action 'self';frame-ancestors 'none'",
+    "content-type": "application/json; charset=utf-8",
+    "cross-origin-resource-policy": "same-origin",
+    "etag": "<present>",
+    "permissions-policy": "geolocation=(), microphone=(self), camera=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=()",
+    "ratelimit-limit": "1000000",
+    "ratelimit-policy": "1000000;w=60",
+    "ratelimit-remaining": "<n>",
+    "ratelimit-reset": "<n>",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "set-cookie": [
+     "__csrf_h=<value>; Path=/; HttpOnly; SameSite=Lax",
+     "nd.sid=<value>; Path=/; Expires=<date>; HttpOnly; SameSite=Lax"
+    ],
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+   },
+   "volatile": [
+    "data.updated_at"
+   ],
+   "body": {
+    "kind": "json",
+    "json": {
+     "data": {
+      "allowed_operators": "e2e_admin",
+      "org_id": "",
+      "password_set": false,
+      "peer_id": "900100018",
+      "schedule_enabled": false,
+      "unattended_enabled": true,
+      "updated_at": "<volatile>",
+      "updated_by": "e2e_operator"
+     },
+     "success": true
+    }
+   }
+  },
+  {
+   "roles": [
+    "global_admin"
+   ],
+   "status": 200,
+   "headers": {
+    "cache-control": "no-cache, no-store, must-revalidate",
+    "content-security-policy": "default-src 'self';script-src 'self';script-src-attr 'none';style-src 'self' 'unsafe-inline';font-src 'self';img-src 'self' data: blob:;media-src 'self' blob:;connect-src 'self' ws:;frame-src 'none';object-src 'none';worker-src 'self' blob:;base-uri 'self';form-action 'self';frame-ancestors 'none'",
+    "content-type": "application/json; charset=utf-8",
+    "cross-origin-resource-policy": "same-origin",
+    "etag": "<present>",
+    "permissions-policy": "geolocation=(), microphone=(self), camera=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=()",
+    "ratelimit-limit": "1000000",
+    "ratelimit-policy": "1000000;w=60",
+    "ratelimit-remaining": "<n>",
+    "ratelimit-reset": "<n>",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "set-cookie": [
+     "__csrf_h=<value>; Path=/; HttpOnly; SameSite=Lax",
+     "nd.sid=<value>; Path=/; Expires=<date>; HttpOnly; SameSite=Lax"
+    ],
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+   },
+   "volatile": [
+    "data.updated_at"
+   ],
+   "body": {
+    "kind": "json",
+    "json": {
+     "data": {
+      "allowed_operators": "e2e_admin",
+      "org_id": "",
+      "password_set": false,
+      "peer_id": "900100018",
+      "schedule_enabled": false,
+      "unattended_enabled": true,
+      "updated_at": "<volatile>",
+      "updated_by": "e2e_global_admin"
+     },
+     "success": true
+    }
+   }
+  },
+  {
+   "roles": [
+    "super_admin"
+   ],
+   "status": 200,
+   "headers": {
+    "cache-control": "no-cache, no-store, must-revalidate",
+    "content-security-policy": "default-src 'self';script-src 'self';script-src-attr 'none';style-src 'self' 'unsafe-inline';font-src 'self';img-src 'self' data: blob:;media-src 'self' blob:;connect-src 'self' ws:;frame-src 'none';object-src 'none';worker-src 'self' blob:;base-uri 'self';form-action 'self';frame-ancestors 'none'",
+    "content-type": "application/json; charset=utf-8",
+    "cross-origin-resource-policy": "same-origin",
+    "etag": "<present>",
+    "permissions-policy": "geolocation=(), microphone=(self), camera=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=()",
+    "ratelimit-limit": "1000000",
+    "ratelimit-policy": "1000000;w=60",
+    "ratelimit-remaining": "<n>",
+    "ratelimit-reset": "<n>",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "set-cookie": [
+     "__csrf_h=<value>; Path=/; HttpOnly; SameSite=Lax",
+     "nd.sid=<value>; Path=/; Expires=<date>; HttpOnly; SameSite=Lax"
+    ],
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-download-options": "noopen",
+    "x-frame-options": "DENY",
+    "x-permitted-cross-domain-policies": "none",
+    "x-xss-protection": "0"
+   },
+   "volatile": [
+    "data.updated_at"
+   ],
+   "body": {
+    "kind": "json",
+    "json": {
+     "data": {
+      "allowed_operators": "e2e_admin",
+      "org_id": "",
+      "password_set": false,
+      "peer_id": "900100018",
+      "schedule_enabled": false,
+      "unattended_enabled": true,
+      "updated_at": "<volatile>",
+      "updated_by": "e2e_super_admin"
+     },
+     "success": true
+    }
+   }
+  },
+  {
+   "roles": [
     "admin"
    ],
    "status": 200,
@@ -122,16 +264,21 @@
     "x-permitted-cross-domain-policies": "none",
     "x-xss-protection": "0"
    },
+   "volatile": [
+    "data.updated_at"
+   ],
    "body": {
     "kind": "json",
     "json": {
      "data": {
       "allowed_operators": "e2e_admin",
+      "org_id": "",
       "password_set": false,
       "peer_id": "900100018",
       "schedule_enabled": false,
       "unattended_enabled": true,
-      "updated_by": "127.0.0.1"
+      "updated_at": "<volatile>",
+      "updated_by": "e2e_admin"
      },
      "success": true
     }
