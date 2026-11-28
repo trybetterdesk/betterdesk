@@ -9795,6 +9795,10 @@
    "reason": "Used by the person who got a link or the device that joins with it, not by an admin."
   },
   {
+   "route": "GET /api/onboard/public/{code}/state",
+   "reason": "Used by the person who got a link or the device that joins with it, not by an admin."
+  },
+  {
    "route": "GET /api/peer-key/{id}",
    "reason": "The RustDesk client API: desktop clients call it with their own sign-in."
   },
