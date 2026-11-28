@@ -2648,11 +2648,16 @@ func (s *Server) handleGetAccessPolicy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// The device's organization, "" for none: the console reads the
+	// organization's connection mode and operators from it to say what
+	// the receiver does
+	orgID, _ := s.db.GetDeviceOrgID(id)
 	policy, err := s.db.GetAccessPolicy(id)
 	if err != nil {
 		// No policy = defaults (all disabled)
 		writeJSON(w, http.StatusOK, map[string]any{
 			"peer_id":             id,
+			"org_id":              orgID,
 			"unattended_enabled":  false,
 			"password_set":        false,
 			"schedule_enabled":    false,
@@ -2667,7 +2672,10 @@ func (s *Server) handleGetAccessPolicy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	writeJSON(w, http.StatusOK, policy)
+	writeJSON(w, http.StatusOK, struct {
+		*db.AccessPolicy
+		OrgID string `json:"org_id"`
+	}{policy, orgID})
 }
 
 func (s *Server) handleSaveAccessPolicy(w http.ResponseWriter, r *http.Request) {

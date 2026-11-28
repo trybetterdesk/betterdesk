@@ -184,3 +184,48 @@ func TestAccessPolicyOnlyInTheSealedHeartbeat(t *testing.T) {
 		t.Fatalf("sealed access_policy without a policy\n got %s\nwant %s", got, want)
 	}
 }
+
+// TestGetAccessPolicyNamesTheOrganization: the policy read names the
+// device's organization, with a policy and without one, so the console
+// can read the organization's connection mode for the device.
+func TestGetAccessPolicyNamesTheOrganization(t *testing.T) {
+	database := testSetupDB(t)
+	defer database.Close()
+	srv := New(config.DefaultConfig(), database, peer.NewMap(), nil, "test")
+	for _, id := range []string{"BD-ORG-1", "BD-ORG-2", "BD-ORG-3"} {
+		if err := database.UpsertPeer(&db.Peer{ID: id, Status: "ONLINE"}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := database.CreateOrganization(&db.Organization{ID: "org-ap", Name: "Org AP", Slug: "org-ap"}); err != nil {
+		t.Fatal(err)
+	}
+	for _, id := range []string{"BD-ORG-1", "BD-ORG-2"} {
+		if err := database.AssignDeviceToOrg(&db.OrgDevice{OrgID: "org-ap", DeviceID: id}); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := database.SaveAccessPolicy(adminPolicy("BD-ORG-1")); err != nil {
+		t.Fatal(err)
+	}
+	get := func(id string) map[string]any {
+		req := httptest.NewRequest(http.MethodGet, "/api/peers/"+id+"/access-policy", nil)
+		req.SetPathValue("id", id)
+		rec := httptest.NewRecorder()
+		srv.handleGetAccessPolicy(rec, req)
+		var out map[string]any
+		if err := json.Unmarshal(rec.Body.Bytes(), &out); err != nil {
+			t.Fatalf("%s: %d %s", id, rec.Code, rec.Body.String())
+		}
+		return out
+	}
+	if got := get("BD-ORG-1"); got["org_id"] != "org-ap" || got["unattended_enabled"] != true || got["schedule_timezone"] != "Europe/Berlin" {
+		t.Errorf("with a policy: %v", got)
+	}
+	if got := get("BD-ORG-2"); got["org_id"] != "org-ap" || got["unattended_enabled"] != false {
+		t.Errorf("without a policy: %v", got)
+	}
+	if got := get("BD-ORG-3"); got["org_id"] != "" {
+		t.Errorf("without an organization: %v", got)
+	}
+}
