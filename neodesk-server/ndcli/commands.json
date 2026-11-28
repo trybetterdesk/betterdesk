@@ -10379,6 +10379,10 @@
    "reason": "The same route at the /api/nd address the old console also served; the command line uses the main address."
   },
   {
+   "route": "POST /api/nd/unattended/caller",
+   "reason": "Called by NeoDesk agents and clients with a device token, not by people."
+  },
+  {
    "route": "POST /api/onboard/join",
    "reason": "Used by the person who got a link or the device that joins with it, not by an admin."
   },
