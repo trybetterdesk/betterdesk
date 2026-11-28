@@ -114,9 +114,13 @@ type Server struct {
 	tcpLn     net.Listener
 	natLn     net.Listener
 	wsHTTP    *http.Server // WebSocket signal listener
-	ctx       context.Context
-	cancel    context.CancelFunc
-	wg        sync.WaitGroup
+	// draining is set by Drain: the listeners are closed on purpose, and
+	// the loops that read them end
+	draining atomic.Bool
+
+	ctx    context.Context
+	cancel context.CancelFunc
+	wg     sync.WaitGroup
 
 	// tcpPunchConns maps remote-addr string → *tcpPunchConn for initiator TCP
 	// connections that are waiting in a keep-alive loop (PunchHoleRequest).
@@ -470,6 +474,31 @@ func (s *Server) Start(ctx context.Context) error {
 }
 
 // Stop gracefully shuts down all signal server listeners.
+// Drain stops taking signal traffic while the process keeps running
+// (a pod that shuts down): it closes the UDP, TCP, NAT test and WebSocket
+// listeners and the connections of the peers registered here, so their
+// next registration reaches another pod at once. Relay sessions are not
+// touched. Stop still runs afterwards.
+func (s *Server) Drain() {
+	if !s.draining.CompareAndSwap(false, true) {
+		return
+	}
+	log.Printf("[signal] Draining: no more registrations here, peers move to other pods")
+	if s.udpConn != nil {
+		s.udpConn.Close()
+	}
+	if s.tcpLn != nil {
+		s.tcpLn.Close()
+	}
+	if s.natLn != nil {
+		s.natLn.Close()
+	}
+	if s.wsHTTP != nil {
+		_ = s.wsHTTP.Close()
+	}
+	s.peers.CloseLocalConnections()
+}
+
 func (s *Server) Stop() {
 	log.Printf("[signal] Shutting down...")
 	s.cancel()
@@ -499,6 +528,9 @@ func (s *Server) serveUDP() {
 	for {
 		n, raddr, err := s.udpConn.ReadFromUDP(buf)
 		if err != nil {
+			if s.draining.Load() {
+				return
+			}
 			select {
 			case <-s.ctx.Done():
 				return
@@ -539,6 +571,9 @@ func (s *Server) serveTCP() {
 	for {
 		conn, err := s.tcpLn.Accept()
 		if err != nil {
+			if s.draining.Load() {
+				return
+			}
 			select {
 			case <-s.ctx.Done():
 				return
@@ -997,6 +1032,9 @@ func (s *Server) serveNAT() {
 	for {
 		conn, err := s.natLn.Accept()
 		if err != nil {
+			if s.draining.Load() {
+				return
+			}
 			select {
 			case <-s.ctx.Done():
 				return

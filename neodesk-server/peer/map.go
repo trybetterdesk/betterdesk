@@ -694,6 +694,21 @@ func (m *Map) Remove(id string) *Entry {
 	return e
 }
 
+// CloseLocalConnections closes the TCP and WebSocket connections of every
+// peer this map holds, so the peers reconnect (on another pod when this
+// one drains). The entries stay.
+func (m *Map) CloseLocalConnections() {
+	m.mu.RLock()
+	entries := make([]*Entry, 0, len(m.entries))
+	for _, e := range m.entries {
+		entries = append(entries, e)
+	}
+	m.mu.RUnlock()
+	for _, e := range entries {
+		e.CloseConnections()
+	}
+}
+
 // Rename moves a live peer to a new ID without closing its transport.
 // ID changes are metadata updates, not disconnects.
 func (m *Map) Rename(oldID, newID string) (*Entry, bool) {
