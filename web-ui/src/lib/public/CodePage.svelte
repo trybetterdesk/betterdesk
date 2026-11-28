@@ -16,7 +16,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { ApiError } from '#lib/api/client.ts';
-	import { getPublicCode, type PublicCode } from '#lib/api/onboard.ts';
+	import { getPublicCode, getPublicState, type PublicCode, type PublicState } from '#lib/api/onboard.ts';
 	import { formatBytes, formatDate } from '#lib/i18n/format.ts';
 	import { t, tf } from '#lib/i18n/i18n.svelte.ts';
 	import BrandLogo from '#lib/shell/BrandLogo.svelte';
@@ -34,6 +34,7 @@
 	import { ICONS } from '#lib/util/display.ts';
 	import DownloadFrame from './DownloadFrame.svelte';
 	import { detectComputer } from './detect.ts';
+	import { neodeskInstalled } from './marker.ts';
 	import {
 		downloadLabel,
 		downloadTitle,
@@ -58,6 +59,13 @@
 
 	let data = $state<PublicCode | null>(null);
 	let phase = $state<'loading' | 'ready' | 'gone' | 'failed'>('loading');
+	/** NeoDesk's marker font is on this computer: the Open button comes first */
+	let installed = $state(false);
+	/** What became of a support link since the page opened */
+	let linkState = $state<PublicState>('waiting');
+
+	/** How often the page of a support link asks whether quick support took it */
+	const POLL_MS = 5000;
 
 	async function load() {
 		phase = 'loading';
@@ -68,6 +76,7 @@
 				return;
 			}
 			data = out;
+			installed = !!mine && !!out.deep_link && neodeskInstalled();
 			phase = 'ready';
 		} catch (err) {
 			phase = err instanceof ApiError && err.status === 404 ? 'gone' : 'failed';
@@ -75,6 +84,36 @@
 	}
 
 	onMount(() => void load());
+
+	// A support link's page follows the session: once quick support took
+	// the link it stops offering the download and says what happens next.
+	// It asks while the tab is visible, until the session ends, and while
+	// nobody took the link only until it expires.
+	$effect(() => {
+		if (!data || data.kind !== 'support' || !mine) return;
+		const until = Date.parse(data.expires_at);
+		let stopped = false;
+		let timer: ReturnType<typeof setTimeout> | undefined;
+		const ask = async () => {
+			if (stopped) return;
+			if (!document.hidden) {
+				try {
+					const next = await getPublicState(code);
+					if (!stopped) linkState = next;
+				} catch {
+					// A failed question changes nothing; the next one may work
+				}
+			}
+			if (stopped || linkState === 'ended') return;
+			if (linkState === 'waiting' && !(Date.now() < until)) return;
+			timer = setTimeout(() => void ask(), POLL_MS);
+		};
+		timer = setTimeout(() => void ask(), POLL_MS);
+		return () => {
+			stopped = true;
+			clearTimeout(timer);
+		};
+	});
 
 	const main = $derived(data ? mainAction(data, mine) : { kind: 'none' as const });
 	const others = $derived(data ? otherDownloads(data, main) : []);
@@ -100,6 +139,13 @@
 			? t(stepKeys('join', 'windows', main.download.format)[2] ?? '', vars)
 			: ''
 	);
+	const taken = $derived(linkState !== 'waiting');
+	const stateText = $derived(taken ? t(`onboard.public.state_${linkState}`, vars) : '');
+	const openLabel = $derived(
+		data?.kind === 'join' ? 'onboard.public.open_app' : 'onboard.public.open_support_app'
+	);
+	/** NeoDesk is there: open the link in it first, the download second */
+	const openFirst = $derived(installed && main.kind === 'download' && !!data?.deep_link);
 	const archWords = $derived({ apple: t('onboard.public.mac_apple'), intel: t('onboard.public.mac_intel') });
 	const heading = $derived.by(() => {
 		if (!data) return '';
@@ -115,6 +161,7 @@
 	const lead = $derived.by(() => {
 		if (!data) return '';
 		if (!mine) return t(`onboard.public.phone_lead_${data.kind}`, vars);
+		if (openFirst) return t('onboard.public.installed_note');
 		return data.kind === 'join' ? t('onboard.public.join_lead', vars) : t('onboard.public.support_lead');
 	});
 	const footer = $derived.by(() => {
@@ -221,15 +268,31 @@
 						<p class="sender">{data.supporter}, {server}</p>
 					{/if}
 					<h1 id="code-title">{heading}</h1>
-					<p class="lead">{lead}</p>
+					{#if !taken}<p class="lead">{lead}</p>{/if}
+					<!-- Says it when quick support took the link, the person allowed, the end -->
+					<p class={['lead', 'link-state', !taken && 'empty']} role="status">{stateText}</p>
 
-					{#if !mine}
+					{#if taken}
+						<!-- Nothing to download or type any more -->
+					{:else if !mine}
 						<div class="phone">
 							<ValueCopy value={here} label={t('onboard.public.copy_link')} />
 							<Button href={mailMyself(heading, here)}>{t('onboard.public.mail_myself')}</Button>
 						</div>
 					{:else if data.release_error}
 						<Notice tone="warning" class="no-release" message={t('onboard.public.no_release')} />
+					{:else if openFirst && main.kind === 'download'}
+						<div class="main-action">
+							<div class="open-first">
+								<Button variant="primary" href={data.deep_link} class="main-open">{t(openLabel)}</Button>
+								<Button
+									icon={ICONS.download}
+									href={main.download.url}
+									download={main.download.file}
+									class="download-again">{t('onboard.public.download_again')}</Button
+								>
+							</div>
+						</div>
 					{:else if main.kind === 'download'}
 						<div class="main-action">
 							<Button
@@ -265,22 +328,26 @@
 				</svg>
 			</div>
 
-			{#if welcome}{@render stepList(
-					WELCOME_STEPS.map((key) => t(key, vars)),
-					'welcome-steps'
-				)}{/if}
-			{#if windowsPrompt}<p class="prompt-note">{windowsPrompt}</p>{/if}
-			{#if steps.length && welcome}
-				<h2 class="system-steps">{t('onboard.public.mac_steps_title')}</h2>
-			{/if}
-			{#if steps.length}{@render stepList(steps, 'system-step-list')}{/if}
-			{#if macOpen}
-				<div class="open-app">
-					<Button href={data.deep_link} class="open-neodesk">{t('onboard.public.open_app')}</Button>
-				</div>
+			{#if taken || openFirst}
+				<!-- The steps are about the download -->
+			{:else}
+				{#if welcome}{@render stepList(
+						WELCOME_STEPS.map((key) => t(key, vars)),
+						'welcome-steps'
+					)}{/if}
+				{#if windowsPrompt}<p class="prompt-note">{windowsPrompt}</p>{/if}
+				{#if steps.length && welcome}
+					<h2 class="system-steps">{t('onboard.public.mac_steps_title')}</h2>
+				{/if}
+				{#if steps.length}{@render stepList(steps, 'system-step-list')}{/if}
+				{#if macOpen}
+					<div class="open-app">
+						<Button href={data.deep_link} class="open-neodesk">{t('onboard.public.open_app')}</Button>
+					</div>
+				{/if}
 			{/if}
 
-			{#if mine}
+			{#if mine && !taken}
 				<div class="short-code">
 					<div class="short-code-text">
 						<p>{t(`onboard.public.code_hint_${data.kind}`)}</p>
@@ -294,7 +361,7 @@
 							</p>
 						{/if}
 					</div>
-					{#if data.deep_link && !macOpen}
+					{#if data.deep_link && !macOpen && !openFirst}
 						<div class="open-app">
 							<Button href={data.deep_link} class="open-neodesk"
 								>{t(
@@ -306,7 +373,7 @@
 				</div>
 			{/if}
 
-			{#if others.length && mine}
+			{#if others.length && mine && !taken}
 				<Disclosure title={t('onboard.public.other_systems')} level={2}>
 					<RowList label={t('onboard.public.other_systems')}>
 						{#each others as d (d.url)}
@@ -321,7 +388,7 @@
 				</Disclosure>
 			{/if}
 
-			<p class="footer">{footer}</p>
+			{#if !taken}<p class="footer">{footer}</p>{/if}
 		</section>
 	</DownloadFrame>
 {/if}
@@ -419,6 +486,24 @@
 	.main-action.command {
 		align-self: stretch;
 	}
+	.link-state {
+		color: var(--text);
+	}
+	/* Empty but in the page, so screen readers announce the text when it comes */
+	.link-state.empty {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+	}
+	.open-first {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-3);
+	}
+	.main-action :global(.main-open),
 	.main-action :global(.main-download) {
 		min-height: 3.25rem;
 		padding-inline: var(--space-6);

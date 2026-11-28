@@ -310,3 +310,18 @@ export type PublicCode = v.InferOutput<typeof PublicCode>;
 export function getPublicCode(code: string, signal?: AbortSignal): Promise<PublicCode> {
 	return api(PublicCode, `/api/onboard/public/${enc(code)}`, { signal, allowAnonymous: true });
 }
+
+export const PublicState = v.object({
+	/** waiting: nobody used the link yet; opened: quick support took it and asks; allowed: the supporter is in; ended */
+	state: v.picklist(['waiting', 'opened', 'allowed', 'ended'])
+});
+export type PublicState = v.InferOutput<typeof PublicState>['state'];
+
+/** Whether quick support took the link, also after the code is spent; an ApiError 404 for a code without a state */
+export async function getPublicState(code: string, signal?: AbortSignal): Promise<PublicState> {
+	const out = await api(PublicState, `/api/onboard/public/${enc(code)}/state`, {
+		signal,
+		allowAnonymous: true
+	});
+	return out.state;
+}
