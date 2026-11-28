@@ -120,7 +120,9 @@ func TestARelayResponseAfterTheViewerLeftIsForwardedUnderItsTicket(t *testing.T)
 
 // TestThePunchFallbackTicketNamesTheDesktopAccount: a desktop app signed
 // in to NeoDesk punches a hole to a device; the device answers with its
-// own RelayResponse (the fallback from a direct connection to the relay).
+// own RelayResponse, a relay it starts itself (the fallback from a direct
+// connection, and what a receiver does for every punch hole), also with
+// the server's P2P-first timer running.
 // The ticket that answer makes names the desktop app's account, as a
 // ticket made at RequestRelay does, so the unattended caller check can
 // vouch for it (UNATTENDED-CONTRACT.md).
@@ -135,13 +137,24 @@ func TestThePunchFallbackTicketNamesTheDesktopAccount(t *testing.T) {
 		{"over TCP", func(srv *Server, target, token string, initiator *net.UDPAddr) {
 			srv.handlePunchHoleRequestTCP(&pb.PunchHoleRequest{Id: target, Token: token}, initiator)
 		}},
+		{"over UDP P2P-first", func(srv *Server, target, token string, initiator *net.UDPAddr) {
+			srv.cfg.P2PFirst = true
+			srv.handlePunchHoleRequest(&pb.PunchHoleRequest{Id: target, Token: token}, initiator)
+		}},
+		{"over TCP P2P-first", func(srv *Server, target, token string, initiator *net.UDPAddr) {
+			srv.cfg.P2PFirst = true
+			srv.handlePunchHoleRequestTCP(&pb.PunchHoleRequest{Id: target, Token: token}, initiator)
+		}},
 	} {
 		t.Run(path.name, func(t *testing.T) {
 			srv, database := newTestSignalServer(t, config.EnrollmentModeOpen)
 			srv.cfg.P2PFirst = false
 			srv.localIP.Store("198.51.100.20")
 			_, targetAddr := attachTestUDPPair(t, srv)
-			target := "FALLBK" + strings.ToUpper(strings.ReplaceAll(path.name, "over ", ""))
+			target := map[string]string{
+				"over UDP": "FALLBKUDP", "over TCP": "FALLBKTCP",
+				"over UDP P2P-first": "FALLBKUDPP", "over TCP P2P-first": "FALLBKTCPP",
+			}[path.name]
 			putOnlinePeer(srv, target, targetAddr.IP.String(), targetAddr.Port, peer.ConnUDP)
 			userID, token := signedInController(t, database, "fallback-"+strings.ReplaceAll(path.name, " ", "-"))
 			initiator := udpAddr("203.0.113.72", 51001+len(path.name))
