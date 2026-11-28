@@ -43,7 +43,10 @@ type Server struct {
 
 	// Stats
 	ActiveSessions atomic.Int64
-	TotalRelayed   atomic.Int64
+	// ForwardedLegs counts legs this pod hands to the pod where their
+	// session meets (cluster mode); Drain waits for them too.
+	ForwardedLegs atomic.Int64
+	TotalRelayed  atomic.Int64
 
 	// reporter hears of paired and parted sessions (billing, live
 	// sessions); nil for none
@@ -579,6 +582,13 @@ func (s *Server) startRelay(conn1, conn2 net.Conn, uuid string) {
 		io.Copy(w2, r1)
 		once.Do(func() { close(done) })
 	}()
+
+	// The server's end (Stop after the shutdown grace) ends the session
+	stop := context.AfterFunc(s.baseCtx(), func() {
+		conn1.Close()
+		conn2.Close()
+	})
+	defer stop()
 
 	// Wait for one direction to finish, then clean up both
 	<-done
