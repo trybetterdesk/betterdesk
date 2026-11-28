@@ -257,6 +257,7 @@
     "json": {
      "devices": [
       {
+       "device_type": "neodesk",
        "folder_id": null,
        "folder_name": "",
        "hostname": "contract-desk",
