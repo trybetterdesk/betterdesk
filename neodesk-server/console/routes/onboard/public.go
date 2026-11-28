@@ -111,6 +111,58 @@ func (h *handlers) publicCode(w http.ResponseWriter, r *http.Request) {
 	kit.JSON(w, r, http.StatusOK, out)
 }
 
+// The states of a link as its page shows them.
+const (
+	// stateWaiting: the code still works; nobody used it yet.
+	stateWaiting = "waiting"
+	// stateOpened: the quick support app took the code and asks the person.
+	stateOpened = "opened"
+	// stateAllowed: the person let the supporter in.
+	stateAllowed = "allowed"
+	// stateEnded: the session is over.
+	stateEnded = "ended"
+)
+
+// publicState answers GET /api/onboard/public/{code}/state with
+// {success, state}: whether the quick support app took the link, so the
+// open page can stop offering the download. A spent support code answers
+// for its session; any other code that cannot be used is the usual 404.
+func (h *handlers) publicState(w http.ResponseWriter, r *http.Request) {
+	code := onboard.Normalize(r.PathValue("code"))
+	if !onboard.ValidFormat(code) {
+		unusable(w, r)
+		return
+	}
+	sess, err := h.sessions.ByCode(r.Context(), code)
+	switch {
+	case err == nil:
+		if state := stateOf(sess); state != "" {
+			kit.JSON(w, r, http.StatusOK, map[string]any{"success": true, "state": state})
+			return
+		}
+	case !errors.Is(err, onboard.ErrNotFound):
+		h.serverError(w, r, "Look up the session of a code:", err)
+		return
+	}
+	if _, _, ok := h.lookupPublic(w, r); ok {
+		kit.JSON(w, r, http.StatusOK, map[string]any{"success": true, "state": stateWaiting})
+	}
+}
+
+// stateOf is the page's state of a redeemed session; "" when it has none
+// to show (a session that expired before anyone opened it).
+func stateOf(sess onboard.Session) string {
+	switch sess.Status {
+	case onboard.StatusOpened, onboard.StatusAsking:
+		return stateOpened
+	case onboard.StatusAllowed:
+		return stateAllowed
+	case onboard.StatusDeclined, onboard.StatusEnded:
+		return stateEnded
+	}
+	return ""
+}
+
 // contentTypes are the types the packages are served with.
 var contentTypes = map[string]string{
 	"exe":    "application/vnd.microsoft.portable-executable",

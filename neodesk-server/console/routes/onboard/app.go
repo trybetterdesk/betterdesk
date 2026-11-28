@@ -147,6 +147,12 @@ func (h *handlers) redeemSupport(w http.ResponseWriter, r *http.Request) {
 		appFail(w, r, http.StatusInternalServerError, "server_error", "")
 		return
 	}
+	// The link's page follows the session by its code from here on
+	if remembered, err := h.sessions.RememberCode(r.Context(), sess.ID, body.Code); err != nil {
+		h.log.Warn("Note the code of the quick support session:", err)
+	} else {
+		sess = remembered
+	}
 	h.auditAs(r, 0, "quick_support_opened", "The quick support app opened session "+sess.ID+" of "+sess.CreatedBy)
 	kit.JSON(w, r, http.StatusOK, redeemAnswer{
 		Success: true, SessionToken: token, Session: appAnswerOf(sess).Session,

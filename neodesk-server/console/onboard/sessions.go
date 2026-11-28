@@ -83,8 +83,11 @@ type Session struct {
 	CreatedByID int64  `json:"created_by_id"`
 	// CreatedByToken is the console API token the session was made with,
 	// "" for none: the end of that token ends the session.
-	CreatedByToken  string `json:"created_by_token,omitempty"`
-	TokenHash       string `json:"token_hash,omitempty"`
+	CreatedByToken string `json:"created_by_token,omitempty"`
+	TokenHash      string `json:"token_hash,omitempty"`
+	// CodeHash is the SHA-256 of the code the app redeemed (CodeHash), so
+	// the page of the link can follow the session after the code is spent.
+	CodeHash        string `json:"code_hash,omitempty"`
 	DeviceID        string `json:"device_id"`
 	Hostname        string `json:"hostname"`
 	Platform        string `json:"platform"`
@@ -321,6 +324,39 @@ func (s *Sessions) Redeem(ctx context.Context, code Code) (string, Session, erro
 	s.byToken[hash] = sess.ID
 	s.mu.Unlock()
 	return token, sess, nil
+}
+
+// CodeHash is how a session keeps the code it was opened with: the hex
+// SHA-256 of the normalized code.
+func CodeHash(code string) string {
+	sum := sha256.Sum256([]byte(Normalize(code)))
+	return hex.EncodeToString(sum[:])
+}
+
+// RememberCode notes on a session the code the app redeemed, for ByCode.
+func (s *Sessions) RememberCode(ctx context.Context, id, code string) (Session, error) {
+	hash := CodeHash(code)
+	return s.change(ctx, id, func(sess *Session) error {
+		sess.CodeHash = hash
+		return nil
+	})
+}
+
+// ByCode returns the session that was opened with code. A session that
+// was never redeemed, or whose code is not known, is ErrNotFound.
+func (s *Sessions) ByCode(ctx context.Context, code string) (Session, error) {
+	if err := s.load(ctx); err != nil {
+		return Session{}, err
+	}
+	hash := CodeHash(code)
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	for _, sess := range s.byID {
+		if sess.CodeHash != "" && subtle.ConstantTimeCompare([]byte(sess.CodeHash), []byte(hash)) == 1 && sess.RedeemedAt != "" {
+			return *sess, nil
+		}
+	}
+	return Session{}, ErrNotFound
 }
 
 // ByToken returns the open session of a session token and notes the

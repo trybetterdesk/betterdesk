@@ -40,6 +40,10 @@ import (
 // minute: page data, downloads, scripts and redeems together.
 const CodeLimit = 20
 
+// StateLimit is how often one address may ask for the state of a link per
+// minute: the open page asks every 5 seconds.
+const StateLimit = 30
+
 // SweepInterval is how often sessions are checked for their end.
 const SweepInterval = 30 * time.Second
 
@@ -61,8 +65,10 @@ type handlers struct {
 	thumbs   map[int64]thumb
 	releases *clientrelease.Service
 	limit    kit.Middleware
-	log      *kit.Logger
-	now      func() time.Time
+	// stateLimit counts the page's questions for the state of its link
+	stateLimit kit.Middleware
+	log        *kit.Logger
+	now        func() time.Time
 }
 
 // Options change what the group is built with; tests set them.
@@ -111,6 +117,12 @@ func RegisterWith(d *kit.Deps, opts Options) {
 			Key:     func(r *http.Request) string { return "onboard:" + kit.ClientIP(r) },
 			Now:     opts.Now,
 		}).Middleware,
+		stateLimit: limits.New(limits.Config{
+			Name: "onboardStateLimiter", WindowMs: 60_000, Max: StateLimit,
+			Message: refusal{Error: "Too many requests. Please try again in a minute.", Code: "rate_limited"},
+			Key:     func(r *http.Request) string { return "onboard-state:" + kit.ClientIP(r) },
+			Now:     opts.Now,
+		}).Middleware,
 		log: d.Log.Child("ONBOARD"),
 		now: opts.Now,
 	}
@@ -154,6 +166,7 @@ func RegisterWith(d *kit.Deps, opts Options) {
 
 	r.Get("/api/onboard/public/{code}", h.publicCode, h.limit)
 	r.Get("/api/onboard/public/{code}/download", h.download, h.limit)
+	r.Get("/api/onboard/public/{code}/state", h.publicState, h.stateLimit)
 	r.Get("/join/{code}", h.joinPage)
 	r.Get("/join/{code}/install.sh", h.installScript, h.limit)
 	r.Get("/s/{code}/run.sh", h.runScript, h.limit)

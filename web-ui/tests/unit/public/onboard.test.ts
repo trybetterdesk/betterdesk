@@ -16,6 +16,10 @@ import { isInsecure, mainAction, otherDownloads, stepKeys } from '../../../src/l
 
 vi.mock('$app/paths', () => ({ resolve: (p: string) => p || '/', asset: (p: string) => '/' + p }));
 
+/** Whether the page finds NeoDesk's marker font */
+const marker = vi.hoisted(() => ({ found: false }));
+vi.mock('../../../src/lib/public/marker.ts', () => ({ neodeskInstalled: () => marker.found }));
+
 const CodePage = (await import('../../../src/lib/public/CodePage.svelte')).default;
 
 const WIN =
@@ -141,25 +145,31 @@ describe('the main action for this computer', () => {
 /* ── The page ── */
 
 let answer: { status: number; body: unknown };
+/** The answer of /api/onboard/public/<code>/state */
+let stateAnswer: { status: number; body: unknown };
 let ua: string;
 
 beforeEach(() => {
 	answer = { status: 200, body: { success: true, ...code() } };
+	stateAnswer = { status: 200, body: { success: true, state: 'waiting' } };
+	marker.found = false;
 	ua = WIN;
 	vi.spyOn(navigator, 'userAgent', 'get').mockImplementation(() => ua);
 	vi.stubGlobal(
 		'fetch',
-		vi.fn(
-			async () =>
-				new Response(JSON.stringify(answer.body), {
-					status: answer.status,
-					headers: { 'Content-Type': 'application/json' }
-				})
-		)
+		vi.fn(async (input: RequestInfo | URL) => {
+			const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+			const out = url.endsWith('/state') ? stateAnswer : answer;
+			return new Response(JSON.stringify(out.body), {
+				status: out.status,
+				headers: { 'Content-Type': 'application/json' }
+			});
+		})
 	);
 });
 
 afterEach(() => {
+	vi.useRealTimers();
 	cleanup();
 	vi.unstubAllGlobals();
 	vi.restoreAllMocks();
@@ -326,5 +336,84 @@ describe('the welcome page of an invite', () => {
 		const header = document.querySelector('header.code-brand');
 		expect(header?.querySelector('.brand-logo-mark')).not.toBeNull();
 		expect(header?.textContent?.trim()).toBe('Acme IT Service');
+	});
+});
+
+describe('NeoDesk on this computer', () => {
+	test('the marker font puts Open first and the download second, without the download steps', async () => {
+		marker.found = true;
+		answer.body = {
+			success: true,
+			...code({
+				kind: 'support',
+				supporter: 'Linus Rath',
+				deep_link: 'neodesk://support/desk.example.com/ABCD2345'
+			})
+		};
+		render(CodePage, { code: 'ABCD2345', kind: 'support' });
+		const open = await screen.findAllByRole('link', { name: 'onboard.public.open_support_app' });
+		expect(open).toHaveLength(1);
+		expect(open[0]).toHaveClass('main-open');
+		expect(screen.getByText('onboard.public.installed_note')).toBeInTheDocument();
+		expect(screen.getByRole('link', { name: 'onboard.public.download_again' })).toHaveAttribute('download');
+		expect(screen.queryByRole('link', { name: 'onboard.public.download_support' })).toBeNull();
+		expect(screen.queryByText('onboard.public.support_steps_windows_1')).toBeNull();
+		// The code stays for an app that asks for it
+		expect(screen.getByText('ABCD-2345')).toBeInTheDocument();
+	});
+
+	test('without the font the download comes first', async () => {
+		answer.body = {
+			success: true,
+			...code({ kind: 'support', deep_link: 'neodesk://support/desk.example.com/ABCD2345' })
+		};
+		render(CodePage, { code: 'ABCD2345', kind: 'support' });
+		await screen.findByRole('link', { name: 'onboard.public.download_support' });
+		expect(screen.queryByText('onboard.public.installed_note')).toBeNull();
+	});
+});
+
+describe('a support link that quick support took', () => {
+	test('the page stops offering the download and follows the session to its end', async () => {
+		vi.useFakeTimers({ shouldAdvanceTime: true });
+		answer.body = {
+			success: true,
+			...code({
+				kind: 'support',
+				supporter: 'Linus Rath',
+				expires_at: new Date(Date.now() + 3600e3).toISOString()
+			})
+		};
+		render(CodePage, { code: 'ABCD2345', kind: 'support' });
+		await screen.findByRole('link', { name: 'onboard.public.download_support' });
+		expect(screen.getByRole('status')).toHaveTextContent('');
+
+		stateAnswer.body = { success: true, state: 'opened' };
+		await vi.advanceTimersByTimeAsync(5000);
+		await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('onboard.public.state_opened'));
+		expect(screen.queryByRole('link', { name: 'onboard.public.download_support' })).toBeNull();
+		expect(screen.queryByText('ABCD-2345')).toBeNull();
+		expect(screen.queryByText('onboard.public.support_lead')).toBeNull();
+
+		stateAnswer.body = { success: true, state: 'allowed' };
+		await vi.advanceTimersByTimeAsync(5000);
+		await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('onboard.public.state_allowed'));
+
+		stateAnswer.body = { success: true, state: 'ended' };
+		await vi.advanceTimersByTimeAsync(5000);
+		await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('onboard.public.state_ended'));
+		// It stops asking at the end
+		const asked = vi.mocked(fetch).mock.calls.length;
+		await vi.advanceTimersByTimeAsync(20000);
+		expect(vi.mocked(fetch).mock.calls.length).toBe(asked);
+	});
+
+	test('an invite page does not ask', async () => {
+		vi.useFakeTimers({ shouldAdvanceTime: true });
+		render(CodePage, { code: 'ABCD2345', kind: 'join' });
+		await screen.findByRole('heading', { level: 1 });
+		await vi.advanceTimersByTimeAsync(15000);
+		const urls = vi.mocked(fetch).mock.calls.map(([u]) => String(u));
+		expect(urls.some((u) => u.endsWith('/state'))).toBe(false);
 	});
 });

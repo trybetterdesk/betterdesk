@@ -446,6 +446,41 @@ func TestQuickSupportFlow(t *testing.T) {
 	})
 }
 
+// TestPublicStateFollowsTheLink: the page of a support link asks for its
+// state and sees the app take the code, the person allow, and the end; a
+// code nobody made, and a spent code without a session, stay the usual 404.
+func TestPublicStateFollowsTheLink(t *testing.T) {
+	w := newWorld(t, storetest.Migrated(t))
+	code := str(w.browser("operator").do(http.MethodPost, "/api/support/sessions", `{"name":"Ana"}`).json(t), "code")
+	page := w.app()
+	state := func(want string) {
+		t.Helper()
+		res := page.do(http.MethodGet, "/api/onboard/public/"+code+"/state", "")
+		if res.status != http.StatusOK || str(res.json(t), "state") != want {
+			t.Fatalf("state: %d %s, want %s", res.status, res.body, want)
+		}
+	}
+	state("waiting")
+	if res := page.do(http.MethodGet, "/api/onboard/public/ZZZZZZZZ/state", ""); res.status != http.StatusNotFound {
+		t.Fatalf("unknown code: %d %s", res.status, res.body)
+	}
+
+	app := w.app()
+	token := str(app.do(http.MethodPost, "/api/support/redeem", `{"code":"`+code+`"}`).json(t), "session_token")
+	bearer := []string{"Authorization", "Bearer " + token}
+	state("opened")
+	// The page data itself stays gone for a spent code
+	if res := page.do(http.MethodGet, "/api/onboard/public/"+code, ""); res.status != http.StatusNotFound {
+		t.Fatalf("page data of a spent code: %d", res.status)
+	}
+	app.do(http.MethodPost, "/api/support/session/device", `{"device_id":"423456789","hostname":"ana-laptop"}`, bearer...)
+	state("opened")
+	app.do(http.MethodPost, "/api/support/session/consent", `{"allowed":true}`, bearer...)
+	state("allowed")
+	app.do(http.MethodPost, "/api/support/session/end", `{}`, bearer...)
+	state("ended")
+}
+
 // TestQuickSupportOfARevokedID: the app's device is refused at once with
 // the reason, the session ends with it, and the supporter sees why and on
 // which computer (L550).
