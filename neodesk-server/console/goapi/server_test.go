@@ -157,10 +157,11 @@ func TestAgainstAPIServer(t *testing.T) {
 
 	t.Run("access policy and connect password", func(t *testing.T) {
 		wantAt(t, "GetAccessPolicy", c.GetAccessPolicy(ctx, "PEERAAA1"), `false`, "data", "unattended_enabled")
-		wantJSON(t, "SaveAccessPolicy", c.SaveAccessPolicy(ctx, "PEERAAA1", NewObject("unattended_enabled", true)), `{"success":true,"data":{"success":true}}`)
+		// The save names the signed-in account it acts for, not an address
+		wantJSON(t, "SaveAccessPolicy", c.SaveAccessPolicy(ActingFor(ctx, "olga"), "PEERAAA1", NewObject("unattended_enabled", true)), `{"success":true,"data":{"success":true}}`)
 		saved := c.GetAccessPolicy(ctx, "PEERAAA1")
 		wantAt(t, "GetAccessPolicy after the save", saved, `true`, "data", "unattended_enabled")
-		wantAt(t, "GetAccessPolicy after the save", saved, `"127.0.0.1"`, "data", "updated_by")
+		wantAt(t, "GetAccessPolicy after the save", saved, `"olga"`, "data", "updated_by")
 		wantJSON(t, "SaveAccessPolicy with a bad time",
 			c.SaveAccessPolicy(ctx, "PEERAAA1", NewObject("schedule_enabled", true, "schedule_start_time", "99:99")), badRequest400)
 		wantJSON(t, "DeleteAccessPolicy", c.DeleteAccessPolicy(ctx, "PEERAAA1"), `{"success":true,"data":{"success":true}}`)
