@@ -109,6 +109,9 @@ func startConsole(ctx context.Context, cfg *config.Config, database db.Database,
 	// Computers reach their support chat at the API port, where they send
 	// everything else (L526): the API hands it to the console
 	apiSrv.SetDeviceChat(srv)
+	// The end of an unattended session the console vouched for goes to
+	// its audit log (A279)
+	apiSrv.SetRelayEnded(srv.RelayEnded)
 	// The desktop sign-in through the console sends the app to the
 	// console's page (DECISIONS A276)
 	if mail := srv.Deps().Mail; mail != nil {
@@ -117,6 +120,7 @@ func startConsole(ctx context.Context, cfg *config.Config, database db.Database,
 	running = true
 	return func() {
 		apiSrv.SetConsoleAddress(nil)
+		apiSrv.SetRelayEnded(nil)
 		apiSrv.SetDeviceChat(nil)
 		apiSrv.SetOutsideHandler(nil)
 		setAPIProxy(apiSrv.ListenerHandler())

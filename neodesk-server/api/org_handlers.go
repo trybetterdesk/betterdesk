@@ -1097,21 +1097,7 @@ func (s *Server) handleGetPeerPolicy(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusForbidden, map[string]string{"error": "device is outside your organization"})
 		return
 	}
-	orgPolicies := make(map[string]interface{})
-	if orgID != "" {
-		for _, category := range policyCategories {
-			key := "policy_" + category
-			value, err := s.db.GetOrgSetting(orgID, key)
-			if err != nil || value == "" {
-				continue
-			}
-			var parsed interface{}
-			if err := json.Unmarshal([]byte(value), &parsed); err != nil {
-				continue
-			}
-			orgPolicies[category] = parsed
-		}
-	}
+	orgPolicies := s.orgPoliciesOf(orgID)
 	withDeviceDefaults(orgPolicies)
 
 	w.Header().Set("Content-Type", "application/json")
@@ -1120,6 +1106,27 @@ func (s *Server) handleGetPeerPolicy(w http.ResponseWriter, r *http.Request) {
 		"org_id":    orgID,
 		"policies":  orgPolicies,
 	})
+}
+
+// orgPoliciesOf is the stored policy groups of an organization, each as
+// its parsed JSON; none for "" and for groups that are empty or no JSON.
+func (s *Server) orgPoliciesOf(orgID string) map[string]interface{} {
+	orgPolicies := make(map[string]interface{})
+	if orgID == "" {
+		return orgPolicies
+	}
+	for _, category := range policyCategories {
+		value, err := s.db.GetOrgSetting(orgID, "policy_"+category)
+		if err != nil || value == "" {
+			continue
+		}
+		var parsed interface{}
+		if err := json.Unmarshal([]byte(value), &parsed); err != nil {
+			continue
+		}
+		orgPolicies[category] = parsed
+	}
+	return orgPolicies
 }
 
 // withDeviceDefaults fills in the settings a device must not have to

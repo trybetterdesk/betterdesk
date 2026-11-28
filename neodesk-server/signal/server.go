@@ -56,6 +56,13 @@ type pendingUUID struct {
 	correlationAddr string
 	advertisedAddr  string
 	createdAt       time.Time
+	// account is the console account behind the punch request
+	// (controllerAccount: the web client's proof or the desktop app's
+	// client token; 0 for none) and consoleSession the console session
+	// the web client's proof named, so a relay ticket the target's
+	// RelayResponse makes later names them like one made at RequestRelay
+	account        int64
+	consoleSession string
 }
 
 // pendingPunch tracks a scheduled P2P-first fallback for an initiator that is
@@ -1270,6 +1277,12 @@ func (s *Server) storePendingUUID(targetID string, initiatorAddr *net.UDPAddr, u
 // therefore visible to the target client. They are normally identical for
 // native UDP/TCP clients, but differ for WSS sessions behind a proxy.
 func (s *Server) storePendingRelay(targetID string, correlationAddr, advertisedAddr *net.UDPAddr, uuid, initiatorID string) {
+	s.storePendingRelayFor(targetID, correlationAddr, advertisedAddr, uuid, initiatorID, 0, "")
+}
+
+// storePendingRelayFor is storePendingRelay for a punch request with the
+// console account behind it and the console session its proof named.
+func (s *Server) storePendingRelayFor(targetID string, correlationAddr, advertisedAddr *net.UDPAddr, uuid, initiatorID string, account int64, consoleSession string) {
 	if targetID == "" && uuid == "" {
 		return
 	}
@@ -1281,6 +1294,8 @@ func (s *Server) storePendingRelay(targetID string, correlationAddr, advertisedA
 		correlationAddr: "",
 		advertisedAddr:  "",
 		createdAt:       time.Now(),
+		account:         account,
+		consoleSession:  consoleSession,
 	}
 	if correlationAddr != nil {
 		entry.correlationAddr = normalizeAddrKey(correlationAddr.String())
@@ -1300,6 +1315,9 @@ func (s *Server) storePendingRelay(targetID string, correlationAddr, advertisedA
 			}
 			if entry.targetID == "" {
 				entry.targetID = old.targetID
+			}
+			if entry.account == 0 && entry.initiatorID == old.initiatorID {
+				entry.account, entry.consoleSession = old.account, old.consoleSession
 			}
 			if entry.correlationAddr == "" {
 				entry.correlationAddr = old.correlationAddr

@@ -305,6 +305,8 @@ type sharedPending struct {
 	CorrelationAddr string `json:"c,omitempty"`
 	AdvertisedAddr  string `json:"a,omitempty"`
 	CreatedAt       int64  `json:"at"`
+	Account         int64  `json:"ac,omitempty"`
+	ConsoleSession  string `json:"cs,omitempty"`
 }
 
 // sharePending writes the relay correlation entry under its three keys.
@@ -315,7 +317,7 @@ func (s *Server) sharePending(key string, p *pendingUUID) {
 	b, err := json.Marshal(sharedPending{
 		UUID: p.uuid, TargetID: p.targetID, InitiatorID: p.initiatorID,
 		CorrelationAddr: p.correlationAddr, AdvertisedAddr: p.advertisedAddr,
-		CreatedAt: p.createdAt.UnixMilli(),
+		CreatedAt: p.createdAt.UnixMilli(), Account: p.account, ConsoleSession: p.consoleSession,
 	})
 	if err != nil {
 		return
@@ -346,7 +348,7 @@ func (s *Server) sharedPendingAt(key string) *pendingUUID {
 	return &pendingUUID{
 		uuid: sp.UUID, targetID: sp.TargetID, initiatorID: sp.InitiatorID,
 		correlationAddr: sp.CorrelationAddr, advertisedAddr: sp.AdvertisedAddr,
-		createdAt: time.UnixMilli(sp.CreatedAt),
+		createdAt: time.UnixMilli(sp.CreatedAt), account: sp.Account, consoleSession: sp.ConsoleSession,
 	}
 }
 

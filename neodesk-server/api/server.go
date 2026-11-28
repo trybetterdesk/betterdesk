@@ -161,9 +161,12 @@ type Server struct {
 	deviceVault *devicevault.Vault
 	// signinUses are the sessions that used their saved sign-in
 	signinUses signinUses
-	// callerUses are the relay sessions whose quick support caller the
-	// server vouched for (support_caller.go), once each
+	// callerUses are the relay sessions whose quick support or unattended
+	// caller the server vouched for (support_caller.go,
+	// unattended_caller.go), once each, whichever route asks
 	callerUses signinUses
+	// relayEnded hears of the relay's session ends (unattended_caller.go)
+	relayEnded relayEndedHook
 	// consoleLogins are the desktop sign-ins through the web console
 	// (console_device_login.go)
 	consoleLogins consoleLogins

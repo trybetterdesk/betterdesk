@@ -168,6 +168,11 @@ func RegisterWith(d *kit.Deps, opts Options) {
 	e.Post("/api/support/session/password", h.appPassword, h.requireSessionToken)
 	e.Post("/api/support/session/end", h.appEnd, h.requireSessionToken)
 	e.Post("/api/support/session/caller", h.appCaller, h.requireSessionToken)
+	// A receiver asks whether the server vouches for an unattended caller
+	// (A279); the device token's routes are on the main table, as the
+	// device policy's
+	r.Post("/api/nd/unattended/caller", h.unattendedCaller, d.RequireDeviceToken, d.RequireTokenDeviceMatch)
+	d.Unattended.OnEnd(h.unattendedEnded)
 	// Feedback works after the end too, for a session the person allowed
 	e.Get("/api/support/session/feedback", h.appFeedbackForm, h.requireFeedbackToken)
 	e.Post("/api/support/session/feedback", h.appFeedbackGive, h.requireFeedbackToken)

@@ -50,6 +50,7 @@ import (
 	"github.com/neodeskapp/neodesk/neodesk-server/console/listen"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/mail"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/ndrelay"
+	"github.com/neodeskapp/neodesk/neodesk-server/console/onboard"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/passwordlinks"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/people"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/qr"
@@ -304,8 +305,11 @@ func New(ctx context.Context, opts Options) (*Server, error) {
 		WebUI: host,
 		GoAPI: api,
 		Audit: audit,
-		Log:   kit.NewLogger(cfg.LogLevel, cfg.Production),
-		Jobs:  s.jobs,
+		// The unattended sessions the server vouched for, until the relay
+		// ends them (RelayEnded)
+		Unattended: onboard.NewUnattendedBook(nil),
+		Log:        kit.NewLogger(cfg.LogLevel, cfg.Production),
+		Jobs:       s.jobs,
 
 		Leases:    opts.Leases,
 		Clustered: opts.Clustered,
@@ -634,6 +638,11 @@ func (s *Server) Router() *kit.Router { return s.router }
 // Early is the table of the client and device API routes, which sit
 // before the request language and the CSRF gate (steps 12 and 13).
 func (s *Server) Early() *kit.Router { return s.early }
+
+// RelayEnded is the relay's end of the relay session uuid: an unattended
+// session the console vouched for gets its end in the audit log, with how
+// long it ran.
+func (s *Server) RelayEnded(uuid string) { s.deps.Unattended.End(uuid) }
 
 // Deps is what the route groups were registered with.
 func (s *Server) Deps() *kit.Deps { return s.deps }

@@ -1162,8 +1162,9 @@ func (s *Server) handlePunchHoleRequest(msg *pb.PunchHoleRequest, raddr *net.UDP
 
 	s.recordConnectionSession(raddr, initiatorID, targetID, msg.GetToken(), "punch_hole", "")
 
-	// Correlate initiator identity for a later RelayResponse on shared NAT.
-	s.storePendingUUID(targetID, raddr, "", initiatorID)
+	// Correlate initiator identity (and the account behind the request)
+	// for a later RelayResponse on shared NAT.
+	s.storePendingRelayFor(targetID, raddr, raddr, "", initiatorID, policy.account, policy.consoleSession)
 
 	// If force relay or always use relay
 	if msg.ForceRelay || connection.AlwaysUseRelay || hairpin ||
@@ -1382,7 +1383,7 @@ func (s *Server) punchHoleRequestTCP(msg *pb.PunchHoleRequest, raddr *net.UDPAdd
 
 	// Correlate initiator identity for a later RelayResponse on shared NAT,
 	// and the address the target sees for a later PunchHoleSent.
-	s.storePendingRelay(targetID, raddr, relayAdvertisedAddr(s, raddr, initiatorID, initiatorHint), "", initiatorID)
+	s.storePendingRelayFor(targetID, raddr, relayAdvertisedAddr(s, raddr, initiatorID, initiatorHint), "", initiatorID, policy.account, policy.consoleSession)
 
 	// ForceRelay or AlwaysUseRelay: return PunchHoleResponse with SYMMETRIC NAT
 	// type instead of RelayResponse. This tells the client that direct P2P is
@@ -2157,8 +2158,14 @@ func (s *Server) handleRelayResponseForward(msg *pb.RendezvousMessage, senderAdd
 	// hardened relay rejects as "Unauthorized relay UUID". Prefer pending
 	// / exact addr / panel proxy / shared-NAT flag — never multi-peer FindByIP.
 	initiatorID := ""
+	// The account behind the punch request goes on the ticket, as at
+	// RequestRelay: the desktop app's client token, or the web client's
+	// proof (also read from its connection below)
+	var account int64
+	consoleSession := ""
 	if pending != nil {
 		initiatorID = pending.initiatorID
+		account, consoleSession = pending.account, pending.consoleSession
 	}
 	if initiatorID == "" {
 		initiatorID = s.peerIDForAddr(initiatorAddr)
@@ -2180,6 +2187,9 @@ func (s *Server) handleRelayResponseForward(msg *pb.RendezvousMessage, senderAdd
 			log.Printf("[signal] RelayResponse forward: resolved initiator %s to peer %s via IP lookup", initiatorAddr, initiatorID)
 		}
 	}
+	if account == 0 || pending == nil || initiatorID != pending.initiatorID {
+		account, consoleSession = s.panelAccount(initiatorAddr), s.panelSession(initiatorAddr)
+	}
 	if targetID == "" || initiatorID == "" {
 		log.Printf("[signal] RelayResponse forward: refusing uuid=%q — unresolved pair (initiator=%q target=%q sender=%s)",
 			rr.Uuid, initiatorID, targetID, senderAddr)
@@ -2194,7 +2204,7 @@ func (s *Server) handleRelayResponseForward(msg *pb.RendezvousMessage, senderAdd
 	route := s.chooseRelay(relayRouteRequest{base: s.getRelayServer(), a: senderAddr, b: initiatorAddr})
 	if route.Tickets.Admitted(rr.Uuid, initiatorID, targetID) {
 		log.Printf("[signal] RelayResponse forward: uuid=%q initiator=%q target=%q was admitted already", rr.Uuid, initiatorID, targetID)
-	} else if refuse := s.admitSession(route.Tickets, rr.Uuid, initiatorID, targetID, s.panelAccount(initiatorAddr), s.panelSession(initiatorAddr)); refuse != "" {
+	} else if refuse := s.admitSession(route.Tickets, rr.Uuid, initiatorID, targetID, account, consoleSession); refuse != "" {
 		log.Printf("[signal] RelayResponse forward: %s (uuid=%q initiator=%q target=%q) — not forwarding",
 			refuse, rr.Uuid, initiatorID, targetID)
 		return

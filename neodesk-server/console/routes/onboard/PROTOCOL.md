@@ -345,3 +345,82 @@ is refused in the shape of a refused enrollment token, with its own code:
 
 In open mode it changes nothing, as any token that doesn't admit: the
 server takes the computer without the token's folder and organization.
+
+## The unattended caller check (A279)
+
+An installed receiver lets a relayed caller in without someone at the
+computer clicking Allow only when the server vouches for the caller and
+the receiver's own copy of the rule agrees. The rule, its precedence and
+the shared test vectors are in `policy/unattended` (the vectors are
+`policy/unattended/testdata/rule-vectors.json`, which the client copies
+unchanged); the wire contract is UNATTENDED-CONTRACT.md in the lead's
+notes.
+
+```
+POST /api/nd/unattended/caller
+Authorization: Bearer <device token>
+X-Device-Id: <device id>
+{"session": "<relay uuid>"}
+```
+
+The route is on the console and on the API port, like
+`GET /api/nd/device-policy`. The device token must be live and bound to
+the device the request names (`RequireDeviceToken`,
+`RequireTokenDeviceMatch`): no token is `401`, another device's id is
+`403 {"error":"Device ID mismatch"}`, and a banned or soft-deleted
+device's token is `401 {"error":"Invalid or unbound access token"}`.
+`session` is `RequestRelay.uuid` as signal sent it to the device; a bad
+body is `400 {"error":"invalid_body"}`.
+
+The server checks, in this order, and the first that fails refuses:
+
+| Check | Refusal `reason` |
+|---|---|
+| The request came over HTTPS, as the console tells it from the connection or a trusted proxy (`TRUST_PROXY`, `X-Forwarded-Proto`) | `not_https` |
+| The relay session runs and goes to the token's device | `session_not_open` |
+| Both sides met on the relay at most 60 seconds ago | `too_late` |
+| Nobody asked about this relay session before; the claim is shared with the quick support check, so one session is vouched once whichever route asks | `already_used` |
+| The relay ticket names an account: the console's browser viewer (`panel-web-remote`) with a console session (`via: console`), or a desktop app signed in with a client session token (`via: desktop`). A guest's bridge and a desktop app that isn't signed in name none | `no_account` |
+| The account exists, is not disabled, its role has Connect to devices and it sees the device (device groups and grants) | `no_permission` |
+| The rule allows it now, with the device's current organization policy (`connection.mode`, `security.allowed_operators`) and access policy | `ask_always`, `not_enabled`, `outside_schedule`, `operator_not_allowed` |
+
+Signal names the account on the ticket on every path that makes one:
+RequestRelay, and the device's own RelayResponse after a punch that falls
+back to the relay, which carries the account the punch request named.
+
+Vouched:
+
+```
+200
+{"success":true,"vouched":true,"device_id":"523456781","session":"<relay uuid>",
+ "helper":"Olga Operator","helper_username":"olga",
+ "helper_avatar":"data:image/png;base64,...","via":"console"}
+```
+
+`helper` is the account's name as the console shows it (first and last
+name, else the username), `helper_avatar` its picture, left out when it
+has none, as in the quick support answer. Refused:
+
+```
+409
+{"success":false,"error":"not_vouched","reason":"outside_schedule"}
+```
+
+The audit log, each entry about the account (`target_user_id`), with the
+account as the actor when it still exists:
+
+| Action | When | Details |
+|---|---|---|
+| `unattended_session_started` | Before the `200`; when it can't be written the answer is `500 {"error":"audit_failed"}` and nobody is vouched for | `Unattended session to device <id> started; helper=<name> (<username>); via=console\|desktop; relay_session=<uuid>` |
+| `unattended_session_ended` | When the relay ends a vouched session | `Unattended session to device <id> ended; helper=...; started=<RFC 3339>; duration_s=<seconds>; relay_session=<uuid>` |
+| `unattended_caller_refused` | A refusal once the relay session named an account (`too_late`, `already_used`, `no_permission` and the rule's reasons) | `Unattended session to device <id> refused; helper=...; reason=<reason>; relay_session=<uuid>` |
+
+The end entry needs the relay and the console in one process: a session
+the relay of another instance ends, or one that outlives a restart, gets
+none.
+
+The receiver lets the caller in without Allow only for a `200` whose
+`vouched` is `true`, whose `device_id` is its own ID and whose `session`
+is the relay session it asked about, when its own rule with
+`helper_username` as the caller allows it too. Anything else, no answer
+within 5 seconds included, means the Allow prompt as before.

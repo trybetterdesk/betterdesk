@@ -23,6 +23,7 @@ import (
 	"github.com/neodeskapp/neodesk/neodesk-server/console/limits"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/mail"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/ndrelay"
+	"github.com/neodeskapp/neodesk/neodesk-server/console/onboard"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/remoterelay"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/restart"
 	"github.com/neodeskapp/neodesk/neodesk-server/console/serverinfo"
@@ -130,6 +131,9 @@ type Deps struct {
 	Updater *updater.Service
 	// Audit writes the audit log. LogAction is the usual way to it.
 	Audit *auditlog.Log
+	// Unattended holds the unattended sessions the server vouched for
+	// until the relay ends them (Server.RelayEnded writes their end).
+	Unattended *onboard.UnattendedBook
 	// Log is the console's logger; a group takes d.Log.Child("TICKETS").
 	Log *Logger
 	// Jobs takes background work that stops with the console.

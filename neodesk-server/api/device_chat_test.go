@@ -84,18 +84,22 @@ func TestComputersTicketsGoToTheConsole(t *testing.T) {
 }
 
 // TestTheDevicePolicyGoesToTheConsole: the receiver app asks for its
-// policy at the API port, where it reaches its chat and tickets (A277).
-// Only that route of /api/nd goes to the console; the others stay the
-// API's.
+// policy (A277) and about an unattended caller (A279) at the API port,
+// where it reaches its chat and tickets. Only those routes of /api/nd go
+// to the console; the others stay the API's.
 func TestTheDevicePolicyGoesToTheConsole(t *testing.T) {
 	for path, want := range map[string]bool{
-		"/api/nd/device-policy":        true,
-		"/api/nd/device-policy/":       false,
-		"/api/nd/device-policy/x":      false,
-		"/api/nd/attestation":          false,
-		"/api/nd/mgmt/connected":       false,
-		"/api/nd/api/nd/device-policy": false,
-		"/api/nd/device-policyx":       false,
+		"/api/nd/device-policy":            true,
+		"/api/nd/device-policy/":           false,
+		"/api/nd/device-policy/x":          false,
+		"/api/nd/attestation":              false,
+		"/api/nd/mgmt/connected":           false,
+		"/api/nd/api/nd/device-policy":     false,
+		"/api/nd/device-policyx":           false,
+		"/api/nd/unattended/caller":        true,
+		"/api/nd/unattended/caller/":       false,
+		"/api/nd/unattended":               false,
+		"/api/nd/api/nd/unattended/caller": false,
 	} {
 		chat, socket := deviceChatRequest(httptest.NewRequest("GET", path, nil))
 		if chat != want || socket {

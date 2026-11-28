@@ -15,6 +15,7 @@ import (
 	osSignal "os/signal"
 	"path/filepath"
 	"strings"
+	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -692,9 +693,13 @@ func serverMain(stop <-chan struct{}) (exitCode int) {
 		if sessionLimiter != nil {
 			relaySrv.SetSessionLimiter(sessionLimiter)
 		}
+		// The API server comes after the relay; a session that ends
+		// before it is there has nobody to tell
+		var relayEndedTo atomic.Pointer[api.Server]
 		relaySrv.SetSessionReporter(relay.SessionReporterFuncs{
 			Started: billingSvc.ActivateRelay,
 			Ended: func(uuid string, _ relay.SessionStats) {
+				relayEndedTo.Load().RelayEnded(uuid)
 				billingSvc.EndRelay(uuid)
 				if err := database.EndPeerConnectionSessionByRelay(uuid); err != nil {
 					log.Printf("[warn] end connection session for relay %s: %v", uuid, err)
@@ -707,6 +712,7 @@ func serverMain(stop <-chan struct{}) (exitCode int) {
 		defer relaySrv.Stop()
 
 		apiSrv := api.New(cfg, database, sig.PeerMap(), relaySrv, Version)
+		relayEndedTo.Store(apiSrv)
 		defer attachPanelSync(apiSrv, billingSvc, database, cfg.DBPath, cfg.AuthDBPath)()
 		attachPanelTrust(apiSrv)
 		apiSrv.SetBlocklist(blocklist)

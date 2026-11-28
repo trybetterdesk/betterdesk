@@ -27,6 +27,7 @@ const supportCallerMaxAge = 60 * time.Second
 
 func (s *Server) supportCallerRoutes(mux *http.ServeMux) {
 	mux.HandleFunc("POST /api/support/caller", s.inProcessOnly(s.handleSupportCaller))
+	mux.HandleFunc("POST /api/unattended/caller", s.inProcessOnly(s.handleUnattendedCaller))
 }
 
 // POST /api/support/caller with {device_id, session}: the console account
