@@ -12,14 +12,16 @@
 		background?: string;
 		/** A readable hex colour for the primary button, or '' */
 		accent?: string;
+		/** The invite and support pages: a wider column for the picture beside the text */
+		wide?: boolean;
 		children: Snippet;
 	}
 
-	let { background = '', accent = '', children }: Props = $props();
+	let { background = '', accent = '', wide = false, children }: Props = $props();
 </script>
 
 <div
-	class={['dl-page', background && 'has-background', accent && 'has-accent']}
+	class={['dl-page', background && 'has-background', accent && 'has-accent', wide && 'wide']}
 	style:--dl-background={background || undefined}
 	style:--dl-accent={accent || undefined}
 >
@@ -51,6 +53,12 @@
 		gap: var(--space-6);
 		width: 100%;
 		max-width: 720px;
+	}
+	.wide .dl-main {
+		padding-top: var(--space-5);
+	}
+	.wide .dl-content {
+		max-width: 1080px;
 	}
 	.has-background .dl-content {
 		align-self: flex-start;

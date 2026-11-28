@@ -301,5 +301,30 @@ describe('the welcome page of an invite', () => {
 		render(CodePage, { code: 'ABCD2345', kind: 'support' });
 		await screen.findByText('onboard.public.support_steps_windows_1');
 		expect(document.querySelector('.welcome-steps')).toBeNull();
+		// The number comes from the list, the item's text is the step alone
+		expect([...document.querySelectorAll('.system-step-list li')].map((li) => li.textContent)).toEqual([
+			'onboard.public.support_steps_windows_1',
+			'onboard.public.support_steps_windows_2',
+			'onboard.public.support_steps_windows_3'
+		]);
+	});
+
+	test('the page is headed by the NeoDesk logo, or the mark with the company that sends it', async () => {
+		answer.body = {
+			success: true,
+			...code({ kind: 'support', server: { ...code().server, name: 'NeoDesk' } })
+		};
+		render(CodePage, { code: 'ABCD2345', kind: 'support' });
+		const logo = await screen.findByRole('img', { name: 'NeoDesk' });
+		expect(logo.closest('header')).toHaveClass('code-brand');
+		expect(logo).toHaveClass('brand-logo-full');
+		cleanup();
+
+		answer.body = { success: true, ...code({ kind: 'support', company: 'Acme IT Service' }) };
+		render(CodePage, { code: 'ABCD2345', kind: 'support' });
+		await screen.findByRole('heading', { level: 1 });
+		const header = document.querySelector('header.code-brand');
+		expect(header?.querySelector('.brand-logo-mark')).not.toBeNull();
+		expect(header?.textContent?.trim()).toBe('Acme IT Service');
 	});
 });

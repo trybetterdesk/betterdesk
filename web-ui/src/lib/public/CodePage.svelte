@@ -1,6 +1,8 @@
 <!--
   The page of an invite (/join/<code>) or a quick support link (/s/<code>),
-  as launch/design/DESIGN.md draws them: who sent it, one big button for
+  as launch/design/DESIGN.md draws them, under the NeoDesk logo (or the
+  mark and the company's name) with the logo's shapes beside the heading
+  on a wide screen: who sent it, one big button for
   this computer (lib/public/onboard.ts) with the file and its publisher,
   the steps for the system (for an invite the three steps of the welcome
   mail first, then what Windows or a Mac asks), the short code for a
@@ -17,6 +19,7 @@
 	import { getPublicCode, type PublicCode } from '#lib/api/onboard.ts';
 	import { formatBytes, formatDate } from '#lib/i18n/format.ts';
 	import { t, tf } from '#lib/i18n/i18n.svelte.ts';
+	import BrandLogo from '#lib/shell/BrandLogo.svelte';
 	import Button from '#lib/ui/Button.svelte';
 	import { Copier } from '#lib/ui/clipboard.svelte.ts';
 	import CodeBlock from '#lib/ui/CodeBlock.svelte';
@@ -27,7 +30,6 @@
 	import OsIcon from '#lib/ui/OsIcon.svelte';
 	import RowList from '#lib/ui/RowList.svelte';
 	import States from '#lib/ui/States.svelte';
-	import Steps from '#lib/ui/Steps.svelte';
 	import ValueCopy from '#lib/ui/ValueCopy.svelte';
 	import { ICONS } from '#lib/util/display.ts';
 	import DownloadFrame from './DownloadFrame.svelte';
@@ -177,84 +179,121 @@
 	{/if}
 </svelte:head>
 
+{#snippet brand()}
+	<header class="code-brand"><BrandLogo name={server || 'NeoDesk'} /></header>
+{/snippet}
+
+{#snippet stepList(items: readonly string[], cls: string)}
+	<ol class={['step-grid', cls]}>
+		{#each items as item, i (i)}<li>{item}</li>{/each}
+	</ol>
+{/snippet}
+
 {#if phase === 'loading'}
-	<DownloadFrame><States kind="loading" /></DownloadFrame>
+	<DownloadFrame wide><States kind="loading" /></DownloadFrame>
 {:else if phase === 'gone'}
-	<DownloadFrame>
-		<section class="code-page" aria-labelledby="code-gone-title">
+	<DownloadFrame wide>
+		{@render brand()}
+		<section class="code-page narrow" aria-labelledby="code-gone-title">
 			<h1 id="code-gone-title">{t('onboard.public.gone_title')}</h1>
-			<p>{t(kind === 'join' ? 'onboard.public.gone_join' : 'onboard.public.gone_support')}</p>
+			<p class="lead">{t(kind === 'join' ? 'onboard.public.gone_join' : 'onboard.public.gone_support')}</p>
 		</section>
 	</DownloadFrame>
 {:else if phase === 'failed'}
-	<DownloadFrame>
-		<section class="code-page" role="alert">
+	<DownloadFrame wide>
+		{@render brand()}
+		<section class="code-page narrow" role="alert">
 			<p>{t('onboard.public.load_failed')}</p>
-			<Button onclick={() => void load()}>{t('errors.try_again')}</Button>
+			<div><Button onclick={() => void load()}>{t('errors.try_again')}</Button></div>
 		</section>
 	</DownloadFrame>
 {:else if data}
-	<DownloadFrame>
+	<DownloadFrame wide>
+		{@render brand()}
 		<section class="code-page" aria-labelledby="code-title">
 			{#if insecure}
 				<Notice tone="warning" class="insecure" message={t('onboard.public.insecure', vars)} />
 			{/if}
-			{#if data.kind === 'support' && data.supporter}
-				<p class="sender">{data.supporter}, {server}</p>
-			{/if}
-			<h1 id="code-title">{heading}</h1>
-			<p class="lead">{lead}</p>
-			{#if welcome}
-				<ol class="welcome-steps">
-					{#each WELCOME_STEPS as key (key)}<li>{t(key, vars)}</li>{/each}
-				</ol>
-			{/if}
 
-			{#if !mine}
-				<div class="phone">
-					<ValueCopy value={here} label={t('onboard.public.copy_link')} />
-					<Button href={mailMyself(heading, here)}>{t('onboard.public.mail_myself')}</Button>
+			<div class="hero">
+				<div class="hero-text">
+					{#if data.kind === 'support' && data.supporter}
+						<p class="sender">{data.supporter}, {server}</p>
+					{/if}
+					<h1 id="code-title">{heading}</h1>
+					<p class="lead">{lead}</p>
+
+					{#if !mine}
+						<div class="phone">
+							<ValueCopy value={here} label={t('onboard.public.copy_link')} />
+							<Button href={mailMyself(heading, here)}>{t('onboard.public.mail_myself')}</Button>
+						</div>
+					{:else if data.release_error}
+						<Notice tone="warning" class="no-release" message={t('onboard.public.no_release')} />
+					{:else if main.kind === 'download'}
+						<div class="main-action">
+							<Button
+								variant="primary"
+								icon={ICONS.download}
+								href={main.download.url}
+								download={main.download.file}
+								class="main-download">{t(downloadLabel(data.kind, mine.platform))}</Button
+							>
+							<p class="file">{fileLine}</p>
+						</div>
+					{:else if main.kind === 'command'}
+						<div class="main-action command">
+							<p>{t(`onboard.public.command_hint_${data.kind}`, vars)}</p>
+							<CodeBlock code={main.command} title={t('onboard.public.command_title')} />
+						</div>
+					{/if}
 				</div>
-			{:else if data.release_error}
-				<Notice tone="warning" class="no-release" message={t('onboard.public.no_release')} />
-			{:else if main.kind === 'download'}
-				<div class="main-action">
-					<Button
-						variant="primary"
-						icon={ICONS.download}
-						href={main.download.url}
-						download={main.download.file}
-						class="main-download">{t(downloadLabel(data.kind, mine.platform))}</Button
-					>
-					<p class="file">{fileLine}</p>
-				</div>
-				{#if windowsPrompt}<p class="prompt-note">{windowsPrompt}</p>{/if}
-				{#if steps.length && welcome}
-					<h2 class="system-steps">{t('onboard.public.mac_steps_title')}</h2>
-				{/if}
-				{#if steps.length}<Steps items={steps} />{/if}
-				{#if macOpen}
-					<div class="open-app">
-						<Button href={data.deep_link} class="open-neodesk">{t('onboard.public.open_app')}</Button>
-					</div>
-				{/if}
-			{:else if main.kind === 'command'}
-				<div class="main-action">
-					<p>{t(`onboard.public.command_hint_${data.kind}`, vars)}</p>
-					<CodeBlock code={main.command} title={t('onboard.public.command_title')} />
+				<!-- The mark's parts as the page's picture: this computer, the person who helps, what both share -->
+				<svg class="hero-art" viewBox="10 10 44 44" aria-hidden="true" focusable="false">
+					<defs><clipPath id="code-art-clip"><circle cx="38" cy="26" r="16" /></clipPath></defs>
+					<rect x="10" y="22" width="32" height="32" rx="10" class="art-square" />
+					<circle cx="38" cy="26" r="16" class="art-circle" />
+					<rect
+						x="10"
+						y="22"
+						width="32"
+						height="32"
+						rx="10"
+						class="art-overlap"
+						clip-path="url(#code-art-clip)"
+					/>
+				</svg>
+			</div>
+
+			{#if welcome}{@render stepList(
+					WELCOME_STEPS.map((key) => t(key, vars)),
+					'welcome-steps'
+				)}{/if}
+			{#if windowsPrompt}<p class="prompt-note">{windowsPrompt}</p>{/if}
+			{#if steps.length && welcome}
+				<h2 class="system-steps">{t('onboard.public.mac_steps_title')}</h2>
+			{/if}
+			{#if steps.length}{@render stepList(steps, 'system-step-list')}{/if}
+			{#if macOpen}
+				<div class="open-app">
+					<Button href={data.deep_link} class="open-neodesk">{t('onboard.public.open_app')}</Button>
 				</div>
 			{/if}
 
 			{#if mine}
 				<div class="short-code">
-					<p>{t(`onboard.public.code_hint_${data.kind}`)}</p>
-					<p class="code">{@render copyable(data.display_code, codeCopier)}</p>
-					{#if data.kind === 'join' && data.server.address}
-						{@const [before, after = ''] = t('onboard.public.server_address', { address: MARK }).split(MARK)}
-						<p class="server-address">
-							{before}{@render copyable(data.server.address, addressCopier)}{after}
-						</p>
-					{/if}
+					<div class="short-code-text">
+						<p>{t(`onboard.public.code_hint_${data.kind}`)}</p>
+						<p class="code">{@render copyable(data.display_code, codeCopier)}</p>
+						{#if data.kind === 'join' && data.server.address}
+							{@const [before, after = ''] = t('onboard.public.server_address', { address: MARK }).split(
+								MARK
+							)}
+							<p class="server-address">
+								{before}{@render copyable(data.server.address, addressCopier)}{after}
+							</p>
+						{/if}
+					</div>
 					{#if data.deep_link && !macOpen}
 						<div class="open-app">
 							<Button href={data.deep_link} class="open-neodesk"
@@ -288,27 +327,38 @@
 {/if}
 
 <style>
+	.code-brand {
+		display: flex;
+		align-items: center;
+		min-height: 32px;
+	}
+	/* The full logo 28 px high, as on the sign-in page; another name gets the mark and the name */
+	.code-brand > :global(.brand-logo-full) {
+		width: auto;
+		height: 28px;
+	}
+	.code-brand > :global(.brand-logo-mark) {
+		width: 28px;
+		height: 28px;
+	}
+	.code-brand :global(.brand-name) {
+		font-size: var(--text-lg);
+	}
 	.code-page {
 		display: flex;
 		flex-direction: column;
+		gap: var(--space-6);
+	}
+	.code-page.narrow {
 		gap: var(--space-4);
+		max-width: var(--measure);
 	}
 	.code-page h1 {
 		margin: 0;
-	}
-	.welcome-steps {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
-		margin: 0;
-		padding-inline-start: 1.5rem;
-	}
-	.welcome-steps li {
-		padding-inline-start: var(--space-1);
-	}
-	.system-steps {
-		margin: 0;
-		font-size: var(--text-base, 1rem);
+		font-size: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+		line-height: 1.15;
+		letter-spacing: -0.01em;
+		text-wrap: balance;
 	}
 	.lead,
 	.file,
@@ -318,23 +368,106 @@
 		margin: 0;
 		color: var(--text-muted);
 	}
+	.lead {
+		max-width: 34rem;
+		font-size: var(--text-lg);
+		line-height: 1.5;
+	}
+	.sender {
+		font-weight: 600;
+	}
 	.footer {
 		font-size: var(--text-sm);
+	}
+
+	/* Text and the main button on the left, the mark's shapes on the right */
+	.hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+		align-items: center;
+		gap: var(--space-7);
+		padding-block: var(--space-5) var(--space-3);
+	}
+	.hero-text {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-4);
+		min-width: 0;
+	}
+	.hero-art {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	.art-square {
+		fill: var(--logo-square);
+	}
+	.art-circle {
+		fill: var(--logo-circle);
+	}
+	.art-overlap {
+		fill: var(--logo-overlap);
 	}
 	.main-action {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		gap: var(--space-2);
+		margin-top: var(--space-3);
+	}
+	.main-action.command {
+		align-self: stretch;
 	}
 	.main-action :global(.main-download) {
-		min-height: 3rem;
+		min-height: 3.25rem;
 		padding-inline: var(--space-6);
-		font-size: var(--text-lg, 1.125rem);
+		font-size: var(--text-lg);
 	}
 	.main-action p {
 		margin: 0;
 	}
+	.file {
+		font-size: var(--text-sm);
+		overflow-wrap: anywhere;
+	}
+
+	/* The steps side by side, each under a rule with its number */
+	.step-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+		gap: var(--space-5) var(--space-6);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		counter-reset: step;
+	}
+	.step-grid li {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+		padding-top: var(--space-3);
+		border-top: 1px solid var(--rule);
+		line-height: 1.5;
+		counter-increment: step;
+	}
+	/* The step's number before its text, out of the text itself, so the item's text stays the step alone */
+	.step-grid li::before {
+		content: counter(step);
+		color: var(--text-muted);
+		font-size: var(--text-xl);
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		line-height: 1;
+	}
+	.system-steps {
+		margin: 0 0 calc(var(--space-3) - var(--space-6));
+		font-size: var(--text-base, 1rem);
+	}
+	.prompt-note {
+		max-width: 48rem;
+	}
+
 	.phone,
 	.open-app {
 		display: flex;
@@ -342,29 +475,36 @@
 		align-items: center;
 		gap: var(--space-2) var(--space-3);
 	}
+
+	/* The code for an app that is already there: a band between two rules */
 	.short-code {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-4) var(--space-6);
+		padding: var(--space-5) 0;
+		border-block: 1px solid var(--rule);
+	}
+	.short-code-text {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-1);
-		padding: var(--space-3) var(--space-4);
-		border: 1px solid var(--rule);
-		border-radius: var(--radius);
+		min-width: 0;
 	}
 	.short-code p {
 		margin: 0;
 	}
 	.short-code .code {
 		font-family: var(--font-mono, monospace);
-		font-size: 1.75rem;
+		font-size: 2rem;
 		font-weight: 600;
 		letter-spacing: 0.12em;
 	}
 	.short-code .server-address {
 		overflow-wrap: anywhere;
 	}
-	.short-code .open-app {
-		margin-top: var(--space-2);
-	}
+
 	.copyable {
 		display: inline-flex;
 		align-items: center;
@@ -390,8 +530,8 @@
 	}
 	.copyable :global(svg) {
 		flex: none;
-		width: 1em;
-		height: 1em;
+		width: 0.75em;
+		height: 0.75em;
 		color: var(--text-muted);
 	}
 	.copyable:hover span {
@@ -399,5 +539,36 @@
 	}
 	.copyable.copied :global(svg) {
 		color: var(--success);
+	}
+
+	@media (max-width: 800px) {
+		.hero {
+			grid-template-columns: minmax(0, 1fr);
+			padding-block: 0;
+		}
+		.hero-art {
+			display: none;
+		}
+		.lead {
+			font-size: var(--text-base, 1rem);
+		}
+		/* The main button takes the column, its label wraps on a narrow phone */
+		.main-action {
+			align-self: stretch;
+		}
+		.main-action :global(a.main-download) {
+			width: 100%;
+			height: auto;
+			padding-block: var(--space-2);
+			white-space: normal;
+		}
+		.short-code .code {
+			font-size: 1.6rem;
+		}
+	}
+	@media (forced-colors: active) {
+		.hero-art {
+			display: none;
+		}
 	}
 </style>
