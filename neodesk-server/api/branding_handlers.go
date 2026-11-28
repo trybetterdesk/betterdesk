@@ -1953,9 +1953,11 @@ func normalizeEnrollmentTags(raw string) string {
 	return strings.Join(out, ",")
 }
 
-// handleDeviceSelfAccessPolicy lets an enrolled device publish its local
-// access policy. The password itself never leaves the Support Agent: the
-// server keeps only a non-verifier marker for UI/audit status.
+// handleDeviceSelfAccessPolicy lets an enrolled device say whether it keeps
+// a local password. The password itself never leaves the Support Agent: the
+// server keeps only a non-verifier marker for UI/audit status. The rest of
+// the access policy (unattended access, schedule, allowed operators) is
+// the admin's: the device's unattended_enabled is read and ignored.
 // POST /api/devices/self/access-policy
 func (s *Server) handleDeviceSelfAccessPolicy(w http.ResponseWriter, r *http.Request) {
 	var body struct {
@@ -1983,20 +1985,10 @@ func (s *Server) handleDeviceSelfAccessPolicy(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	policy := &db.AccessPolicy{
-		PeerID:            body.DeviceID,
-		UnattendedEnabled: body.UnattendedEnabled,
-		UpdatedBy:         "device:" + body.DeviceID,
-	}
-	if body.PasswordSet {
-		// This marker is intentionally not a password verifier. Relay and CDAP
-		// authorization always verify the local secret on the device.
-		policy.PasswordHash = "LOCAL_ONLY"
-	} else {
-		// Clear legacy server-side password hashes after an agent upgrades.
-		policy.PasswordHash = "CLEAR"
-	}
-	if err := s.db.SaveAccessPolicy(policy); err != nil {
+	// The marker is intentionally not a password verifier: relay and CDAP
+	// authorization always verify the local secret on the device. Without
+	// a local password the marker (and a legacy server-side hash) goes.
+	if err := s.db.SetAccessPolicyPasswordMarker(body.DeviceID, body.PasswordSet); err != nil {
 		http.Error(w, "failed to save policy", http.StatusInternalServerError)
 		return
 	}

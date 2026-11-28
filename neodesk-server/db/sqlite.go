@@ -3468,6 +3468,22 @@ func (s *SQLiteDB) SaveAccessPolicy(p *AccessPolicy) error {
 	return err
 }
 
+// SetAccessPolicyPasswordMarker sets or clears the local password marker
+// of a peer's access policy and nothing else.
+func (s *SQLiteDB) SetAccessPolicyPasswordMarker(peerID string, set bool) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	if !set {
+		_, err := s.db.Exec(`UPDATE access_policies SET password_hash = '' WHERE peer_id = ?`, peerID)
+		return err
+	}
+	_, err := s.db.Exec(
+		`INSERT INTO access_policies (peer_id, password_hash) VALUES (?, 'LOCAL_ONLY')
+		 ON CONFLICT(peer_id) DO UPDATE SET password_hash = 'LOCAL_ONLY'`, peerID)
+	return err
+}
+
 // DeleteAccessPolicy removes the access policy for a peer device.
 func (s *SQLiteDB) DeleteAccessPolicy(peerID string) error {
 	s.mu.Lock()

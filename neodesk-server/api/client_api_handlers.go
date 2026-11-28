@@ -1115,14 +1115,8 @@ func (s *Server) handleClientHeartbeat(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if policy, err := s.db.GetAccessPolicy(deviceID); err == nil && policy != nil {
-		resp["access_policy"] = map[string]any{
-			"unattended_enabled": policy.UnattendedEnabled,
-			"password_set":       policy.PasswordSet,
-			"schedule_enabled":   policy.ScheduleEnabled,
-		}
-	}
-	// connection_mode_command is added only inside the sealed envelope.
+	// connection_mode_command and access_policy are added only inside the
+	// sealed envelope.
 	s.writeHeartbeatResponse(w, deviceID, resp, responsePublicKey)
 }
 

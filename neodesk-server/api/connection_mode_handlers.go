@@ -11,6 +11,7 @@ import (
 
 	"github.com/neodeskapp/neodesk/neodesk-server/audit"
 	"github.com/neodeskapp/neodesk/neodesk-server/db"
+	"github.com/neodeskapp/neodesk/neodesk-server/policy/unattended"
 )
 
 const connectionModeCapability = "connection-mode.remote-control"
@@ -295,6 +296,12 @@ func (s *Server) writeHeartbeatResponse(w http.ResponseWriter, deviceID string, 
 	if unread, err := s.db.UnreadDeviceTickets(deviceID); err == nil {
 		payload["tickets_unread"] = unread
 	}
+	// The device's access policy, which the receiver applies to unattended
+	// callers (UNATTENDED-CONTRACT.md, A279), goes only to a device that
+	// proved itself, sealed to its key
+	if policy, ok := s.accessPolicyWire(deviceID); ok {
+		payload["access_policy"] = policy
+	}
 	var deliverID string
 	if command, err := s.db.DeliverableConnectionModeCommand(deviceID, time.Now().UTC()); err != nil {
 		log.Printf("[api] connection mode delivery for %s: %v", deviceID, err)
@@ -313,4 +320,32 @@ func (s *Server) writeHeartbeatResponse(w http.ResponseWriter, deviceID string, 
 		}
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"neodesk_envelope": envelope})
+}
+
+// accessPolicyWire is the device's access policy as the sealed heartbeat
+// carries it: every field, with the schedule's days and the allowed
+// operators as lists. A device without a policy gets the defaults, which
+// the rule reads like no policy, so a policy the admin deleted does not
+// live on in the device's copy. ok is false when the policy could not be
+// read.
+func (s *Server) accessPolicyWire(deviceID string) (map[string]any, bool) {
+	policy, err := s.db.GetAccessPolicy(deviceID)
+	switch {
+	case err != nil && !db.IsNoRows(err):
+		log.Printf("[api] access policy of %s for its heartbeat: %v", deviceID, err)
+		return nil, false
+	case err != nil || policy == nil:
+		policy = &db.AccessPolicy{PeerID: deviceID}
+	}
+	a := unattended.FromDB(policy)
+	return map[string]any{
+		"unattended_enabled": a.UnattendedEnabled,
+		"password_set":       policy.PasswordSet,
+		"schedule_enabled":   a.ScheduleEnabled,
+		"schedule_days":      a.ScheduleDays,
+		"schedule_start":     a.ScheduleStart,
+		"schedule_end":       a.ScheduleEnd,
+		"schedule_timezone":  a.ScheduleTimezone,
+		"allowed_operators":  a.AllowedOperators,
+	}, true
 }

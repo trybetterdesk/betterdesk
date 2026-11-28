@@ -1,0 +1,1233 @@
+{
+  "about": "Shared test vectors of the unattended access rule (lead/receiver-app/UNATTENDED-CONTRACT.md, A279). The server's evaluator (neodesk-server/policy/unattended) and the receiver app run every vector; the client copies this file unchanged. mode null is a missing connection mode, access null a device without an access policy, now a UTC instant, want allow or the refusal's reason.",
+  "vectors": [
+    {
+      "name": "ask_always refuses with the device switch on",
+      "mode": "ask_always",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "ask_always"
+    },
+    {
+      "name": "ask_always refuses a device without a policy",
+      "mode": "ask_always",
+      "org_operators": [],
+      "access": null,
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "ask_always"
+    },
+    {
+      "name": "ask_always comes before the schedule and operators",
+      "mode": "ask_always",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": false,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": [
+          "ben"
+        ]
+      },
+      "caller": "anna",
+      "now": "2026-12-05T10:00:00Z",
+      "want": "ask_always"
+    },
+    {
+      "name": "unattended allows a device without a policy",
+      "mode": "unattended",
+      "org_operators": [],
+      "access": null,
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "unattended ignores the device switch",
+      "mode": "unattended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": false,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "attended needs the device switch",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": false,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "not_enabled"
+    },
+    {
+      "name": "attended refuses a device without a policy",
+      "mode": "attended",
+      "org_operators": [],
+      "access": null,
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "not_enabled"
+    },
+    {
+      "name": "attended with the device switch allows",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "missing mode needs the device switch",
+      "mode": null,
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": false,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "not_enabled"
+    },
+    {
+      "name": "missing mode refuses a device without a policy",
+      "mode": null,
+      "org_operators": [],
+      "access": null,
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "not_enabled"
+    },
+    {
+      "name": "missing mode with the device switch allows",
+      "mode": null,
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "empty mode counts as missing",
+      "mode": "",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": false,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "not_enabled"
+    },
+    {
+      "name": "unknown mode counts as attended",
+      "mode": "sometimes",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": false,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "not_enabled"
+    },
+    {
+      "name": "not_enabled comes before the schedule and operators",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": false,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": [
+          "ben"
+        ]
+      },
+      "caller": "anna",
+      "now": "2026-12-05T10:00:00Z",
+      "want": "not_enabled"
+    },
+    {
+      "name": "inside the window",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T09:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "one minute before the start",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T06:59:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "at the start",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T07:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "one minute before the end",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T16:59:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "at the end",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T17:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "a day that is not listed",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-05T10:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "the schedule holds under unattended too",
+      "mode": "unattended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": false,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-05T10:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "the weekday is the local one: Friday night UTC is Saturday in Berlin",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "fri"
+        ],
+        "schedule_start": "00:00",
+        "schedule_end": "00:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-04T23:30:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "the weekday is the local one: Sunday night UTC is Monday in Berlin",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon"
+        ],
+        "schedule_start": "00:00",
+        "schedule_end": "00:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-11-29T23:30:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "start equals end is the whole day",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "tue"
+        ],
+        "schedule_start": "00:00",
+        "schedule_end": "00:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T22:59:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "start equals end only on listed days",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "tue"
+        ],
+        "schedule_start": "12:00",
+        "schedule_end": "12:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-02T00:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "day names in any case",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "Mon",
+          "TUE"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "over midnight: the evening of a listed day",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon"
+        ],
+        "schedule_start": "22:00",
+        "schedule_end": "06:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-11-30T22:30:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "over midnight: after midnight counts for the day it started",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon"
+        ],
+        "schedule_start": "22:00",
+        "schedule_end": "06:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T03:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "over midnight: after midnight of an unlisted start day",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "tue"
+        ],
+        "schedule_start": "22:00",
+        "schedule_end": "06:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T03:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "over midnight: at the end",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon"
+        ],
+        "schedule_start": "22:00",
+        "schedule_end": "06:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T05:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "over midnight: in the gap during the day",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon"
+        ],
+        "schedule_start": "22:00",
+        "schedule_end": "06:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-11-30T12:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "over midnight: the evening of an unlisted day",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon"
+        ],
+        "schedule_start": "22:00",
+        "schedule_end": "06:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T22:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "DST start in Berlin: 06:30 UTC is 08:30 summer time",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "sun"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-03-29T06:30:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "the day before DST start: 06:30 UTC is 07:30 winter time",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "sat"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-03-28T06:30:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "DST start in Berlin: 16:30 UTC is 18:30 summer time",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "sun"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-03-29T16:30:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "DST start in Berlin: the skipped hour 02:00 to 03:00 never comes",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "sun"
+        ],
+        "schedule_start": "02:00",
+        "schedule_end": "03:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-03-29T01:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "DST end in Berlin: 06:30 UTC is 07:30 winter time",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "sun"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-10-25T06:30:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "DST end in Berlin: 07:00 UTC is 08:00 winter time",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "sun"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-10-25T07:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "DST end in Berlin: the first 02:30",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "sun"
+        ],
+        "schedule_start": "02:00",
+        "schedule_end": "03:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-10-25T00:30:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "DST end in Berlin: the second 02:30",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "sun"
+        ],
+        "schedule_start": "02:00",
+        "schedule_end": "03:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-10-25T01:30:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "DST end in Berlin: 03:00 after the repeated hour",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "sun"
+        ],
+        "schedule_start": "02:00",
+        "schedule_end": "03:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-10-25T02:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "another time zone: New York morning",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "09:00",
+        "schedule_end": "17:00",
+        "schedule_timezone": "America/New_York",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T14:30:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "another time zone: before the New York start",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "09:00",
+        "schedule_end": "17:00",
+        "schedule_timezone": "America/New_York",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T13:30:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "unknown time zone",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Atlantis",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "empty time zone",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "Local is no time zone",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Local",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "UTC is a time zone",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "UTC",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T08:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "bad start time",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "8:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "bad end time",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "24:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "no days listed",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "schedule off ignores a bad schedule",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "x",
+        "schedule_end": "",
+        "schedule_timezone": "Europe/Atlantis",
+        "allowed_operators": []
+      },
+      "caller": "anna",
+      "now": "2026-12-05T03:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "outside_schedule comes before operators",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": [
+          "ben"
+        ]
+      },
+      "caller": "anna",
+      "now": "2026-12-05T10:00:00Z",
+      "want": "outside_schedule"
+    },
+    {
+      "name": "org list with the caller",
+      "mode": "unattended",
+      "org_operators": [
+        "anna",
+        "ben"
+      ],
+      "access": null,
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "org list without the caller",
+      "mode": "unattended",
+      "org_operators": [
+        "anna",
+        "ben"
+      ],
+      "access": null,
+      "caller": "carl",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "operator_not_allowed"
+    },
+    {
+      "name": "org list compares without case and spaces",
+      "mode": "unattended",
+      "org_operators": [
+        " Anna"
+      ],
+      "access": null,
+      "caller": "ANNA ",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "org list of blanks is everyone",
+      "mode": "unattended",
+      "org_operators": [
+        "",
+        " "
+      ],
+      "access": null,
+      "caller": "carl",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "device list with the caller",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": [
+          "anna"
+        ]
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "device list without the caller",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": [
+          "anna"
+        ]
+      },
+      "caller": "ben",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "operator_not_allowed"
+    },
+    {
+      "name": "device list compares without case and spaces",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": [
+          " Ben "
+        ]
+      },
+      "caller": "bEn",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "both lists with the caller",
+      "mode": "attended",
+      "org_operators": [
+        "anna"
+      ],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": [
+          "anna",
+          "ben"
+        ]
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "caller only in the org list",
+      "mode": "attended",
+      "org_operators": [
+        "anna"
+      ],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": [
+          "ben"
+        ]
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "operator_not_allowed"
+    },
+    {
+      "name": "caller only in the device list",
+      "mode": "attended",
+      "org_operators": [
+        "ben"
+      ],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": [
+          "anna"
+        ]
+      },
+      "caller": "anna",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "operator_not_allowed"
+    },
+    {
+      "name": "empty lists are everyone",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": false,
+        "schedule_days": [],
+        "schedule_start": "",
+        "schedule_end": "",
+        "schedule_timezone": "",
+        "allowed_operators": []
+      },
+      "caller": "zoe",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "allow"
+    },
+    {
+      "name": "an empty caller is in no list",
+      "mode": "unattended",
+      "org_operators": [
+        "anna"
+      ],
+      "access": null,
+      "caller": "",
+      "now": "2026-12-01T10:00:00Z",
+      "want": "operator_not_allowed"
+    },
+    {
+      "name": "operators within the schedule",
+      "mode": "attended",
+      "org_operators": [],
+      "access": {
+        "unattended_enabled": true,
+        "schedule_enabled": true,
+        "schedule_days": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri"
+        ],
+        "schedule_start": "08:00",
+        "schedule_end": "18:00",
+        "schedule_timezone": "Europe/Berlin",
+        "allowed_operators": [
+          "anna"
+        ]
+      },
+      "caller": "anna",
+      "now": "2026-12-01T09:00:00Z",
+      "want": "allow"
+    }
+  ]
+}

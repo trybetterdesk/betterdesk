@@ -901,6 +901,11 @@ type Database interface {
 	// Access Policies (unattended access management)
 	GetAccessPolicy(peerID string) (*AccessPolicy, error)
 	SaveAccessPolicy(p *AccessPolicy) error
+	// SetAccessPolicyPasswordMarker records whether the device keeps a
+	// local password (LOCAL_ONLY) or none, and changes nothing else of
+	// its access policy. Without a policy, a device with a password gets
+	// one that only carries the marker; one without a password gets none.
+	SetAccessPolicyPasswordMarker(peerID string, set bool) error
 	DeleteAccessPolicy(peerID string) error
 
 	// Role Permissions (RBAC Phase 52)

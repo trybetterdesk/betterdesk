@@ -32,6 +32,7 @@ import (
 	"github.com/neodeskapp/neodesk/neodesk-server/meshcentral"
 	"github.com/neodeskapp/neodesk/neodesk-server/metrics"
 	"github.com/neodeskapp/neodesk/neodesk-server/peer"
+	"github.com/neodeskapp/neodesk/neodesk-server/policy/unattended"
 	"github.com/neodeskapp/neodesk/neodesk-server/ratelimit"
 	"github.com/neodeskapp/neodesk/neodesk-server/relay"
 	"github.com/neodeskapp/neodesk/neodesk-server/security"
@@ -2705,6 +2706,13 @@ func (s *Server) handleSaveAccessPolicy(w http.ResponseWriter, r *http.Request) 
 		}
 	}
 
+	// The schedule counts in an IANA time zone the caller check knows: a
+	// zone it does not know would refuse every unattended connection
+	if tz := strings.TrimSpace(body.ScheduleTimezone); tz != "" && unattended.Zone(tz) == nil {
+		writeJSON(w, http.StatusBadRequest, map[string]any{"error": "unknown schedule_timezone: " + tz})
+		return
+	}
+
 	// Validate schedule days
 	validDays := map[string]bool{"mon": true, "tue": true, "wed": true, "thu": true, "fri": true, "sat": true, "sun": true}
 	if body.ScheduleDays != "" {
@@ -2723,9 +2731,12 @@ func (s *Server) handleSaveAccessPolicy(w http.ResponseWriter, r *http.Request) 
 		ScheduleDays:      body.ScheduleDays,
 		ScheduleStartTime: body.ScheduleStartTime,
 		ScheduleEndTime:   body.ScheduleEndTime,
-		ScheduleTimezone:  body.ScheduleTimezone,
+		ScheduleTimezone:  strings.TrimSpace(body.ScheduleTimezone),
 		AllowedOperators:  body.AllowedOperators,
-		UpdatedBy:         s.remoteIP(r),
+		// Who changed it: the signed-in account (the console's account
+		// for a call through the console), and when
+		UpdatedBy: actorFromCtx(r),
+		UpdatedAt: time.Now().UTC().Format(time.RFC3339),
 	}
 
 	// Hash password if provided

@@ -3074,6 +3074,19 @@ func (pg *PostgresDB) SaveAccessPolicy(p *AccessPolicy) error {
 	return err
 }
 
+// SetAccessPolicyPasswordMarker sets or clears the local password marker
+// of a peer's access policy and nothing else.
+func (pg *PostgresDB) SetAccessPolicyPasswordMarker(peerID string, set bool) error {
+	if !set {
+		_, err := pg.pool.Exec(pg.ctx, `UPDATE access_policies SET password_hash = '' WHERE peer_id = $1`, peerID)
+		return err
+	}
+	_, err := pg.pool.Exec(pg.ctx,
+		`INSERT INTO access_policies (peer_id, password_hash) VALUES ($1, 'LOCAL_ONLY')
+		 ON CONFLICT(peer_id) DO UPDATE SET password_hash = 'LOCAL_ONLY'`, peerID)
+	return err
+}
+
 // DeleteAccessPolicy removes the access policy for a peer device.
 func (pg *PostgresDB) DeleteAccessPolicy(peerID string) error {
 	_, err := pg.pool.Exec(pg.ctx, `DELETE FROM access_policies WHERE peer_id = $1`, peerID)
