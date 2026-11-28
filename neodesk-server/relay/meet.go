@@ -110,7 +110,9 @@ func (s *Server) forwardTCPLeg(conn net.Conn, uuid, remote, pod string) bool {
 	}
 	log.Printf("[relay] Leg of UUID %s from %s handed to pod %s (stream opened in %s)", relayUUIDLogID(uuid), remote, pod, took)
 	s.meet.forwarded.Store(uuid, pod)
-	pipeBoth(conn, stream)
+	s.ForwardedLegs.Add(1)
+	defer s.ForwardedLegs.Add(-1)
+	pipeBoth(s.baseCtx(), conn, stream)
 	return true
 }
 
@@ -126,6 +128,8 @@ func (s *Server) forwardWSLeg(ws *websocket.Conn, uuid, remote, pod string) bool
 	}
 	log.Printf("[relay] WS leg of UUID %s from %s handed to pod %s (stream opened in %s)", relayUUIDLogID(uuid), remote, pod, took)
 	s.meet.forwarded.Store(uuid, pod)
+	s.ForwardedLegs.Add(1)
+	defer s.ForwardedLegs.Add(-1)
 	ws.SetReadLimit(MaxWSRelayMessage)
 	idle := config.RelayIdleTimeout
 	done := make(chan struct{})
@@ -197,8 +201,14 @@ func remoteAddr(s string) net.Addr {
 	return stringAddr(s)
 }
 
-// pipeBoth copies both ways until one side ends, then closes both.
-func pipeBoth(a, b net.Conn) {
+// pipeBoth copies both ways until one side ends or ctx ends (the server
+// stops), then closes both.
+func pipeBoth(ctx context.Context, a, b net.Conn) {
+	stop := context.AfterFunc(ctx, func() {
+		a.Close()
+		b.Close()
+	})
+	defer stop()
 	done := make(chan struct{})
 	var once sync.Once
 	go func() {
@@ -229,7 +239,9 @@ func (s *Server) Drain(grace time.Duration) int64 {
 	}
 	deadline := time.Now().Add(grace)
 	for {
-		n := s.ActiveSessions.Load()
+		// Legs this pod hands to another pod count too: the client's
+		// connection to them ends with this pod
+		n := s.ActiveSessions.Load() + s.ForwardedLegs.Load()
 		if n == 0 {
 			return 0
 		}

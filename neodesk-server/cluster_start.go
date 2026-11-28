@@ -147,6 +147,8 @@ func (rt *clusterRuntime) drain() {
 	rt.mesh.Leave()
 	if rt.signal != nil {
 		rt.signal.PeerMap().Leave()
+		// Peers register with another pod at their next heartbeat
+		rt.signal.Drain()
 	}
 	if rt.relay != nil {
 		left := rt.relay.Drain(rt.cfg.ShutdownGrace)
