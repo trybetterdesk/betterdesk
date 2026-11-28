@@ -1,0 +1,51 @@
+# The ports clients connect to. One address for every replica: a session's
+# legs that reach different pods meet through the pods themselves.
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "neodesk.fullname" . }}
+  labels:
+    {{- include "neodesk.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if ne .Values.service.type "ClusterIP" }}
+  externalTrafficPolicy: {{ .Values.service.externalTrafficPolicy }}
+  {{- end }}
+  {{- with .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ . }}
+  {{- end }}
+  selector:
+    {{- include "neodesk.selector" . | nindent 4 }}
+  ports:
+    - { name: nat-test, port: 21115, targetPort: nat-test, protocol: TCP }
+    - { name: signal, port: 21116, targetPort: signal, protocol: TCP }
+    - { name: signal-udp, port: 21116, targetPort: signal-udp, protocol: UDP }
+    - { name: relay, port: 21117, targetPort: relay, protocol: TCP }
+    - { name: signal-ws, port: 21118, targetPort: signal-ws, protocol: TCP }
+    - { name: relay-ws, port: 21119, targetPort: relay-ws, protocol: TCP }
+    - { name: api, port: 21121, targetPort: api, protocol: TCP }
+    {{- if .Values.service.clientAPI }}
+    - { name: client-api, port: 21114, targetPort: client-api, protocol: TCP }
+    {{- end }}
+    {{- if .Values.service.cdap }}
+    - { name: cdap, port: 21122, targetPort: cdap, protocol: TCP }
+    {{- end }}
+---
+# The web console and the HTTP API inside the cluster, for an Ingress
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "neodesk.fullname" . }}-web
+  labels:
+    {{- include "neodesk.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "neodesk.selector" . | nindent 4 }}
+  ports:
+    - { name: console, port: 3375, targetPort: console, protocol: TCP }
+    - { name: api, port: 21121, targetPort: api, protocol: TCP }

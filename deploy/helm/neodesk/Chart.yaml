@@ -1,0 +1,13 @@
+apiVersion: v2
+name: neodesk
+description: NeoDesk remote desktop server (signal, relay, API and web console) on Kubernetes, one or several replicas
+type: application
+version: 0.1.0
+appVersion: "3.6.0-rc.6"
+home: https://neode.sk
+sources:
+  - https://github.com/neodeskapp/neodesk
+keywords:
+  - remote-desktop
+  - rustdesk
+  - neodesk

@@ -1,0 +1,19 @@
+NeoDesk runs with {{ if .Values.autoscaling.enabled }}{{ .Values.autoscaling.minReplicas }} to {{ .Values.autoscaling.maxReplicas }}{{ else }}{{ .Values.replicaCount }}{{ end }} replica(s).
+
+Clients connect to {{ .Values.publicHost }} (ID server and relay; the Service
+{{ include "neodesk.fullname" . }} publishes 21115 to 21119 and 21121).
+{{- if .Values.ingress.enabled }}
+Web console: https://{{ .Values.ingress.host }}
+{{- else }}
+Web console: kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "neodesk.fullname" . }}-web 3375
+{{- end }}
+
+The server's public key, for the clients' Key setting:
+  kubectl -n {{ .Release.Namespace }} exec deploy/{{ include "neodesk.fullname" . }} -- cat /opt/neodesk/data/id_ed25519.pub
+
+The first admin's password (random unless ADMIN_PASSWORD was set):
+  kubectl -n {{ .Release.Namespace }} exec deploy/{{ include "neodesk.fullname" . }} -- neodesk-show-admin-credentials
+{{- if .Values.valkey.enabled }}
+
+valkey.enabled runs a Valkey without persistence or password, for tests.
+{{- end }}

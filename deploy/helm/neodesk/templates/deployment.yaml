@@ -1,0 +1,177 @@
+{{- include "neodesk.validate" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "neodesk.fullname" . }}
+  labels:
+    {{- include "neodesk.labels" . | nindent 4 }}
+    app.kubernetes.io/component: server
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "neodesk.selector" . | nindent 6 }}
+  strategy:
+    # One new pod at a time, and never fewer ready pods than wanted: the new
+    # pod migrates the database under the installation lock while the old
+    # ones keep serving
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        {{- include "neodesk.selector" . | nindent 8 }}
+      annotations:
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ add .Values.shutdownGraceSeconds 20 }}
+      {{- if .Values.keyPair.existingSecret }}
+      initContainers:
+        # Puts the key pair of the Secret on the volume, unless one is there
+        - name: key-pair
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -f /data/server/id_ed25519 ]; then
+                mkdir -p /data/server
+                cp /keys/id_ed25519 /keys/id_ed25519.pub /data/server/
+                chmod 600 /data/server/id_ed25519
+                echo "Key pair copied from the Secret"
+              fi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: key-pair
+              mountPath: /keys
+              readOnly: true
+      {{- end }}
+      containers:
+        - name: neodesk
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: RELAY_SERVERS
+              value: {{ .Values.publicHost | quote }}
+            - name: NEODESK_KEY_PREFIX
+              value: {{ .Values.valkey.keyPrefix | quote }}
+            - name: NEODESK_SHUTDOWN_GRACE
+              value: "{{ .Values.shutdownGraceSeconds }}s"
+            - name: NEODESK_UPDATE_MODE
+              value: image
+            {{- if .Values.tls.existingSecret }}
+            - name: TLS_CERT
+              value: /etc/neodesk/tls/tls.crt
+            - name: TLS_KEY
+              value: /etc/neodesk/tls/tls.key
+            {{- end }}
+            {{- with .Values.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ include "neodesk.secretName" . }}
+          ports:
+            - { name: console, containerPort: 3375, protocol: TCP }
+            - { name: api, containerPort: 21121, protocol: TCP }
+            - { name: client-api, containerPort: 21114, protocol: TCP }
+            - { name: nat-test, containerPort: 21115, protocol: TCP }
+            - { name: signal, containerPort: 21116, protocol: TCP }
+            - { name: signal-udp, containerPort: 21116, protocol: UDP }
+            - { name: relay, containerPort: 21117, protocol: TCP }
+            - { name: signal-ws, containerPort: 21118, protocol: TCP }
+            - { name: relay-ws, containerPort: 21119, protocol: TCP }
+            - { name: cdap, containerPort: 21122, protocol: TCP }
+            # Pod-to-pod calls of the installation, signed with
+            # NEODESK_CLUSTER_SECRET; not published
+            - { name: cluster, containerPort: 21124, protocol: TCP }
+          startupProbe:
+            httpGet: { path: /api/health, port: api }
+            periodSeconds: 5
+            failureThreshold: 120
+          readinessProbe:
+            # 503 while the pod drains or Valkey does not answer
+            httpGet: { path: /api/health, port: api }
+            periodSeconds: 5
+            failureThreshold: 2
+          livenessProbe:
+            # The process, not its dependencies: a Valkey outage must not
+            # restart every pod
+            tcpSocket: { port: signal }
+            periodSeconds: 20
+            failureThreshold: 3
+          lifecycle:
+            preStop:
+              # The Service drops the pod before it stops listening
+              exec:
+                command: ["sleep", "5"]
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /opt/neodesk/data
+              subPath: server
+            - name: data
+              mountPath: /app/data
+              subPath: console
+            {{- if .Values.tls.existingSecret }}
+            - name: tls
+              mountPath: /etc/neodesk/tls
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "neodesk.claimName" . }}
+        {{- if .Values.keyPair.existingSecret }}
+        - name: key-pair
+          secret:
+            secretName: {{ .Values.keyPair.existingSecret }}
+        {{- end }}
+        {{- if .Values.tls.existingSecret }}
+        - name: tls
+          secret:
+            secretName: {{ .Values.tls.existingSecret }}
+        {{- end }}
+      affinity:
+        {{- if .Values.affinity }}
+        {{- toYaml .Values.affinity | nindent 8 }}
+        {{- else }}
+        # Replicas on different nodes where possible
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    {{- include "neodesk.selector" . | nindent 20 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -157,6 +157,7 @@ dev_modules/
 scripts/legacy/
 migrations/
 templates/
+!deploy/helm/neodesk/templates/
 test_api.sh
 build_windows.sh
 _write_readme.py

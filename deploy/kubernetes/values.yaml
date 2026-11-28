@@ -1,0 +1,14 @@
+# The values neodesk.yaml is rendered from (render.sh). Edit neodesk.yaml
+# for your cluster, or install the Helm chart in deploy/helm/neodesk with
+# your own values instead.
+replicaCount: 3
+publicHost: neodesk.example.com
+secrets:
+  # Make it before you apply neodesk.yaml; see README.md
+  existingSecret: neodesk-secrets
+persistence:
+  accessMode: ReadWriteMany
+  size: 20Gi
+ingress:
+  enabled: true
+  host: console.example.com

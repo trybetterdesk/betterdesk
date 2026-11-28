@@ -172,6 +172,49 @@ jobs:
         working-directory: neodesk-server
         run: go run ./cmd/repotool bump-version --verify
 
+  # The Helm chart lints, refuses settings several replicas can't run
+  # with, and the plain manifests in deploy/kubernetes are what it renders
+  kubernetes:
+    name: kubernetes manifests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HELM_VERSION: 3.16.4
+      HELM_SHA256: fc307327959aa38ed8f9f7e66d45492bb022a66c3e5da6063958254b9767d179
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+
+      - name: Install Helm
+        run: |
+          curl -sSfL "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" -o helm.tar.gz
+          echo "${HELM_SHA256}  helm.tar.gz" | sha256sum -c -
+          tar -xzf helm.tar.gz linux-amd64/helm
+          sudo install -m 0755 linux-amd64/helm /usr/local/bin/helm
+          helm version
+
+      - name: Lint the chart
+        run: |
+          helm lint deploy/helm/neodesk --set publicHost=neodesk.example.com
+          helm lint deploy/helm/neodesk -f deploy/kubernetes/values.yaml
+
+      - name: Check that the chart refuses several replicas without PostgreSQL and Valkey
+        run: |
+          for args in             "--set replicaCount=3"             "--set replicaCount=3 --set postgresql.url=postgres://u@db/neodesk"             "--set replicaCount=3 --set postgresql.url=postgres://u@db/neodesk --set valkey.enabled=true"; do
+            if helm template t deploy/helm/neodesk --set publicHost=x $args >/dev/null 2>err.txt; then
+              echo "rendered with: $args"; exit 1
+            fi
+            grep -q "several replicas" err.txt || { cat err.txt; exit 1; }
+          done
+          helm template t deploy/helm/neodesk --set publicHost=x --set replicaCount=3             --set postgresql.url=postgres://u@db/neodesk --set valkey.enabled=true             --set persistence.accessMode=ReadWriteMany >/dev/null
+
+      - name: Check that deploy/kubernetes/neodesk.yaml is the rendered chart
+        run: |
+          sh deploy/kubernetes/render.sh
+          git diff --exit-code -- deploy/kubernetes/neodesk.yaml || {
+            echo "Run deploy/kubernetes/render.sh and commit neodesk.yaml"; exit 1; }
+
   # go vet, govulncheck and the MeshCentral interop
   go-checks:
     needs: changes
@@ -858,7 +901,7 @@ jobs:
   # Green when every part that ran passed; parts the change did not touch
   # are skipped and count as passed
   passed:
-    needs: [changes, checks, go-checks, go-test, go-test-cache, shared-state, web, build, contract, e2e, e2e-fresh, cdap]
+    needs: [changes, checks, kubernetes, go-checks, go-test, go-test-cache, shared-state, web, build, contract, e2e, e2e-fresh, cdap]
     if: always()
     name: CI passed
     runs-on: ubuntu-latest

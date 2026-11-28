@@ -1,0 +1,126 @@
+# NeoDesk on Kubernetes. One replica runs as the Docker image does. Several
+# replicas share one PostgreSQL database and one Valkey (or Redis), and one
+# ReadWriteMany volume for their files.
+
+# Replicas of the server. More than one needs postgresql.url (or the key
+# DATABASE_URL in secrets.existingSecret) and Valkey: valkey.url, the key
+# VALKEY_URL in secrets.existingSecret, or valkey.enabled for a test.
+replicaCount: 1
+
+image:
+  repository: ghcr.io/neodeskapp/neodesk
+  # "latest" is the newest release, "dev" the newest development build.
+  tag: latest
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+# The host name or address clients use to reach the server: the address of
+# the public Service (or the DNS name pointing at it). It becomes the relay
+# address the server hands out (RELAY_SERVERS). Required.
+publicHost: ""
+
+postgresql:
+  # postgres://user:password@host:5432/neodesk?sslmode=require. Kept in the
+  # chart's Secret. Leave empty to give it in secrets.existingSecret, or to
+  # use SQLite with one replica.
+  url: ""
+
+valkey:
+  # redis://, rediss://, valkey:// or valkeys:// URL of Valkey 8 or Redis 7,
+  # with user and password when it needs them. Kept in the chart's Secret.
+  url: ""
+  # Key prefix for every key the installation writes (NEODESK_KEY_PREFIX).
+  keyPrefix: "neodesk:"
+  # A Valkey in the cluster for tests: one pod, no persistence, no
+  # password. Use a managed or replicated Valkey in production.
+  enabled: false
+  image: valkey/valkey:8-alpine
+
+secrets:
+  # Name of a Secret you made with the keys API_KEY, SESSION_SECRET,
+  # JWT_SECRET, REMOTE_TARGET_VAULT_KEY, NEODESK_CLUSTER_SECRET and, as
+  # needed, DATABASE_URL and VALKEY_URL. Empty: the chart makes one, with
+  # random values that stay the same across upgrades.
+  existingSecret: ""
+
+# The server's key pair (clients pin its public key). Empty: the first
+# replica makes one on the volume. A Secret with the keys id_ed25519 and
+# id_ed25519.pub puts that pair on the volume instead, when the volume has
+# none yet.
+keyPair:
+  existingSecret: ""
+
+# TLS certificate for signal, relay and API (a kubernetes.io/tls Secret,
+# e.g. from cert-manager). Mounted at /etc/neodesk/tls; set TLS_SIGNAL,
+# TLS_RELAY or TLS_API in extraEnv to use it. A new certificate is read at
+# the next start: roll the pods after a renewal.
+tls:
+  existingSecret: ""
+
+persistence:
+  # One volume for the server's and the console's files. With several
+  # replicas it must be ReadWriteMany (NFS, CephFS, EFS, Azure Files).
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  storageClass: ""
+  existingClaim: ""
+
+# The public Service: the ports RustDesk and NeoDesk clients connect to.
+service:
+  type: LoadBalancer
+  # Local keeps the clients' addresses, which the NAT test and the UDP
+  # signal need.
+  externalTrafficPolicy: Local
+  annotations: {}
+  loadBalancerIP: ""
+  # Also publish the CDAP gateway (21122) and the API port for clients
+  # without an API server setting (21114).
+  cdap: false
+  clientAPI: true
+
+# The web console and the HTTP API behind an Ingress. The Service
+# <release>-web serves both on ClusterIP.
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  # Host of the web console (port 3375).
+  host: ""
+  # Host of the HTTP API (port 21121), "" to leave it out.
+  apiHost: ""
+  tls: []
+  #  - secretName: neodesk-web-tls
+  #    hosts: [console.example.com, api.example.com]
+
+# How long a stopping pod gives running relay sessions to end
+# (NEODESK_SHUTDOWN_GRACE). The pod's termination grace is 20 s longer.
+shutdownGraceSeconds: 30
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    memory: 1Gi
+
+podDisruptionBudget:
+  # With several replicas, keep at least this many during node drains.
+  minAvailable: 1
+
+# An example only: relay sessions stay on the pod they meet on, so a scale
+# down ends the sessions of the pods it removes after the grace.
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+# More environment for the server, as in the Docker image.
+extraEnv: []
+#  - name: TLS_API
+#    value: "Y"
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+podAnnotations: {}
